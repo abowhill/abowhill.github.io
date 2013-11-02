@@ -1,0 +1,188 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>Safe, Secure, Portable Remote X-Windows in the Browser | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1><a href="/">Syntax FX</a></h1>
+    <div id="intro">
+     <p class="subTitle details">Technical Blog of Allan Bowhill.</p>
+    </div>
+    <hr>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2013/foo/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013.html" class="next details">Archive<i class="icon-reorder right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2013/safe-secure-portable-remote-x-windows-in-the-browser/">Safe, Secure, Portable Remote X-Windows in the Browser</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Nov  1 2013</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/x/">X</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/x-windows/">X-windows</a></span>
+	</span></span>
+        <div class="articleBody clearfix">
+<p>It is indeed possible to be sitting at some remote location such as a hotel, coffeeshop, store, library or bus with only public, unencrypted internet wifi access and a low-powered windows netbook and still securely access a complete X-Windows desktop over the internet.</p>
+
+<p>OK, this scenario is not quite as fast as being on the physical X-windows machine, especially when you fire up a web browser with a bunch of graphics, but it can be just as good as being there for almost everything else. If you think about it, this is just the kind thing X-Windows was originally designed for: remote access to a graphical desktop on a display server via a dumb terminal. It's really no different over the internet. These dumb terminals in the old days used to be implemented as hardware, but effectively any dumb Windows netbook can play that role.</p>
+
+<p>Given you have access to a running Unix machine at home or work, even one without a monitor (known as a "headless" display) all you need are a couple pieces of software on the Windows laptop: Chrome and Putty, and a bit of configuration magic running on the Unix machine you are accessing.</p>
+
+<p>This setup strategy gives you X-windows in your web browser via a free VNC Chrome plugin, tunneled through an SSH forwarded connection to a headless server behind a firewall running a VNC client, connected to X-windows running in a Virtual FrameBuffer server. There are a few bones to connect, and I will try to explain this.</p>
+
+<p>The Virtual Frame Buffer server (Xvfb) is something that comes with the X-windows distribution in the form of a kind of virtual video driver component. It is similar to the mechanism used to serve up Windows Remote Desktop, in that it uses some code to read the Frame buffer that stores the Windwos Image, but it's Unix instead of Microsoft Windows. Basically the deal with Xvfb is that it's treated just another type of video card driver, like Nvidia or AMD. But instead of displaying to a video card, it "displays" everything live, to a space in memory. Additionally, no monitor or keyboard has to be connected. it's all redirected to run as a complete desktop in memory, as if it were connected to a real mouse, keyboard, video card and monitor. When you run X using this driver, it just sort of sits there in no man's land, running X-Windows as if it were running on the local machine.</p>
+
+<p>To access the machine running the VNC server behind the firewall, you must first have SSH access to a Unix machine in the DMZ in front of the firewall. There are three options from here.</p>
+
+
+<p>1. Setup the VNC server on the DMZ machine. This is probably a terrible choice, as it exposes both X Windows and VNC connections to the open world. Technically, it can be done but addresses should be bound to non-public IP address segments (e.g 192.168.X.X or 10.0.0.X) on your internal network. I would not trust this kind of setup, and thus won't go into it.</p>
+
+<p>2. Setup VNC on a separate machine that can only be accessed on the internal network. This is a fine solution, but requires another machine, which in my mind is a waste and excessive. But a good choice if you have tons of computers to dedicate to tasks like this.</p>
+
+<p>3. Setup VNC in a jail whose interface can only be accessed over private address space behind the firewall. This is the ideal and most economical solution, and can easily be done on FreeBSD. If you are smart, you will be using this operating system in your DMZ. (If you are very smart you would be probably be using OpenBSD for this purpose) In any case, setup a jail on your FreeBSD DMZ machine with a local address (192.168.X.X or the like), install x11/xorg (X-windows) and net/tightvnc net/x11vnc ports. They are a bit of a long build, but worth it.</p>
+
+<p>The idea here is if  X is running inside a FreeBSD jail on the host machine placed in the DMZ, and the jail is only accessible to protected network address space (such as 192.168.x.x), only ssh tunneling can expose the machine from the outside. </p>
+
+<p>NOTE: After upgrading and preparing a plain old jail to test this out, I am backing off my recommendation to use the tightvnc port until I can manage a working configuration with it. Tightvnc worked in a non-jail environment, and has a few problems that I don't understand yet, so I've modified the instructions to work with the net/x11vnc port. I'll try to provide the net/tightvnc configuration sooner or later, because I do believe the performance is rated better. However, the net/x11vnc port does work inside a jail with some adjustments. I've highlighted the changes and additions I made to orange.</p>
+
+<p>Once you've built a jail according to the manpage for jail(8), You'll probably want to start it with a command like this:</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="gp">&gt; </span>jail -c -f simple_jail_config
+</td></tr></tbody></table></pre><p>
+
+<p>where simple_jail_config is a file that looks something like this:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div></td><td class="code"><span class="n">testjail</span> <span class="p">{</span>
+<span class="n">path</span><span class="o">=</span><span class="sr">/usr/</span><span class="n">home</span><span class="o">/</span><span class="n">username</span><span class="o">/</span><span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">49</span><span class="p">;</span>
+<span class="n">mount</span><span class="nf">.devfs</span><span class="p">;</span>
+<span class="n">allow</span><span class="nf">.raw_sockets</span><span class="p">;</span>
+<span class="n">allow</span><span class="nf">.sysvipc</span><span class="p">;</span>
+<span class="n">host</span><span class="nf">.hostname</span> <span class="o">=</span> <span class="n">testhostname</span><span class="p">;</span>
+<span class="n">ip4</span><span class="nf">.addr</span> <span class="o">=</span> <span class="mi">192</span><span class="o">.</span><span class="mi">168</span><span class="o">.</span><span class="mi">0</span><span class="o">.</span><span class="mi">49</span><span class="p">;</span>
+<span class="n">interface</span> <span class="o">=</span> <span class="n">rl0</span><span class="p">;</span>
+<span class="nb">exec</span><span class="nf">.start</span> <span class="o">=</span> <span class="s2">&quot;/bin/sh /etc/rc&quot;</span><span class="p">;</span>
+<span class="nb">exec</span><span class="nf">.stop</span> <span class="o">=</span> <span class="s2">&quot;/bin/sh /etc/rc.shutdown&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+</td></tr></tbody></table></pre><p>
+
+<p>That's the first part of the setup. It can be done on a headless UNIX server. What follows is a set of commands to fire up the server-side programs. (The following was a setup modified from technique shown at http://en.wikipedia.org/wiki/Xvfb). </p>
+
+<p>On your VNC host (be it a jail or otherwise) type, as a non-root user:</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div></td><td class="code"><span class="gp">&gt; </span><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:1
+<span class="gp">&gt; </span>Xvfb :1 -screen 0 1024x768x16 &amp;
+<span class="gp">&gt; </span>fluxbox -display :1 &amp;
+</td></tr></tbody></table></pre><p>
+
+<p>The second part of server setup is running VNC server as a companion process to X. VNC will take whatever desktop you are running (even a virtualized one like Xvfb) and will transmit it over the wire to a VNC client running on another machine. </p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="gp">&gt; </span>x11vnc -ncache 10 -display :1 -bg -nopw -listen 192.168.0.49 -xkb
+</td></tr></tbody></table></pre><p>
+
+<p>That's all you need to do on the server. Three command lines.</p>
+
+<p>Some explanation is due. VNC is run as a co-process to X because of security problems with serving X connections directly over the wire, even when X is protected by SSH forwarding.</p>
+
+<p>One of the things about X (a good thing and a bad thing) is that you can redirect windows and keystrokes to other X servers on other machines. This should never be done in an insecure environment, because it exposes all kinds of details that can compromise your privacy. So you will always want to use SSH to cryptographically secure the connection.</p>
+
+<p>There is a feature in SSH that allows global forwarding of incoming connections. However, on good UNIX distributions like FreeBSD this is turned off by default. Due to security problems that can crop up via the MIT Magic Cookie, complexity of the X protocol, and callbacks to client X connections, you should not use this feature to forward your X-Windows connections directly. Instead, use VNC as a proxy to X, which simplifies the security model greatly. With VNC there is only a single connection for SSH to tunnel, and it doesn't rely on wobbly trickery with SSH and the MIT Magic Cookies and callback connections to the client every time a new application is opened.</p>
+
+<p>For more info, See this excerpt from SSH: Secure Shell Definitive Guide, O'Reilly. It's complicated. <a href="http://csce.uark.edu/~kal/info/private/ssh/ch09_03.htm">Secure Shell Definitive Guide</a> </p>
+
+<p>Other positive side-effects of pairing an X-windows connection with a VNC proxy is that you get slightly better performance over the wire, and compatibility with just about any client platform. In other words, you don't have to install and run a big, fat X-server on the remote client to get full remotely-served X desktop. Using the VNC scheme, small, low-powered machines like netbooks running Windows or some other OS can access X-Windows as easily as UNIX laptops running X-Windows.</p>
+
+<p>So the strategic bottom line is that you must pair VNC with X-Windows on the server. VNC will tap into the virtual frame buffer of the X server, and act as a kind of proxy between the X server and remote VNC client. Since the protocol is elegant, it can be safely tunneled through SSH, which can port-forward the VNC connection to a local port on the client machine, which is one of the magical, almost quantum features of  SSH - the ability to transport the interface of one machine behind a firewall to the local interface of some other machine in front of a firewall. Finally, the VNC client on the remote machine's web browser has only to connect to one of its own ports to access the whole thing.</p>
+
+<p>As far as the client setup is concerned, it's quite simple. </p>
+
+<p>First, install the Google Chrome VNC plugin. It's free, from the Chrome web store. </p>
+
+<p>Secondly, install a copy of Putty, the free and venerable ssh client. If you are running Linux or OS/X on a laptop, you probably already have ssh, so you can dispense with Putty.</p>
+
+<p>For Windows users, Putty should be configured with a profile to access the host UNIX machine .
+In other words, in the Configuration menu, in the Session option, give the IP address or hostname of the DMZ host. Port should be already set at 22.</p>
+
+<p>Next, you'll need to scroll-down the configuration tree to the section Connection//SSH//Tunnels and set the source port to something like 3333.</p>
+
+<p>Next, set Destination to:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="o">[</span><span class="n">host</span><span class="o">]</span><span class="p">:</span><span class="o">[</span><span class="n">port</span><span class="o">]</span>
+</td></tr></tbody></table></pre><p>
+
+<p>Where [host] is the hostname or IP address of the machine behind the DMZ firewall, running the vnc server, and port being the port number that VNC server is attached to. Mine is usually port 5902, but you can find this for your system by getting on the VNC host and looking at the logfile for vncserver after it has been started. It's in the hidden .vnc directory in your home directory. There will be an entry in the logfile saying something like: Listening for VNC connections on TCP port 5902</p>
+
+<p>Once you've entered these two numbers in Putty, click ADD</p>
+
+<p>Then go back to the Session menu selection option and SAVE your profile. From your client laptop when you make a connection to the server using putty, you'll be prompted for your username and password, and dropped into a shell. Leave the Putty session open, because it will make the VNC server connection available to you on localhost port 3333.</p>
+
+<p>At this point, you can open Chrome, open the extension, and type in localhost:3333 to make the connection. You may be asked for a password. That's all there is to it. Your X-Windows desktop should display in a detached window.</p>
+</div>
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
