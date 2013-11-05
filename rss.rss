@@ -5,7 +5,7 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Mon, 04 Nov 2013 12:25:15 -0800</lastBuildDate>
+        <lastBuildDate>Mon, 04 Nov 2013 17:41:50 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
@@ -18,40 +18,105 @@
         </item>
         
         <item>
-          <title>Foo</title>
-          <description>Hi there. 
-
- Hi there once more 
-
- Hello there again. 
-
- Header 1 
- ## Header 2
-### Header 3
-#### Header 4
-##### Header 5
-###### Header 6 
-
- 
-   BlockQuote
-&gt; Nested BlockQuote 
- 
-
-  1 indented code block
- A paragraph 
-
- ~~~~~ ruby
-def arma(two)</description>
-          <link>http://localhost:4567/posts/2013/foo/</link>
-          <pubDate>Fri, 01 Nov 2013 00:00:00 +0000</pubDate>
+          <title>Thermal storage and Active Resource Management</title>
+          <description>I recently added a couple of new games to my system recently, each about 25 Gigabytes in size, and I noticed how poorly I planned to use my own computing resources properly. I installed the game I never use on my best drive, but not after installing the game I now often use on my worst.</description>
+          <link>http://localhost:4567/posts/2013/thermal-storage-and-active-resource-management/</link>
+          <pubDate>Thu, 11 Jul 2013 00:00:00 +0000</pubDate>
         </item>
         
         <item>
-          <title>Livin The Good Life</title>
-          <description>The LORD said:
-	   "I have indeed seen the misery of my people in Egypt. So I have come down to rescue them from the hand of the Egyptians and to bring them up out of that land into a good and spacious land, a land flowing with milk and honey--the home of the Canaanites, Hittites, Amorites, Perizzites, Hivites and Jebusites."</description>
-          <link>http://localhost:4567/posts/2013/livin-the-good-life/</link>
-          <pubDate>Sun, 20 Jan 2013 22:00:00 +0000</pubDate>
+          <title>Upgrading a -STABLE ZFS system with clang</title>
+          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
+          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
+          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Dotfile map for several shells</title>
+          <description>Here is a preliminary dotfile invocation map for several FreeBSD shells: 
+
+  /bin/sh 
+   /usr/local/bin/bash 
+   /usr/local/bin/ksh93 
+   /bin/csh  
+   /bin/tcsh.</description>
+          <link>http://localhost:4567/posts/2013/dotfile-map-for-several-shells/</link>
+          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>ZFS: A truly Superior Filesystem</title>
+          <description>My wife just recently got a new HP Chromebook, causing her to rapidly abandon her 3-year old Toshiba NB 205 netbook. This gave me a new computer to experiment on, and of course I installed FreeBSD. 
+
+ This is a very low-powered machine, with a ton of case-edge built-in peripherals. It has 2G ram, and an internal disk upgraded to 230G. It originally came pre-packaged with Win7 “Starter” edition and a bunch of Toshiba bloatware, which makes it the perfect target for an OS nuke and wicked post-nuclear experimentation.</description>
+          <link>http://localhost:4567/posts/2013/zfs-a-truly-superior-filesystem/</link>
+          <pubDate>Mon, 20 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>On the quagmire of shell dotfile execution</title>
+          <description>Have you ever tried to get a third-party full-color 4-directional scrolling pager (aka: most) working under bash so you can see manpages in full color, and have programs like mergemaster call up a special viewing window rather than just scrolling stuff across the screen? You are in for a treat if you use FreeBSD.</description>
+          <link>http://localhost:4567/posts/2013/on-the-quagmire-of-shell-dotfile-execution/</link>
+          <pubDate>Sat, 18 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>SSH port forwarding ala crosh</title>
+          <description>On a Google Chromebook you can access a UNIX-like terminal window by typing CTRL-T from the Chrome browser. This feature makes a Chromebook much more viable to use for technical people. 
+
+ Without it, you’d have to setup your own HTTP/SSL Tunneling/Comet server at home to even come close to embedding a terminal in a web browser (a complicated setup project I have done before). So hat’s off to whoever had the wherewithal to put that feature in.</description>
+          <link>http://localhost:4567/posts/2013/ssh-port-forwarding-ala-crosh/</link>
+          <pubDate>Thu, 16 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>A Notation for Functional Design with Binary Outcomes</title>
+          <description>I’ve been working out the design for a Ruby program that builds regular, plain old  jails over the past couple of days. 
+
+ After identifying and reading-up on the problem domain, then writing a set of manual setup instructions for it (still underway[^1]), I felt I knew enough to begin design. The program I’m writing is kind of a warm-up to eventually writing a script that installs service jails, which is an advanced setup task.</description>
+          <link>http://localhost:4567/posts/2013/a-notation-for-functional-design-with-binary-outcomes/</link>
+          <pubDate>Mon, 13 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>The Importance of Object-Oriented Design</title>
+          <description>One of the more stifling features of object-oriented programming is trying to figure out what classes to design. 
+
+ Unlike its venerated, comparatively simple tribal cousin, procedural programming, object-oriented programming requires you to invent abstractions in the form of classes that describe the problem domain, or selected parts of it - and package functions with data. The classes you design are blueprints from which objects are manufactured at runtime.</description>
+          <link>http://localhost:4567/posts/2013/the-importance-of-object-oriented-design/</link>
+          <pubDate>Mon, 13 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Shelling it again</title>
+          <description>Sadly again, I find myself using the punishing /bin/sh to script tasks in FreeBSD. And again, I am reminded how painful and time-consuming it can be to do some of the simplest things. 
+
+ One of the first things you should realize is that sh is not Bash. It is Bash featureless ancestor - a kind of pygmy caveman. It is smaller, faster, and somewhat harder to work with. It has nearly meaningless error-messages.</description>
+          <link>http://localhost:4567/posts/2013/shelling-it-again/</link>
+          <pubDate>Sat, 23 Mar 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Ruby RVM redux (RVM on Windows too!)</title>
+          <description>Installing Ruby using RVM 
+
+ Using Wayne Seguin’s RVM (Ruby Version Manager) is definitely the best way to go for installing Ruby on most UNIX platforms. It allows any kind of Ruby to be installed, even multiple versions, and will keep everything in the home directory under .RVM, so no admin-level system installations are required. It is very well maintained, and considered the defacto standard for maintaining and updating Ruby installations. Visit http://rvm.io for more information. After installation, use: rvm notes for up-to-date information about the installed framework.</description>
+          <link>http://localhost:4567/posts/2013/ruby-rvm-redux-rvm-on-windows-too/</link>
+          <pubDate>Thu, 21 Feb 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>SSH Port Forwarding: one example</title>
+          <description>Ssh port forwarding leverages the idea that your secure identity - once established on a bunch of machines that are aware of each other – can give you kind of superman access abilities - to leap servers and firewalls with a single bound, assign services on one machine to exist on another, etc. Practically every barrier you would normally encounter on a network can be circumvented - be it hardware or software.</description>
+          <link>http://localhost:4567/posts/2013/ssh-ports-forwarding-one-example/</link>
+          <pubDate>Tue, 08 Jan 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Using a custom face in ARMA III</title>
+          <description>I’ve been playing a lot of ARMA 3 BETA recently, a military simulator that has an incredible amount of customizability to create your own game and simulation. ARMA (more specifically ARMA 2: Combined Operations) is the software platform that hosts the famous zombie-survival multiplayer mod (3rd party modification script) game called Dayz.</description>
+          <link>http://localhost:4567/posts/2013/using-a-custom-interface-in-arma-iii/</link>
+          <pubDate>Mon, 07 Jan 2013 00:00:00 +0000</pubDate>
         </item>
          
 </channel>

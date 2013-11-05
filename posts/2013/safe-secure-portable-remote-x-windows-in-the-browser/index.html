@@ -84,7 +84,7 @@
 
         <nav class="clearfix">
           <div class="navButton button previousButton">
-            <a class="previous details" href="/posts/2013/foo/"><i class="icon-backward left-more"></i>Earlier</a>
+            <a class="previous details" href="/posts/2013/thermal-storage-and-active-resource-management/"><i class="icon-backward left-more"></i>Earlier</a>
           </div>
           
           
@@ -103,6 +103,7 @@
 	  <span class="tags"><a class="tags" href="/posts/tags/x-windows/">X-windows</a></span>
 	</span></span>
         <div class="articleBody clearfix">
+
 <p>It is indeed possible to be sitting at some remote location such as a hotel, coffeeshop, store, library or bus with only public, unencrypted internet wifi access and a low-powered windows netbook and still securely access a complete X-Windows desktop over the internet.</p>
 
 <p>OK, this scenario is not quite as fast as being on the physical X-windows machine, especially when you fire up a web browser with a bunch of graphics, but it can be just as good as being there for almost everything else. If you think about it, this is just the kind thing X-Windows was originally designed for: remote access to a graphical desktop on a display server via a dumb terminal. It's really no different over the internet. These dumb terminals in the old days used to be implemented as hardware, but effectively any dumb Windows netbook can play that role.</p>
@@ -115,16 +116,17 @@
 
 <p>To access the machine running the VNC server behind the firewall, you must first have SSH access to a Unix machine in the DMZ in front of the firewall. There are three options from here.</p>
 
+<ol type="1">
+<li><em>Setup the VNC server on the DMZ machine.</em> This is probably a terrible choice, as it exposes both X Windows and VNC connections to the open world. Technically, it can be done but addresses should be bound to non-public IP address segments (e.g 192.168.X.X or 10.0.0.X) on your internal network. I would not trust this kind of setup, and thus won't go into it.</li>
 
-<p>1. Setup the VNC server on the DMZ machine. This is probably a terrible choice, as it exposes both X Windows and VNC connections to the open world. Technically, it can be done but addresses should be bound to non-public IP address segments (e.g 192.168.X.X or 10.0.0.X) on your internal network. I would not trust this kind of setup, and thus won't go into it.</p>
+<li><em>Setup VNC on a separate machine that can only be accessed on the internal network.</em> This is a fine solution, but requires another machine, which in my mind is a waste and excessive. But a good choice if you have tons of computers to dedicate to tasks like this.</li>
 
-<p>2. Setup VNC on a separate machine that can only be accessed on the internal network. This is a fine solution, but requires another machine, which in my mind is a waste and excessive. But a good choice if you have tons of computers to dedicate to tasks like this.</p>
-
-<p>3. Setup VNC in a jail whose interface can only be accessed over private address space behind the firewall. This is the ideal and most economical solution, and can easily be done on FreeBSD. If you are smart, you will be using this operating system in your DMZ. (If you are very smart you would be probably be using OpenBSD for this purpose) In any case, setup a jail on your FreeBSD DMZ machine with a local address (192.168.X.X or the like), install x11/xorg (X-windows) and net/tightvnc net/x11vnc ports. They are a bit of a long build, but worth it.</p>
+<li><em>Setup VNC in a jail whose interface can only be accessed over private address space behind the firewall.</em> This is the ideal and most economical solution, and can easily be done on FreeBSD. If you are smart, you will be using this operating system in your DMZ. (If you are very smart you would be probably be using OpenBSD for this purpose) In any case, setup a jail on your FreeBSD DMZ machine with a local address (192.168.X.X or the like), install x11/xorg (X-windows) and net/tightvnc net/x11vnc ports. They are a bit of a long build, but worth it.</li>
+</list>
 
 <p>The idea here is if  X is running inside a FreeBSD jail on the host machine placed in the DMZ, and the jail is only accessible to protected network address space (such as 192.168.x.x), only ssh tunneling can expose the machine from the outside. </p>
 
-<p>NOTE: After upgrading and preparing a plain old jail to test this out, I am backing off my recommendation to use the tightvnc port until I can manage a working configuration with it. Tightvnc worked in a non-jail environment, and has a few problems that I don't understand yet, so I've modified the instructions to work with the net/x11vnc port. I'll try to provide the net/tightvnc configuration sooner or later, because I do believe the performance is rated better. However, the net/x11vnc port does work inside a jail with some adjustments. I've highlighted the changes and additions I made to orange.</p>
+<p>NOTE: After upgrading and preparing a plain old jail to test this out, I am backing off my recommendation to use the tightvnc port until I can manage a working configuration with it. Tightvnc worked in a non-jail environment, and has a few problems that I don't understand yet, so I've modified the instructions to work with the net/x11vnc port.</p>
 
 <p>Once you've built a jail according to the manpage for jail(8), You'll probably want to start it with a command like this:</p>
 
@@ -146,7 +148,7 @@
 <span class="p">}</span>
 </td></tr></tbody></table></pre><p>
 
-<p>That's the first part of the setup. It can be done on a headless UNIX server. What follows is a set of commands to fire up the server-side programs. (The following was a setup modified from technique shown at http://en.wikipedia.org/wiki/Xvfb). </p>
+<p>That's the first part of the setup. It can be done on a headless UNIX server. What follows is a set of commands to fire up the server-side programs. (The following was a setup modified from technique shown at <a href="http://en.wikipedia.org/wiki/Xvfb">Wikipedia</a>). </p>
 
 <p>On your VNC host (be it a jail or otherwise) type, as a non-root user:</p>
 

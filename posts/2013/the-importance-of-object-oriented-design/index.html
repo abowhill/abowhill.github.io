@@ -1,0 +1,231 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>The Importance of Object-Oriented Design | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2013/shelling-it-again/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013/ssh-port-forwarding-ala-crosh/" class="next details">Later<i class="icon-forward right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2013/the-importance-of-object-oriented-design/">The Importance of Object-Oriented Design</a></h2>
+        <span class="postDetails clearfix"><time class="date details">May 13 2013</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/design/">design</a></span>
+	</span></span>
+        <p>One of the more stifling features of object-oriented programming is trying to figure out what classes to design.</p>
+
+<p>Unlike its venerated, comparatively simple tribal cousin, procedural programming, object-oriented programming requires you to invent abstractions in the form of classes that describe the problem domain, or selected parts of it - and package functions with data. The classes you design are blueprints from which objects are manufactured at runtime.</p>
+
+<p>Depending on the language, there can also be inheritance, mixins, access permissions, generics, collections, interfaces, and even Eigenclasses that allow you to mutate the original classes and objects at runtime. And for the truly discriminating, pedantic programmer, there are design patterns.</p>
+
+<p>The big advantage of object-oriented design is the ability to speak to the computer in terms of the problem’s domain. The prodecedural approach makes you to speak to the computer on its own terms, requiring you to translate the problem domain into terms the computer understands.</p>
+
+<p>But the object-oriented approach is actually just an extension of the procedural approach. It’s just the procedural parts (both functions and variables) are heavily modularized and cast into types - protected data structures. We cannot escape the procedural nature of programming. Programs are implementations of algorithms, and algorithms are sequences of steps – recipes for solving problems.</p>
+
+<p>It follows that as a complex wrapper to procedural methodology, there will be more design decisions to make when using an object-oriented methodology. And design is all about how to get problem P to solution S with code. The design you devise can vary depending on what type of problem you’re solving, and the tools you have available.</p>
+
+<p>This is one of the reasons I am trying to leave Perl in favor of Ruby. I’ve done a fair amount of reading on Ruby, and don’t care to delve more deeply into Perl. Unfortunately, most of my practice with Perl has been through jobs. I was always hired as a “perl programmer” no matter what I did until recently. So, although I’ve had plenty of exposure and education centering on object-oriented design, I haven’t had much opportunity to use it - at work or on my own projects. There just hasn’t been a need.</p>
+
+<p>However, what little project exposure I’ve had, has been revealing when it comes to the task of designing classes. There is more than one way to do it. One piece of advise I can give about programming is that you must know your problem domain very well to successfully address it in code. This is especially important with object-oriented class design, as it requires you to declare the problem domain up-front.</p>
+
+<p>So, getting class design correct before coding starts is very important. With reflection and Eigenclassess, it may not be as critical, because you can posthumously mutate objects at runtime with code. Although this violates some of the principles of class-based object-oriented design (encapsulation) it holds some promise of allowing softer, more simplistic cookie-cutter class designs to be planned before coding gets underway, which can be later be mutated and specialized as the project progresses. This saves time over devising rigid strongly-typed blueprints which become, in a way, immutable before coding begins. Reflection may allow for extra refinement to take place after the initial general design is settled-upon. So in this respect, there may be a tradeoff between encapsulation and flexibility with object design.</p>
+
+<p>Using a softly-typed language like Ruby or Python over a strongly-typed one like Java or C++ still doesn’t substantially relieve the pain of a blank slate when it comes to devising a correct or suitable class model to address a domain-specific problem, but perhaps it can reduce size of the “blank page” you are required to fill in before coding starts.</p>
+
+<p>On top of that, what layer of coding you are doing has everything to do with what language you might be using. By layer, I’m suggesting how close to the hardware you are. Below is a rough diagram of languages vs. layers for most computing problems:</p>
+
+<table rules="groups">
+  <thead>
+    <tr>
+      <th style="text-align: left">Layer</th>
+      <th style="text-align: left">Languages most used</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">Hardware</td>
+      <td style="text-align: left"> </td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: No OS</td>
+      <td style="text-align: left">(Hardware Engineering: ASM, C, Verilog</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: BIOS</td>
+      <td style="text-align: left">(ASM, C)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Bootstrap Loaders</td>
+      <td style="text-align: left">(OS Engineering: C, Forth, ASM)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: OS Kernel</td>
+      <td style="text-align: left">(C)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Filesystems and Drivers</td>
+      <td style="text-align: left">(C)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Privileged User Mode</td>
+      <td style="text-align: left">(Critical Operations: C, C++)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: OS utilities</td>
+      <td style="text-align: left">(Standard Operations: C, C++)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: 3rd party system</td>
+      <td style="text-align: left">(Application: Java, C#, C++, C)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Services Frameowrks</td>
+      <td style="text-align: left">(Services: Perl Ruby, Python, Java, C#, C++)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Glue, Build, Admin code</td>
+      <td style="text-align: left">(Production: Perl, Ruby, Python, Shells)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Domain specific langs</td>
+      <td style="text-align: left">(Integration: JavaScript, ERB, Jquery, SQL)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">Software: Entertainment, utilities</td>
+      <td style="text-align: left">(Sourceless: C++, C#, Java, JavaScript)</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"> </td>
+      <td style="text-align: left"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Above, I have tried to rougly outline the layers at which coding occurs, and associated heirarchy of useage realms. Each realm can be composed of one or more layers, and there are no firm boundaries.</p>
+
+<ol>
+  <li>Hardware Engineering - making hardware do something. (embedded)</li>
+  <li>OS Engineering       - making hardware do something sophisticated. (kernel) </li>
+  <li>Critical Ops         - making sure the OS is running. (critical utils)</li>
+  <li>Standard Ops         - making the OS fully usable.    (complete OS binaries)</li>
+  <li>Application          - making the OS extra usable.    (3rd party software)</li>
+  <li>Services             - making the OS serve an automated purpose. (servers)</li>
+  <li>Production           - using the OS to produce software and services.(glue)</li>
+  <li>Integration          - using client installs for consumption (web browser) </li>
+  <li>Sourceless           - making self-contained applications (turbo-tax, games)</li>
+</ol>
+
+<p>Whether or not you agree with the categories, there is a distinct migration of lanugages for the different types of code being written at each layer. The closer we are to hardware, the more lower-level languages we see being used. We start with assembly language and veriolg. The further we go from the hardware, the more higher-level languages we see being used, until we are no longer dealing with source code, or even commands, but end-user applications controlled by user interfaces.</p>
+
+<p>Somwhere in-between the OS engineering layer and the critical operations layer we begin to see object-oriented languages being used. Somehere betweeen the applications and services layer we see the emergence of “pointerless” languages like Java. Somewhere around the services and production layer we see “scripting” languages emerging as the language of choice.</p>
+
+<p>So, it’s not too hard to see that when we get in a bit to the standard operations layer we see see object-oriented code come into use. And it doesn’t go away after that. In fact, object-oriented languages become dominant as we move toward the end-user with his applications, whcih can be very sophisticated programs reaching a million+ lines of code.</p>
+
+<p>Conservatively half of all programming realms, the object-oriented approach is important.</p>
+
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
