@@ -159,7 +159,7 @@
 
 <p>The second part of server setup is running VNC server as a companion process to X. VNC will take whatever desktop you are running (even a virtualized one like Xvfb) and will transmit it over the wire to a VNC client running on another machine. </p>
 
-<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="gp">&gt; </span>x11vnc -ncache 10 -display :1 -bg -nopw -listen 192.168.0.49 -xkb
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="gp">&gt; </span>x11vnc -display :1 -bg -nopw -listen 192.168.0.49 -xkb
 </td></tr></tbody></table></pre><p>
 
 <p>That's all you need to do on the server. Three command lines.</p>
