@@ -31,3 +31,6 @@ Where __windows_name__ is your windows login name and __arma_character_name__ is
 Then open up __ARMA 3__ and select __OPTIONS__, then __PROFILE__ from the __MAIN MENU__
 
 Then select __EDIT__ then __CUSTOM FACE__, and __APPLY__, then __OK__
+
+![](../../../images/face_buddy.jpg)
+![](../../../images/buddy_stratis.jpg)
