@@ -5,7 +5,7 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Wed, 06 Nov 2013 08:58:17 -0800</lastBuildDate>
+        <lastBuildDate>Sun, 10 Nov 2013 13:43:51 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
@@ -25,13 +25,6 @@
         </item>
         
         <item>
-          <title>Upgrading a -STABLE ZFS system with clang</title>
-          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
-          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
-          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
-        </item>
-        
-        <item>
           <title>Dotfile map for several shells</title>
           <description>Here is a preliminary dotfile invocation map for several FreeBSD shells: 
 
@@ -41,6 +34,13 @@
    /bin/csh  
    /bin/tcsh.</description>
           <link>http://localhost:4567/posts/2013/dotfile-map-for-several-shells/</link>
+          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Upgrading a -STABLE ZFS system with clang</title>
+          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
+          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
           <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
         </item>
         
@@ -117,6 +117,47 @@
           <description>I’ve been playing a lot of ARMA 3 BETA recently, a military simulator that has an incredible amount of customizability to create your own game and simulation. ARMA (more specifically ARMA 2: Combined Operations) is the software platform that hosts the famous zombie-survival multiplayer mod (3rd party modification script) game called Dayz.</description>
           <link>http://localhost:4567/posts/2013/using-a-custom-interface-in-arma-iii/</link>
           <pubDate>Mon, 07 Jan 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>A Neat Trick</title>
+          <description>The Linuxcommando Blog  showed a neat inter-process commandline trick that really shows the versatility of the UNIX terminal. It involves prodding a process running in one terminal with a signal from a shell prompt in another, making the process in the first terminal tell something about what it’s doing.</description>
+          <link>http://localhost:4567/posts/2011/a-neat-trick/</link>
+          <pubDate>Sat, 03 Dec 2011 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>When life hands you lemons...</title>
+          <description>If you’re unemployed and want to know how many days it’s been, how many years experience you have, and with which companies, this Ruby class will tell you. Basically, initialize the WorkHistoryAnalysis class, pass in each experience as “, [start date], [end date]" in YYYY,MM,DD format as shown at the bottom of the file. A little report will be generated at the console.</description>
+          <link>http://localhost:4567/posts/2011/when-life-hands-you-lemons/</link>
+          <pubDate>Fri, 06 May 2011 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>A short RVM setup sheet</title>
+          <description>RVM Installation on FreeBSD 
+
+ There are a few good steps outlined on the RVM website. This document is mostly echoed from those steps: RVM install 
+
+ The author (originally Wayne Seguin) offers probably the best tech support available. He is on irc.freenode.net, but you’ll have to authenticate in order to post. The best route is to Register on freenode , setup a username, and login to the #rvm channel with authentication. The web interface is pretty nice.</description>
+          <link>http://localhost:4567/posts/2011/short-rvm-setup-sheet/</link>
+          <pubDate>Mon, 28 Feb 2011 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Basic Javascript call types</title>
+          <description>Some of the hardest-to-understand things about Javascript are also some of the most basic concepts to any programming language. Take simple function declarations. Just input-output, parameters and an algorithm, right? Well, not quite. It’s actually a bit more complicated.</description>
+          <link>http://localhost:4567/posts/2011/basic-javascript-call-types/</link>
+          <pubDate>Sun, 27 Feb 2011 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Win7 vs. Ubuntu vs. CR-48 boot times</title>
+          <description>I just completed a little informal testing of boot times between Win7 and Ubuntu 10.10. Just for fun I included times for the same operations on the Google CR-48 netbook laptop running Ubuntu.  
+
+ Amazingly, between Ubuntus, the desktop machine with somewhere near twice the processing power was at least 50% slower on booting than the Google CR-48 laptop. And Win7 was approximately 50% slower to achieving a state of usability than Ubuntu on the same desktop machine.</description>
+          <link>http://localhost:4567/posts/2011/win7-vs-ubuntu-vs-cr48-boot-times/</link>
+          <pubDate>Fri, 11 Feb 2011 00:00:00 +0000</pubDate>
         </item>
          
 </channel>

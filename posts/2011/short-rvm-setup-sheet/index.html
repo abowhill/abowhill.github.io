@@ -1,0 +1,254 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>A short RVM setup sheet | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2011/basic-javascript-call-types/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2011/when-life-hands-you-lemons/" class="next details">Later<i class="icon-forward right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2011/short-rvm-setup-sheet/">A short RVM setup sheet</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Feb 28 2011</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/rvm/">RVM</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/freebsd/">FreeBSD</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/ruby/">Ruby</a></span>
+	</span></span>
+        <p><strong><em>RVM Installation on FreeBSD</em></strong></p>
+
+<p>There are a few good steps outlined on the RVM website. This document is mostly echoed from those steps: <a href="http://rvm.io">RVM install</a></p>
+
+<p>The author (originally Wayne Seguin) offers probably the best tech support available. He is on irc.freenode.net, but you’ll have to authenticate in order to post. The best route is to Register on freenode , setup a username, and login to the #rvm channel with authentication. The web interface is pretty nice.</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">/msg nickerv identify &lt;your password&gt;
+</td></tr></tbody></table></pre><p />
+
+<p><strong><em>Basic Installation</em></strong></p>
+
+<p>Most of these steps should NOT be run as root. Some of the dependencies will need to be. Install git, bash and curl. When these are installed, run bash and
+and update your .bashrc with this line:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot;
+</td></tr></tbody></table></pre><p />
+
+<p>Then:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">chmod 600 .bashrc
+</td></tr></tbody></table></pre><p />
+
+<p>and edit .profile, adding the line as the last in the file:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">source ~/.bashrc
+</td></tr></tbody></table></pre><p />
+
+<p>Log out of the console, and log back in to make sure everything works.
+Now fetch rvm: </p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">bash &lt; &lt;(curl -s https://rvm.beginrescueend.com/install/rvm)
+</td></tr></tbody></table></pre><p />
+
+<p>Logout and log back in again. To test the rvm installation, it should say “rvm is a function” when the following is typed: </p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">type rvm | head -1
+</td></tr></tbody></table></pre><p />
+
+<p><strong><em>Updating the install</em></strong></p>
+
+<p>You should probably run these 2 commands each time you login to your shell, but do it now to make sure you have the newest version:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$rvm get head
+$rvm reload
+</td></tr></tbody></table></pre><p />
+
+<p><strong><em>Getting Dependencies and Ruby</em></strong></p>
+
+<p>You’ll have to check the notes for your platform: </p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$rvm notes 
+</td></tr></tbody></table></pre><p />
+
+<blockquote>
+  <p>NOTE: You’ll have to install a bunch of dependencies as root. For Ubuntu, for example it will give a list of packages to install: </p>
+</blockquote>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">ruby: /usr/bin/apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev
+</td></tr></tbody></table></pre><p />
+
+<p>To find out which Rubies you can install, type:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">rvm list known
+</td></tr></tbody></table></pre><p />
+
+<p>Now for the ruby installation (NOT done as root). Just choose the version, and run the following:  </p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ rvm install 1.9.2  where the ruby version is 1.9.2. 
+</td></tr></tbody></table></pre><p />
+
+<p>This will take some time to build, since it’s being built from source. Also, there will be no screen messages during the build process. When completed, both ruby and rubygems will be installed somewhere under your .rvm directory.</p>
+
+<p><strong><em>Setting default Ruby &amp; Gems</em></strong></p>
+
+<p>If this is the first installation, you won’t have any ruby or gems defined by default. So, to set your default ruby to ruby-1.9.2-p180 enter:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$ rvm --default use ruby-1.9.2-p180
+$ rvm list
+</td></tr></tbody></table></pre><p />
+
+<p>The above lines will display which version is the current default. You can further verify with:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$ruby --version
+$gem --version
+</td></tr></tbody></table></pre><p />
+
+<p>Next, set your default gemset to something bound to the purpose (say rails3)</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ rvm --create use 1.9.2@rails3
+</td></tr></tbody></table></pre><p />
+
+<p>This tells rvm to use ruby1.9.2 paired with the gemset called rails3. What happens is that rvm creates a separate set of gems to use with rails-1.9.2. If you should ever need to use another ruby and another version of gems, you can have multiple combinations hanging around, and simply tell rvm which one you would like to use. To verify the current gemset, type: 
+~~~
+$ rvm gemset list</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div></td><td class="code">&lt;p/&gt;
+
+You should see an entry for &quot;global&quot; and your special gemset: rails3. At this point, you should update your gems to the latest. This is done by:
+
+~~~
+$ gem --version
+$ gem update --system
+$ gem --version
+</td></tr></tbody></table></pre><p />
+
+<p>You should see the version jump to the latest (currently 1.8.5.) There is some debate on whether any of these commands should be run as root, but I would not recommend it if everything appears to work. There is no sense giving root access to programs that do not need it, especially on web servers.</p>
+
+<p><strong><em>Installing rails (optional)</em></strong></p>
+
+<p>That should be it for the ruby installation. You can run ruby normally as the current user without worries. RVM basically intercepts calls to ruby and its utilities, and allows you to have everything installed in your local directory, as well as multiple versions of Ruby and Gems, which are kept as “Gemsets”. </p>
+
+<p>Before installing Ruby on Rails, it’s worth visiting the Rails website to determine the correct version. At http://rubyonrails.org there are three available, the release candidate (unstable), the dot-zero version (too old) and the bugfix version. In this case, the bugfix version is 3.0.7 so we will install that:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ gem install rails --version 3.0.7
+</td></tr></tbody></table></pre><p />
+
+<p>All dependencies should binplace locally (in the .rvm subdirectory) and without 
+the need for root access. You should be able to see what’s installed with:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ gem list
+</td></tr></tbody></table></pre><p />
+
+<p>If any troubles occur, or there is a need for build-time modifications, you can always poke around in the sources in the .rvm directory to customize anything you install.</p>
+
+<p><strong><em>Maintenance</em></strong></p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$rvm get head
+$rvm reload
+</td></tr></tbody></table></pre><p />
+
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>

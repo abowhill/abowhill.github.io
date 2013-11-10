@@ -1,0 +1,225 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>Basic Javascript call types | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2011/win7-vs-ubuntu-vs-cr48-boot-times/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2011/short-rvm-setup-sheet/" class="next details">Later<i class="icon-forward right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2011/basic-javascript-call-types/">Basic Javascript call types</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Feb 27 2011</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/javascript/">Javascript</a></span>
+	</span></span>
+        <p>Some of the hardest-to-understand things about Javascript are also some of the most basic concepts to any programming language. Take simple function declarations. Just input-output, parameters and an algorithm, right? Well, not quite. It’s actually a bit more complicated.</p>
+
+<p>Javascript is a dual-style language. You can program it procedurally, like C, or in an object-oriented manner, somewhat like Ruby or Perl. The basic function/class declaration takes the form:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">function Name (parameter_list) { code_block }
+</td></tr></tbody></table></pre><p />
+
+<p>The form above is really just syntactic sugar for function pointer assignment syntax:</p>
+
+<pre class="highlight javascript"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="kd">var</span> <span class="nx">Name</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">parameter_list</span><span class="p">)</span> <span class="p">{</span> <span class="nx">code_block</span> <span class="p">}</span>
+</td></tr></tbody></table></pre><p />
+
+<p>Name is an alias for an anonymous function pointer. Furthermore, every object instance in Javascript is more or less equivalent to assignment of a simple anonymous hash table:</p>
+
+<pre class="highlight javascript"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="kd">var</span> <span class="nx">Name</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">code_block</span> <span class="p">}</span>
+</td></tr></tbody></table></pre><p />
+
+<p>Above, we create an object called Name. There is no prototype (ancestral shadow object) attached to Name, as you would normally get if you used new() (which you can’t with a hash), but member methods and properties assigned inline or posthumously will function just as if they were part of an object.</p>
+
+<p>Similarly, a function declaration also doubles as a class declaration in Javascript:</p>
+
+<pre class="highlight javascript"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div><div class="lineno">32</div><div class="lineno">33</div><div class="lineno">34</div><div class="lineno">35</div><div class="lineno">36</div><div class="lineno">37</div><div class="lineno">38</div><div class="lineno">39</div><div class="lineno">40</div><div class="lineno">41</div><div class="lineno">42</div><div class="lineno">43</div><div class="lineno">44</div><div class="lineno">45</div><div class="lineno">46</div><div class="lineno">47</div><div class="lineno">48</div><div class="lineno">49</div><div class="lineno">50</div><div class="lineno">51</div><div class="lineno">52</div><div class="lineno">53</div><div class="lineno">54</div><div class="lineno">55</div><div class="lineno">56</div><div class="lineno">57</div><div class="lineno">58</div><div class="lineno">59</div><div class="lineno">60</div><div class="lineno">61</div><div class="lineno">62</div><div class="lineno">63</div><div class="lineno">64</div><div class="lineno">65</div><div class="lineno">66</div><div class="lineno">67</div><div class="lineno">68</div><div class="lineno">69</div><div class="lineno">70</div><div class="lineno">71</div><div class="lineno">72</div><div class="lineno">73</div><div class="lineno">74</div><div class="lineno">75</div><div class="lineno">76</div><div class="lineno">77</div></td><td class="code"><span class="c1">// namespace collision wrapper START
+</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+
+<span class="cm">/* this is our dual class/function */</span>
+
+<span class="kd">function</span> <span class="nx">Klass</span><span class="p">(</span><span class="nx">param</span><span class="p">)</span> 
+   <span class="p">{</span>
+   <span class="k">this</span><span class="p">.</span><span class="nx">inline_property</span> <span class="o">=</span> <span class="s2">&quot;I&#39;m an inline_property.&quot;</span><span class="p">;</span>
+   <span class="k">this</span><span class="p">.</span><span class="nx">inline_method</span>   <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> 
+      <span class="p">{</span> 
+      <span class="k">return</span> <span class="s2">&quot;I&#39;m an inline_method.&quot;</span><span class="p">;</span> 
+      <span class="p">}</span>
+   <span class="k">return</span> <span class="s2">&quot;I&#39;m a return value.&quot;</span><span class="p">;</span>
+   <span class="p">};</span>
+
+<span class="cm">/*********************************/</span>
+<span class="cm">/* add some members posthumously */</span>
+<span class="cm">/*********************************/</span>
+
+<span class="cm">/* Add static members to Klass */</span>
+
+<span class="nx">Klass</span><span class="p">.</span><span class="nx">static_property</span> <span class="o">=</span> <span class="s2">&quot;I&#39;m a static_property.&quot;</span><span class="p">;</span> 
+
+<span class="nx">Klass</span><span class="p">.</span><span class="nx">static_method</span>   <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span>
+   <span class="p">{</span> 
+   <span class="k">return</span> <span class="s2">&quot;I&#39;m a static_method.&quot;</span><span class="p">;</span> 
+   <span class="p">}</span> 
+
+<span class="cm">/* Add instance members to all objects created from Klass */</span>
+
+<span class="nx">Klass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">instance_property</span> <span class="o">=</span> <span class="s2">&quot;I&#39;m an instance_property.&quot;</span><span class="p">;</span> 
+
+<span class="nx">Klass</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">instance_method</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">foo</span><span class="p">()</span>
+   <span class="p">{</span> 
+   <span class="k">return</span> <span class="s2">&quot;I&#39;m an instance_method.&quot;</span><span class="p">;</span> 
+   <span class="p">}</span>
+
+<span class="cm">/**********************************************************/</span>
+<span class="cm">/* Now let&#39;s see the different types of calls we can make */</span>
+<span class="cm">/**********************************************************/</span>
+
+<span class="kd">var</span> <span class="nx">d</span> <span class="o">=</span> <span class="nb">document</span><span class="p">;</span>
+
+<span class="cm">/* call as a plain old function */</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span><span class="s2">&quot;[Call as a function]&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// prints &quot;I&#39;m a return value.&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">Klass</span><span class="p">(</span><span class="s2">&quot;parameter&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="cm">/* call as a static Class */</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span><span class="s2">&quot;[Call as a static class]&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// prints &quot;I&#39;m a static_property.&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">Klass</span><span class="p">.</span><span class="nx">static_property</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// prints &quot;I&#39;m a static_method.&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">Klass</span><span class="p">.</span><span class="nx">static_method</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="cm">/* call as an instance of Klass (an object) */</span>
+<span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span><span class="s2">&quot;[Call as an Object]&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="nx">K</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Klass</span><span class="p">();</span>
+
+<span class="c1">// prints &quot;I&#39;m an inline_property&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">K</span><span class="p">.</span><span class="nx">inline_property</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// prints &quot;I&#39;m an inline_method&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">K</span><span class="p">.</span><span class="nx">inline_method</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// prints &quot;I&#39;m an instance_property&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">K</span><span class="p">.</span><span class="nx">instance_property</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="c1">// prints &quot;I&#39;m an instance_method&quot;
+</span><span class="nx">d</span><span class="p">.</span><span class="nx">write</span> <span class="p">(</span> <span class="nx">K</span><span class="p">.</span><span class="nx">instance_method</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;&lt;p&gt;&quot;</span><span class="p">);</span>
+
+<span class="p">})</span> <span class="p">();</span> <span class="c1">// namespace collision wrapper END
+</span></td></tr></tbody></table></pre><p />
+
+<p>The point of the code above is to show that a function declaration can double as a class declaration. If the function Name (or Class Name) is new()-ed, it has nearly the full capability of an object. So not only is an object mostly interchangeable with a hash, but a class is mostly interchangeable with a function.</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">Class &lt;=&gt; Function and Object &lt;=&gt; Hash
+</td></tr></tbody></table></pre><p />
+
+<p>How’s that for confusing? Little old Javascript is not as simple as it seems!</p>
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
