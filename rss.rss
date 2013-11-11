@@ -5,7 +5,7 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Sun, 10 Nov 2013 13:43:51 -0800</lastBuildDate>
+        <lastBuildDate>Sun, 10 Nov 2013 17:03:21 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
@@ -139,7 +139,7 @@
 
  There are a few good steps outlined on the RVM website. This document is mostly echoed from those steps: RVM install 
 
- The author (originally Wayne Seguin) offers probably the best tech support available. He is on irc.freenode.net, but you’ll have to authenticate in order to post. The best route is to Register on freenode , setup a username, and login to the #rvm channel with authentication. The web interface is pretty nice.</description>
+ The author (originally Wayne Seguin) offers probably the best tech support available. He is on webchat.freenode.net, but you’ll have to authenticate in order to post. The best route is to Register on freenode, setup a username and login to the #rvm channel with authentication. The web interface is pretty nice.</description>
           <link>http://localhost:4567/posts/2011/short-rvm-setup-sheet/</link>
           <pubDate>Mon, 28 Feb 2011 00:00:00 +0000</pubDate>
         </item>

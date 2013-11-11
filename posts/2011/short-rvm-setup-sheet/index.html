@@ -108,15 +108,29 @@
 
 <p>There are a few good steps outlined on the RVM website. This document is mostly echoed from those steps: <a href="http://rvm.io">RVM install</a></p>
 
-<p>The author (originally Wayne Seguin) offers probably the best tech support available. He is on irc.freenode.net, but you’ll have to authenticate in order to post. The best route is to Register on freenode , setup a username, and login to the #rvm channel with authentication. The web interface is pretty nice.</p>
+<p>The author (originally Wayne Seguin) offers probably the best tech support available. He is on <a href="webchat.freenode.net">webchat.freenode.net</a>, but you’ll have to authenticate in order to post. The best route is to Register on freenode, setup a username and login to the <strong>#rvm</strong> channel with authentication. The web interface is pretty nice. </p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">/msg nickerv identify &lt;your password&gt;
+<blockquote>
+  <p>NOTE: the web interface at webchat.freeneode.net accepts input for the following commands at the bottom of the page.</p>
+</blockquote>
+
+<p>To register on freenode as user: <em>someuser</em> with password: <em>mypassword</em> and email: <em>someuser@mailer.com</em>, first enter the cpatcha to get past the opening screen to be able to talk to the nickserv. Then, in the entry bar at the bottom, enter:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div></td><td class="code">/msg nickserv info someuser
+/nick someuser
+/msg nickserv register mypassword someuser@mailer.com
+/msg nickserv set hidemail on
+</td></tr></tbody></table></pre><p />
+
+<p>Then you’ll gedt an email at someuser@example.com with a nickserv command to confirm your registration. Just cut and paste the command verbetim. Login again. For every login, just enter the following:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">/msg nickerv identify someuser mypassword
+/join #rvm
 </td></tr></tbody></table></pre><p />
 
 <p><strong><em>Basic Installation</em></strong></p>
 
-<p>Most of these steps should NOT be run as root. Some of the dependencies will need to be. Install git, bash and curl. When these are installed, run bash and
-and update your .bashrc with this line:</p>
+<p>Install git, bash and curl as root. All other steps (except for system-wide dependency installs) should NOT be run as root. When dependencies are installed, run bash and and update your .bashrc with this line:</p>
 
 <pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">[[ -s &quot;$HOME/.rvm/scripts/rvm&quot; ]] &amp;&amp; . &quot;$HOME/.rvm/scripts/rvm&quot;
 </td></tr></tbody></table></pre><p />
@@ -134,7 +148,7 @@ and update your .bashrc with this line:</p>
 <p>Log out of the console, and log back in to make sure everything works.
 Now fetch rvm: </p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">bash &lt; &lt;(curl -s https://rvm.beginrescueend.com/install/rvm)
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">\curl -s https://get.rvm.io | bash -s stable
 </td></tr></tbody></table></pre><p />
 
 <p>Logout and log back in again. To test the rvm installation, it should say “rvm is a function” when the following is typed: </p>
@@ -146,15 +160,15 @@ Now fetch rvm: </p>
 
 <p>You should probably run these 2 commands each time you login to your shell, but do it now to make sure you have the newest version:</p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$rvm get head
-$rvm reload
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">rvm get head
+rvm reload
 </td></tr></tbody></table></pre><p />
 
 <p><strong><em>Getting Dependencies and Ruby</em></strong></p>
 
 <p>You’ll have to check the notes for your platform: </p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$rvm notes 
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">rvm notes 
 </td></tr></tbody></table></pre><p />
 
 <blockquote>
@@ -171,7 +185,7 @@ $rvm reload
 
 <p>Now for the ruby installation (NOT done as root). Just choose the version, and run the following:  </p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ rvm install 1.9.2  where the ruby version is 1.9.2. 
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">rvm install 2.0.0  where the ruby version is 2.0.0-[x]
 </td></tr></tbody></table></pre><p />
 
 <p>This will take some time to build, since it’s being built from source. Also, there will be no screen messages during the build process. When completed, both ruby and rubygems will be installed somewhere under your .rvm directory.</p>
@@ -180,44 +194,42 @@ $rvm reload
 
 <p>If this is the first installation, you won’t have any ruby or gems defined by default. So, to set your default ruby to ruby-1.9.2-p180 enter:</p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$ rvm --default use ruby-1.9.2-p180
-$ rvm list
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">rvm --default use ruby-1.9.2-p180
+rvm list
 </td></tr></tbody></table></pre><p />
 
 <p>The above lines will display which version is the current default. You can further verify with:</p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">$ruby --version
-$gem --version
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code">ruby --version
+gem --version
 </td></tr></tbody></table></pre><p />
 
 <p>Next, set your default gemset to something bound to the purpose (say rails3)</p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ rvm --create use 1.9.2@rails3
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">rvm --create use 1.9.2@rails3
 </td></tr></tbody></table></pre><p />
 
-<p>This tells rvm to use ruby1.9.2 paired with the gemset called rails3. What happens is that rvm creates a separate set of gems to use with rails-1.9.2. If you should ever need to use another ruby and another version of gems, you can have multiple combinations hanging around, and simply tell rvm which one you would like to use. To verify the current gemset, type: 
-~~~
-$ rvm gemset list</p>
+<p>This tells rvm to use ruby1.9.2 paired with the gemset called rails3. What happens is that rvm creates a separate set of gems to use with rails-1.9.2. If you should ever need to use another ruby and another version of gems, you can have multiple combinations hanging around, and simply tell rvm which one you would like to use. To verify the current gemset, type: </p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div></td><td class="code">&lt;p/&gt;
-
-You should see an entry for &quot;global&quot; and your special gemset: rails3. At this point, you should update your gems to the latest. This is done by:
-
-~~~
-$ gem --version
-$ gem update --system
-$ gem --version
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">rvm gemset list
 </td></tr></tbody></table></pre><p />
 
-<p>You should see the version jump to the latest (currently 1.8.5.) There is some debate on whether any of these commands should be run as root, but I would not recommend it if everything appears to work. There is no sense giving root access to programs that do not need it, especially on web servers.</p>
+<p>You should see an entry for “global” and your special gemset: rails3. At this point, you should update your gems to the latest. This is done by:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div></td><td class="code">gem --version
+gem update --system
+gem --version
+</td></tr></tbody></table></pre><p />
+
+<p>You should see the version jump to the latest (currently 2.0.0.) </p>
 
 <p><strong><em>Installing rails (optional)</em></strong></p>
 
 <p>That should be it for the ruby installation. You can run ruby normally as the current user without worries. RVM basically intercepts calls to ruby and its utilities, and allows you to have everything installed in your local directory, as well as multiple versions of Ruby and Gems, which are kept as “Gemsets”. </p>
 
-<p>Before installing Ruby on Rails, it’s worth visiting the Rails website to determine the correct version. At http://rubyonrails.org there are three available, the release candidate (unstable), the dot-zero version (too old) and the bugfix version. In this case, the bugfix version is 3.0.7 so we will install that:</p>
+<p>Before installing Ruby on Rails, it’s worth visiting the Rails website to determine the correct version. At <a href="http://rubyonrails.org">Rubyonrails.org</a> there are three available, the release candidate (unstable), the dot-zero version (too old) and the bugfix version. In this case, the bugfix version is 3.0.7 so we will install that:</p>
 
-<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">$ gem install rails --version 3.0.7
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code">gem install rails --version 4.0.1
 </td></tr></tbody></table></pre><p />
 
 <p>All dependencies should binplace locally (in the .rvm subdirectory) and without 
