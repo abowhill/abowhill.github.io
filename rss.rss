@@ -5,10 +5,19 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Sun, 10 Nov 2013 17:06:16 -0800</lastBuildDate>
+        <lastBuildDate>Fri, 15 Nov 2013 16:46:15 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>Scala First Impressions</title>
+          <description>Over the mast month or so I've been studying the [Scala](http://www.scala=lang.org) programming language, and am about halfway through the book[Programming in Scala, Odersky, Spoon and Venners](http://www.artima.com/shop/programming_in_scala_2ed). 
+
+My initial exposure to Scala was kind of double-edged. On one edge, attraction; the other, revulsion. All great technologies, works of art, areas of learning can have this duality. Obviously, these works initially attract me. From that set, many succeed in subsequently repelling me forever for one reason or another. Ruby succeeded in not repelling me forever. Only time will tell with Scala.</description>
+          <link>http://localhost:4567/posts/2013/scala-first-impressions/</link>
+          <pubDate>Fri, 15 Nov 2013 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>Safe, Secure, Portable Remote X-Windows in the Browser</title>
@@ -25,6 +34,13 @@
         </item>
         
         <item>
+          <title>Upgrading a -STABLE ZFS system with clang</title>
+          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
+          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
+          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
           <title>Dotfile map for several shells</title>
           <description>Here is a preliminary dotfile invocation map for several FreeBSD shells: 
 
@@ -34,13 +50,6 @@
    /bin/csh  
    /bin/tcsh.</description>
           <link>http://localhost:4567/posts/2013/dotfile-map-for-several-shells/</link>
-          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
-        </item>
-        
-        <item>
-          <title>Upgrading a -STABLE ZFS system with clang</title>
-          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
-          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
           <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
         </item>
         
@@ -70,20 +79,20 @@
         </item>
         
         <item>
-          <title>A Notation for Functional Design with Binary Outcomes</title>
-          <description>I’ve been working out the design for a Ruby program that builds regular, plain old  jails over the past couple of days. 
-
- After identifying and reading-up on the problem domain, then writing a set of manual setup instructions for it (still underway[^1]), I felt I knew enough to begin design. The program I’m writing is kind of a warm-up to eventually writing a script that installs service jails, which is an advanced setup task.</description>
-          <link>http://localhost:4567/posts/2013/a-notation-for-functional-design-with-binary-outcomes/</link>
-          <pubDate>Mon, 13 May 2013 00:00:00 +0000</pubDate>
-        </item>
-        
-        <item>
           <title>The Importance of Object-Oriented Design</title>
           <description>One of the more stifling features of object-oriented programming is trying to figure out what classes to design. 
 
  Unlike its venerated, comparatively simple tribal cousin, procedural programming, object-oriented programming requires you to invent abstractions in the form of classes that describe the problem domain, or selected parts of it - and package functions with data. The classes you design are blueprints from which objects are manufactured at runtime.</description>
           <link>http://localhost:4567/posts/2013/the-importance-of-object-oriented-design/</link>
+          <pubDate>Mon, 13 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>A Notation for Functional Design with Binary Outcomes</title>
+          <description>I’ve been working out the design for a Ruby program that builds regular, plain old  jails over the past couple of days. 
+
+ After identifying and reading-up on the problem domain, then writing a set of manual setup instructions for it (still underway[^1]), I felt I knew enough to begin design. The program I’m writing is kind of a warm-up to eventually writing a script that installs service jails, which is an advanced setup task.</description>
+          <link>http://localhost:4567/posts/2013/a-notation-for-functional-design-with-binary-outcomes/</link>
           <pubDate>Mon, 13 May 2013 00:00:00 +0000</pubDate>
         </item>
         
