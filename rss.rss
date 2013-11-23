@@ -5,10 +5,17 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Mon, 18 Nov 2013 17:52:19 -0800</lastBuildDate>
+        <lastBuildDate>Fri, 22 Nov 2013 16:56:19 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>Functional Programming Concepts: What We Were Never Taught in School</title>
+          <description>I remember one of my CS profs in college telling the class that when we graduate, we will come out knowing this much (petite two-finger gesture here) about programming. Well, I don’t know about that, as programming in the real world is considerably further up the curve on mechanics, tools reliance, and development fads, but far behind the curve on applying theory and good engineering practice. But there you have it. The academic view on Bachelor’s degree candidates. However, there some truth to this statement.</description>
+          <link>http://localhost:4567/posts/2013/functional-programming-concepts/</link>
+          <pubDate>Fri, 22 Nov 2013 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>Scala First Impressions</title>
@@ -34,13 +41,6 @@
         </item>
         
         <item>
-          <title>Upgrading a -STABLE ZFS system with clang</title>
-          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
-          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
-          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
-        </item>
-        
-        <item>
           <title>Dotfile map for several shells</title>
           <description>Here is a preliminary dotfile invocation map for several FreeBSD shells: 
 
@@ -50,6 +50,13 @@
    /bin/csh  
    /bin/tcsh.</description>
           <link>http://localhost:4567/posts/2013/dotfile-map-for-several-shells/</link>
+          <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
+        </item>
+        
+        <item>
+          <title>Upgrading a -STABLE ZFS system with clang</title>
+          <description>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</description>
+          <link>http://localhost:4567/posts/2013/upgrading-a-stable-zfs-system-with-clang/</link>
           <pubDate>Tue, 21 May 2013 00:00:00 +0000</pubDate>
         </item>
         

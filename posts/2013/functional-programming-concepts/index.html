@@ -1,0 +1,154 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>Functional Programming Concepts: What We Were Never Taught in School | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2013/scala-first-impressions/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013.html" class="next details">Archive<i class="icon-reorder right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2013/functional-programming-concepts/">Functional Programming Concepts: What We Were Never Taught in School</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Nov 22 2013</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/scala/">scala</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/functional/">functional</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/programming/">programming</a></span>
+	</span></span>
+        <p>I remember one of my CS profs in college telling the class that when we graduate, we will come out knowing <em>this much</em> (petite two-finger gesture here) about programming. Well, I don’t know about that, as programming in the real world is considerably further up the curve on mechanics, tools reliance, and development fads, but far behind the curve on applying theory and good engineering practice. But there you have it. The academic view on Bachelor’s degree candidates. However, there some truth to this statement. </p>
+
+<p>In my education, we were never taught outright functional programming methodologies - at least not enough from what I recall. I certainly never had a 100-level course called <em>a survey of formal programming methodologies</em>. Should I have? Almost all of my education was spent studying CS techniques, applications, languages and processes from the perspective of procedural and object-oriented design, under Waterfall process and CMM buiness methodology. Nothing of Agile development methods, no web/cloud programming coursework, no JavaScript/HTML. Everything was taught from an imperative programming approach with languages like C, C++ and Java, and performed in console applications. I feel deprived in a way, because although we were taught most of this stuff, it was never framed from the perspective of Pure Functional Programming.</p>
+
+<p>Since I am in the process of learning Scala on my own now, I’ve experienced some “methodology shock” with the language - a discomfort in the ways of programming with <em>Functional</em> methods. Douglas Crockford, in his Google Tech Talk about Monads <a href="http://www.youtube.com/watch?v=b0EF0VTs9Dc">Monads and Gonads</a> starts by defining Functional Programming as having two kinds of meanings. </p>
+
+<p><strong>Programming with Functions</strong></p>
+
+<p>The first meaning of Functional Programming, according to Crockford, is the simple abiity to program using functions. This entails the familiar C-like structures of storing sequential code in an enclosing block, whose entry point for data is defined by a parameter list, and whose result can be returned outside the block to the caller.</p>
+
+<p>Some developments occurred to enhance this model: <em>First Class Functions</em>, <em>High Order Functions</em> and <em>Lexical Closure</em>.</p>
+
+<p><em>First Class Functions</em> are functions that can be treated like data. First-Class functions, like the Integer data type, can be assigned to fields, given as arguments to other functions, and stored in data structures.</p>
+
+<p><em>High Order Functions</em>, are functions that can operate on other functions as arguments. </p>
+
+<p><em>Lexical Closure</em> - An enclosed function has access to a variable in an outer function. A big breakthrough.</p>
+
+<p><strong>Pure Functional Programming</strong></p>
+
+<p>The second meaning of Functional Programming is <em>Pure Functional Programming</em> is where functions are treated the same as mathematical functions. Mutation of existing data is not allowed. There can be no side-effects (modifcations to internal or external data). </p>
+
+<p>In Pure Functional design, immutable data can only be input to a function, calculation done on it, with some other different immutable data returned. Re-running the function with the same input will always result in the same output. No I/O can be performed. </p>
+
+<p>The advantages are that pure functions can be treated as entities whose input is conceptually identical to static data. A function is-a value. Therefore, the distinction between functions and data are erased. They become First Class, one in the same thing. This leads to higher reliability, consistent, more testable correctness, and a kind of full simplicity.</p>
+
+<p>The disadvantages are that if you make everything immutable, you won’t be able to do much of anything with a program (a sentiment echoed by Haskell guy <a href="http://www.youtube.com/watch?v=iSmkqocn0oQ&amp;feature=youtu.be">Simon Peyton Jones</a> In summary, immutability makes it hard to work with real-world programming problems where data changes.</p>
+
+<p>But the saving chord of this is the loophole of <em>High Order Functions</em> functions, which allow immutable functions to have dynamic behavior. Combining two functions offers a kind of pseudo-mutability to Pure Functional programs. No side-effects, but things like IO can be performed. Thus gave birth to the concept of Monads, which is where I stop trying to make sense of this.</p>
+
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
