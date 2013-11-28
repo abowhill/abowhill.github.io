@@ -5,10 +5,17 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Sat, 23 Nov 2013 13:08:34 -0800</lastBuildDate>
+        <lastBuildDate>Wed, 27 Nov 2013 20:18:46 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>An Empty Shell Project</title>
+          <description>I’ve been playing around a little with writing a shell in scala, just to see what kinds of issues I’d come across. I remember writing most of a pipeline shell in college using C++, and it was kind of fun because it involved IO and interprocess communication: the “useful” aspects of programming as opposed to the “safe” ones.</description>
+          <link>http://localhost:4567/posts/2013/empty-shell-project/</link>
+          <pubDate>Wed, 27 Nov 2013 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>Functional Programming Concepts: What We Were Never Taught in School</title>

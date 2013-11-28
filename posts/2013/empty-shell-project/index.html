@@ -1,0 +1,261 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>An Empty Shell Project | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+<!-- MathJax Library -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"> </script>
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2013/functional-programming-concepts/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013.html" class="next details">Archive<i class="icon-reorder right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2013/empty-shell-project/">An Empty Shell Project</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Nov 27 2013</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/shell/">shell</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/scala/">scala</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/programming/">programming</a></span>
+	</span></span>
+        <p>I’ve been playing around a little with writing a shell in scala, just to see what kinds of issues I’d come across. I remember writing most of a pipeline shell in college using C++, and it was kind of fun because it involved IO and interprocess communication: the “useful” aspects of programming as opposed to the “safe” ones. </p>
+
+<p>So I did a bit of looking into what scala offered for IO and console development. There are many options, not all are easy to use or understand, since the API documentation is distinctly lacking clear examples. There is the <strong>Console</strong> class, the <strong>Source</strong> class, <strong>Streams</strong>, and <strong>Java libraries</strong> as potential entities that can be used to handle console input and output. It’s pretty confusing, and hard to tell which ones are heading for deprection and which ones are “the right ones” to use. </p>
+
+<p>I decided I would go with <strong>Source</strong> as the class to leverage, because it is common generic means to read and write file streams in most examples I’ve seen. This should work just as easily for console IO. I also decided to use a <em>line-by-line</em> approach to shell interaction, rather than a character-by-character based scheme which is too granular for the purpose. After all, a shell bases its IO on complete lines of input. </p>
+
+<p>Originally, each line of code I used was developed in <strong>REPL</strong> (the acronym in common use to describe the scala development shell) a place you can execute scala commands to investigate how they behave). It’s accessible simply by entering </p>
+
+<p><code>&gt; scala</code> </p>
+
+<p>at a non-root command prompt.</p>
+
+<p>When I settled on some lines of code that worked, I moved them into a <em>scala script</em>. A scala script is not compiled, but interpreted scala that can run prototypes of code you write without having to setup a project development enviroment. Doing this after playing with little solutions in <strong>REPL</strong> allows you to see how everything works together.</p>
+
+<p>So for an intermediate scala script, I came up with the following, (named <em>scalashell.script</em>) which simply creates empty shell behavior and has a way of exiting cleanly, in addition to a couple of junk commands to capture any other input. </p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div></td><td class="code">import scala.io.Source
+
+val prompt = &#39;&gt;&#39;
+
+System.out.print(prompt)
+
+for (line &lt;- Source.stdin.getLines.takeWhile(_ != &quot;:exit&quot;) )
+   {
+   System.out.print(prompt)
+
+   val wordgroups = line.split(&quot; &quot;).toList
+
+   if (wordgroups.contains(&quot;someword&quot;))
+      System.out.print(&quot;someword found&quot;)
+   }
+</td></tr></tbody></table></pre><p />
+
+<p>It can be run with </p>
+
+<p><code>&gt; scala scalashell.script</code></p>
+
+<p>from a non-root prompt.</p>
+
+<p>The script is an intermediate point of development, with the ultimate goal of making a compilable project. Now, since I have a bit of working code for something (admittedly not much at the moment) it seems right to setup the project more formally. Since I want to encorporate testing in this project, and some modern build tools, I decided to use <strong>Scalatest</strong> for testing and <strong>SBT</strong> for builds. This is a fairly common setup.</p>
+
+<p><a href="http://www.scalatest.org">Scalatest</a> is a versatile test framework that can do a variety of styles of testing: BDD (Behavior Driven Development), simple unit testing, integration testing. It has several different styles of expression for tests. FunSuite, FlatSpec, FunSpec, WordSpec, FreeSpec, Spec, PropSpec, and FeatureSpec. <strong>FlatSpec</strong> is recommended for <em>Unit tests</em>. <strong>FeatureSpec</strong> is recommended for <em>integration tests</em>. You just download the latest jarfile from the website to use it in your project.</p>
+
+<p><a href="http://www.scala-sbt.org">SBT</a> is a build framework that can continuously build and test your code as you modify it, publish jars, and generate documentation. Sounds neat. <strong>SBT</strong> can be installed using a downloaded jar and shell script, or in FreeBSD directly from the ports collection:</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code"><span class="gp">&gt; </span><span class="nb">cd</span> /usr/ports/devel/sbt
+<span class="gp">&gt; </span>sudo make install clean
+</td></tr></tbody></table></pre><p />
+
+<p>Finally, version control with <a href="http://www.git-scm.com">Git</a> and <a href="http://www.github.com">Github</a> should also be encorporated. Since I’m working inside a FreeBSD jail for this, I installed <strong>Git</strong> from the ports collection, and have established an account on <strong>Github</strong> through my web browser. You’ll need to setup git/github properly following instructions on their respective websites.</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code"><span class="gp">&gt; </span><span class="nb">cd</span> /usr/ports/devl/git
+<span class="gp">&gt; </span>sudo make install clean
+</td></tr></tbody></table></pre><p />
+
+<p>Since SBT requires a baked directory structure to operate in, I chose a project name: <strong>scalashell</strong> for this project and started off by making the following basic directories underneath it:</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div></td><td class="code"><span class="gp">&gt; </span><span class="nb">cd </span>scalashell
+<span class="gp">&gt; </span>mkdir src lib project target
+<span class="gp">&gt; </span>mkdir -p src/main/scala src/test/scala
+</td></tr></tbody></table></pre><p />
+
+<p>Then I copied in the scalatest jar to:</p>
+
+<p><code>
+lib/scalatest_2.10-2.0.RC2.jar
+</code></p>
+
+<p>I then copied the scala shell script into <code>src/main/scala</code> in the project. Since the script is not compilable, I renamed it to <strong>shell.scala</strong> and wrapped it in an object (the scala way of making a static class) adding code wrapper to <strong>main</strong> to make it run as a driver. Not sure this was the best choice, but the simple looping shell interface isn’t really something that belongs in a class, so it’s going to be the driver.</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div></td><td class="code">import scala.io.Source
+
+object Shell
+   {
+   def main (args: Array[String])
+      {
+      val prompt = &#39;&gt;&#39;
+
+      System.out.print(prompt)
+
+      for (line &lt;- Source.stdin.getLines.takeWhile(_ != &quot;:exit&quot;) )
+         {
+         System.out.print(prompt)
+
+         val wordgroups = line.split(&quot; &quot;).toList
+
+         if (wordgroups.contains(&quot;someword&quot;))
+            System.out.print(&quot;someword found&quot;)
+         }
+      }
+   }
+</td></tr></tbody></table></pre><p />
+
+<p>So for this project setup, the basic mechanics of development are to have two terminal windows open: A and B. One terminal (A) is running an editor with project sources and test code, and another terminal window (B) is hosting the SBT shell which spits out compile and test messages as you edit sources in window A.</p>
+
+<p>For the editor window A, source code is located in <code>src/main/scala</code></p>
+
+<p>Test code is located in the shell running the SBT shell, window B: <code>src/tests/scala</code> </p>
+
+<p>To get SBT running, all you do is move to the toplevel directory for the project and call up the SBT shell:</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code"><span class="gp">&gt; </span><span class="nb">cd </span>scalashell
+<span class="gp">&gt; </span>sbt
+</td></tr></tbody></table></pre><p />
+
+<p>SBT intelligently finds your sources and compiles them for you into the project’s <em>target</em> directory. You can force a simple compile and run for demo purposes with the following command from the SBT shell: <code>&gt; run</code></p>
+
+<p>This will compile and run our <strong>scalashell</strong> driver, allowing interacton with it. Typing <code>:exit</code> will exit the running <strong>scalashell</strong>, and return to the SBT shell with a green status message.</p>
+
+<p><img src="../../../images/sbt-1.jpg" alt="" /></p>
+
+<p>Additonally, if you type in: <code>~ compile</code> in the SBT shell, the framework will recompile sources <em>every time you make a change</em>. Furthermore, if you type: <code>~ test</code> in the SBT shell, tests will be run against the sources as you make changes to code, if either of your code or tests change. This is probably the mode we will develop in.</p>
+
+<p>For example, if you edit a test file called <strong>ExampleSpec.scala</strong> in the <code>src/test/scala</code> directory:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div></td><td class="code">import org.scalatest._
+
+class ExampleSpec extends FlatSpec with Matchers {
+
+  &quot;A Shell&quot; should &quot;Start&quot; in {
+   }
+
+  &quot;A Shell&quot; should &quot;Exit&quot; in {
+   }
+}
+</td></tr></tbody></table></pre><p />
+
+<p>You should see the following output from the SBT window as long as you last typed: <em>~ test</em> in the SBT shell. If either tests or source code are edited, SBT will trigger a rebuild and test automatically each time.</p>
+
+<p><img src="../../../images/sbt-2.jpg" alt="" /></p>
+
+<p>The test in <strong>ExampleSpec.scala</strong> was just an empty one that will always succeeed. In a following post, I should be able to work out how to redirect IO and harness the execution of the <strong>Shell</strong> class so I can inject input and read output from the test.</p>
+
+<p>But this is a good starting point.</p>
+
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
