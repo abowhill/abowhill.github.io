@@ -5,10 +5,17 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Fri, 06 Dec 2013 10:47:10 -0800</lastBuildDate>
+        <lastBuildDate>Fri, 06 Dec 2013 22:05:25 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>Testing PShell with a Crude Console Execution Harness</title>
+          <description>Since my last post on it, the Empty Shell Project (now known as PShell) has moved forward a bit. I revised the shell itself, and moved it from the Source API to the Console API. I also built a special (but crude) Shell Execution Harness to isolate and capture I-O. Test-Driven Development TDD (or BDD - Behavior Driven Development) is the way we will develop this project, but it puts a heavy up-front load of system infrastructure preparation on. However, frameworks and harnesses need to be in place to execute automated tests before we can move much further.</description>
+          <link>http://localhost:4567/posts/2013/console-testing-with-execution-harness/</link>
+          <pubDate>Fri, 06 Dec 2013 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>Extractors in Scala</title>

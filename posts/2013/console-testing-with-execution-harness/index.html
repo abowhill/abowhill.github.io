@@ -1,0 +1,356 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>Testing PShell with a Crude Console Execution Harness | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+<!-- MathJax Library -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"> </script>
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2013/vararg-extractors/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013/index.html" class="next details">Archive<i class="icon-reorder right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2013/console-testing-with-execution-harness/">Testing PShell with a Crude Console Execution Harness</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Dec  6 2013</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/scala/">scala</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/shell/">shell</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/programming/">programming</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/sbt/">sbt</a></span>
+	</span></span>
+        <p>Since my last post on it, the <a href="http://abowhill.github.io/posts/2013/empty-shell-project">Empty Shell Project (now known as PShell)</a> has moved forward a bit. I revised the shell itself, and moved it from the <a href="http://www.scala-lang.org/api/current/index.html#scala.io.Source">Source API</a> to the <a href="http://www.scala-lang.org/api/current/index.html#scala.Console$">Console API</a>. I also built a special (but crude) Shell Execution Harness to isolate and capture I-O. <a href="http://en.wikipedia.org/wiki/Behavior-driven_development">Test-Driven Development TDD</a> (or BDD - Behavior Driven Development) is the way we will develop this project, but it puts a heavy up-front load of system infrastructure preparation on. However, frameworks and harnesses need to be in place to execute automated tests before we can move much further.</p>
+
+<p>But first, let’s examine changes made to the <strong>PShell</strong>:</p>
+
+<h3 id="empty-shell-using-the-source-api">Empty Shell using the Source API</h3>
+<p />
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div></td><td class="code">/* Old shell code based on the Source API */
+
+import scala.io.Source
+
+val prompt = &#39;&gt;&#39;
+
+System.out.print(prompt)
+
+for (line &lt;- Source.stdin.getLines.takeWhile(_ != &quot;:exit&quot;) )
+   {
+   System.out.print(prompt)
+   }
+</td></tr></tbody></table></pre><p />
+
+<p>Above is the code for the old version of the shell using the <strong>Source API</strong>. <em>Source</em> has a lot going for it in terms of console development. The API has a rich feature set. There is code elegance (and a bit of aggravation) when taking continually blocking line-by-line input via the <code>Source.getLines()</code> method, but there is abstraction and decoupling from named input devices, which is nice. The <strong>Source API</strong> possesses a number of attractions, but at the expense of potentially shooting yourself in the foot with library choices and extra code.</p>
+
+<h3 id="empty-shell-based-on-the-console-api">Empty Shell based on the <strong>Console API</strong></h3>
+<p />
+
+<p>The new <strong>PShell</strong> code is listed below. I decided to move over to the <strong>Console API</strong> for rightness. Why use a generalization when you have a more specific interface avilable that is prewritten and dedicated to the task? Until it fails to meet the project’s needs, the most direct means is surely what should be rightfully used. Although it offers a thinner interface, the <strong>Console API</strong> has some high-level functions dealing with redirection and color changes. It is also rumored to limit blocking calls to the current thread. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> Since I am considering using multi-threaded programming in a future iteration of the <strong>Console Execution Harness</strong> (described later in this post) I would rather use an API that makes it easier to isolate context.</p>
+
+<p>One immediate and noticable difference using the <strong>Console API</strong> in place of the <strong>Source API</strong> is that <code>Console.getLine()</code> only takes a single line of input at a time instead of continually grabbing lines and blocking, as <code>Source.getLines()</code> does. This drops dependency on a fragile and hard-to-break-out-of iterator that <code>Source.getLines()</code> uses.</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div></td><td class="code">/* New shell code based on the Scala Console API */
+
+package shell
+{
+case object PShell
+   {
+   def run =
+      {
+      val prompt = coding(System.getProperty(&quot;file.encoding&quot;)) + &quot; &quot;
+
+      var line: String = new String
+
+      while (line != &quot;:exit&quot;) // :exit ends this application
+         {
+         Console.print(prompt.toString)
+         line = Console.readLine.toString
+         Console.out.println(&quot;[&quot; + line + &quot;]&quot;)
+         }
+      }
+
+   private def coding(x: Any) = x match
+      {
+      case &quot;UTF-8&quot; =&gt; 0x2794.toChar
+      case _ =&gt; &#39;&gt;&#39;
+      }
+   }
+}
+</td></tr></tbody></table></pre><p />
+
+<h3 id="introducing-a-utf-8-problem">Introducing a UTF-8 Problem</h3>
+<p />
+
+<p>UTF-8 is the modern, multilingual encoding standard that makes it possible to have cool prompts, like real UTF-8 arrows. Unfortunately, it also requires support programatically (in the <strong>PShell</strong>) and in the user’s console software. I wanted the shell to be <strong>UTF-8</strong> capable in some way.</p>
+
+<p><strong>UTF-8</strong> encoding is fully supported on the Microsoft platform, but is still largely unsupported on FreeBSD, and does not come by default at runtime with either Java or Scala. Both the programmer and the user have to work to get it. <strong>IS0-8859-1 (Latin-1)</strong> is the default encoding for any JVM instance and you can really only view <strong>UTF-8</strong> easily on FreeBSD via XWindows by supplying a special switch to Xterm. Basically, this means <strong>UTF-8</strong> may not work <em>at all</em> on some systems, but on others both the code and the user will have to enable things to make it work. Yet on others, such as MS Windows, users should be able to enable it with minimal effort. </p>
+
+<p>As far as Scala source code is concerned, both the <strong>Source API</strong> and <strong>Console API</strong> are able to write <strong>UTF-8</strong> bytes to streams even after the JVM has been started with another type of character encoding. This is because they both work (or can be made to work in the case of the <strong>Source API</strong>) with <em>java.io.PrintStream</em>, which harkens back to <em>java.io.OutputStream</em>, which can be configured to read bytes independent of the JVM’s currently established encoding. So if you write carefully-crafted code and the user has a <strong>UTF-8</strong> capable console, you can force the program to run in <strong>UTF-8</strong> mode on the client machine. But this isn’t something a non-Windows user would like.</p>
+
+<p>The real problem with <strong>UTF-8</strong> lies in the fact you can’t directly determnine from a program whether someone’s terminal is <em>actually</em> capable of portraying <strong>UTF-8</strong> characters correctly. You can read from the UNIX <code>&gt; locale</code> command but if that hasn’t been set correctly it won’t match the user’s terminal capabilities. And then even if everything is copacetic there is still the issue of reliability and implementation with consoles that claim to support <strong>UTF-8</strong>. </p>
+
+<p>Below are two pictures. The first is an Xterm whose <strong>UTF-8</strong> switch has been enabled with: </p>
+
+<p><code>&gt; xterm -en UTF-8</code>. </p>
+
+<p>It displays a <strong>UTF-8</strong> prompt correctly. The second picture shows a Putty session where UTF-8 has not been configured properly for the terminal. It displays a garbage character for the prompt. So the deal here is that forcing <strong>UTF-8</strong> on people, even if your program is using some weak autodetection technique is the <em>wrong choice</em>, because it holds the potential to mess things up too much.</p>
+
+<p><img src="../../../images/sbt-utf8.jpg" alt="UTF-8 PShell prompt visible with UTF-8 enabled PShell and UTF-8 enabled Xterm" />
+<img src="../../../images/sbt-iso-8859-1.jpg" alt="PShell prompt mangled when viewing with terminal that only displays Latin characters" /></p>
+<p />
+
+<p>A more reasonable approach is to allow the user to run the code in <strong>UTF-8 Mode</strong> if he or she wants to. This means he or she would start Scala runtime by passing in the JVM switch: </p>
+
+<p><code>&gt; scala -Dfile.encoding=UTF-8 some_scala_class</code></p>
+
+<p>which establishes <strong>UTF-8</strong> as the default encoding scheme for the duration of runtime for this instance of the virtual machine. Although it requires users to supply a switch at runtime, the benefit of this approach is that it’s more reliable and easier to support in code when the global default is being used. You can easily detect whether the user passed in the <strong>UTF-8</strong> switch to the JVM by reading the <code>file.encoding</code> property from from Java system properties, and then you know <em>everything</em> is <strong>UTF-8</strong> for the session. So this is the approach we use in the new <strong>PShell</strong>. </p>
+
+<h3 id="other-changes-to-pshell">Other changes to PShell</h3>
+
+<p>There were a couple of things having to do with wrappers that changed. I gave the object encapsulating the shell code a <code>package shell</code> namespace, so it could be referred-to by a superficial driver. I also put the basic shell code into a <code>PShell.run</code> method because I wantd to divorce running the shell code from startup of the singleton object containing it. I’m not sure if it matters much, but it allows inspection of the object’s methods to occur if it is run inside the <strong>REPL</strong> (Scala’s interactive shell).</p>
+
+<p>Below is the driver code. Note the import namespace <code>shell.Pshell</code> refers to the namespace of <em>shell</em> and the name of the singleton object contained therein: (<em>PShell</em>). This is how classes and objects refer to each other across files so they can compile as one during build. Actual filenames don’t matter in Scala as they do in Java. I chose <code>main.scala</code> for the driver below, and <code>shell.scala</code> for the <strong>PShell</strong> codeblock listed above. I placed both these files in my project’s <code>src/main/scala</code> subdirectory as it is the required convention for the <strong>SBT</strong> build system. The <a href="../../2013/empty-shell-project">Empty Shell post</a> goes into the details of how to get the project started with <strong>SBT</strong>.</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div></td><td class="code">/* PShell driver */
+
+import shell.PShell
+
+object Shell
+   {
+   def main (args: Array[String])
+      {
+      PShell.run
+      }
+   }
+</td></tr></tbody></table></pre><p />
+
+<h3 id="the-console-harness">The Console Harness</h3>
+<p />
+
+<p>The <strong>ConsoleHarness</strong> singleton object is the programmatic interface which <a href="http://www.scalatest.org">the ScalaTest framework</a> will use to run tests on the <strong>PShell</strong>. 
+To run a test on the <strong>PShell</strong> console object, some test commands get placed into a string, one line of code runs the test, and results are returned for the <strong>stdin</strong>, <strong>stdout</strong> and <strong>stderr</strong> recorded during the run. Our tests in the <strong>ScalaTest</strong> framework can then compare the input to the results for <strong>PASS</strong> or <strong>FAIL</strong> outcomes. When setup with <em>SBT</em> using the <code>~ test</code> directive in another dedicated console, the results are reported to us every time we make a change to any source files or test sources. With these tools, we can measurably move forward with <strong>PShell</strong> development by writing test specs that initially fail, then add or fix code to make the tests pass, and move on to specifying and developing another feature without unknowingly breaking anything that works.</p>
+
+<h4 id="consoleharness-helper-object">ConsoleHarness helper object</h4>
+
+<p>I’ve committed a scala script you can run, demonstrating the <a href="https://github.com/abowhill/scala/blob/master/ConsoleHarness.scala"><strong>ConsoleHarness</strong> at GitHub</a>.  It contains a complete description of the usage, but I will recount a short version here, and describe a litte how it works. </p>
+
+<p>For our <strong>PShell</strong> project, as mentioned above, the steps to run a test with <strong>ConsoleHarness</strong> are:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div></td><td class="code">1. Place some test commands in a String.
+2. Write one line of code to execute the test commands in the harness on PShell.
+3. Get the results of the test and analyze.
+</td></tr></tbody></table></pre>
+<p>So, for example, if we wish to say: “Hello World!” on one line of input and “Goodbye World!” on another line and exit <strong>PShell</strong>, we write something like this:</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div></td><td class="code">val input = &quot;Hello World!, Goodbye World!&quot;
+val ConsoleHarness(first, second, third) = ConsoleHarness(PShell.run, input, &quot;:exit&quot;)
+// The text results are now stored in the vals stdin, stdout and stderr for analysis.
+</td></tr></tbody></table></pre><p />
+
+<p>For the <strong>input</strong> val, the contents of each comma-separated field represents a line of input to send the <strong>PShell</strong>. Whitespace is trimmed at the leading and trailing ends of each field before it is sent. <strong>ConsoleHarness</strong> adds a platform-specific newline to execute each user command in the <strong>PShell</strong>. When it is done issuing user commands, it sends the command to exit the shell, which <strong>PShell</strong> recognizes as <strong>“:exit”</strong>.</p>
+
+<p>The second line of code above has two references to <strong>ConsoleHarness</strong> on both sides of an assignment operator. This is an extractor construct, which basically filters data from the right to left. </p>
+
+<p><code>val ConsoleHarness(first, second, third) = ConsoleHarness(PShell.run, input, ":exit")</code></p>
+
+<p>The right-hand side of the extractor construct runs the <code>apply()</code> method implicity. This method reattaches <strong>stdin</strong>, <strong>stdout</strong> and <strong>stderr</strong> to separate IO streams that display nothing. It then invokes the <strong>PShell.run</strong> method, and captures the attached streams returning them in a map keyed by quoted words <strong>“stdin”</strong>, <strong>“stdout”</strong> and <strong>“stderr”</strong>. </p>
+
+<p>The left-hand side of the extractor construct runs the <code>unapply()</code> method implictly, and accepts a <strong>Map</strong> of the captured streams on input, returning them in order to the declared varables: <strong>first</strong>, <strong>second</strong> and <strong>third</strong> , where the contents of those streams can be read like text files and evaluated.</p>
+
+<p>There is no sophisticated interaction between the streams.<sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup> Input is sent in its entirety as one streaming file. <strong>stdout</strong> and <strong>stderr</strong> are recorded entirely as a streaming files. Input streams in, output streams out, and the files are closed when the program exits gracefully.</p>
+
+<p>The code for <strong>ConsoleHarness</strong> may belong in a separate file, but I’ve placed it just below the test source code blocks (shown further below) in the same file as a kind of helper object for now. Both the test code and this object are in a file located in the project’s test subdirectory: <code>src/test/scala/PShellTest.scala</code></p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div><div class="lineno">32</div><div class="lineno">33</div><div class="lineno">34</div><div class="lineno">35</div></td><td class="code">object ConsoleHarness
+   {
+   val eol = System.getProperty(&quot;line.separator&quot;)
+
+   def apply(runapp: =&gt; Any, cmds: String, exit: String): Map[String,String] =
+      {
+      val cmdString = cmds.split(&quot;,&quot;).map(_.trim).mkString(eol) + eol + exit
+
+      val inS = new java.io.StringReader(cmdString)
+      Console.setIn(inS)
+
+      val outS = new java.io.ByteArrayOutputStream
+      Console.setOut(outS)
+
+      val errS = new java.io.ByteArrayOutputStream
+      Console.setErr (errS)
+
+      runapp
+
+      Map(&quot;stdin&quot; -&gt; cmdString, &quot;stdout&quot; -&gt; outS.toString,
+        &quot;stderr&quot; -&gt; errS.toString)
+      }
+
+   def unapply(iomap: Map[String,String]): Option[(String, String, String)] =
+      {
+      Console.setIn(System.in)
+      Console.setOut(System.out)
+      Console.setErr(System.err)
+
+      if (iomap.size &gt; 0)
+         Some(iomap(&quot;stdin&quot;), iomap(&quot;stdout&quot;), iomap(&quot;stderr&quot;))
+      else
+         None
+      }
+   }
+</td></tr></tbody></table></pre><p />
+
+<p>The scalatest sources below use the execution harness above, and run two basic tests to see if the <strong>PShell</strong> starts and shuts down predictably. The first test sends no user commands in an empty string, but sends the <strong>:exit</strong> command to the <strong>PShell</strong>. It’s a kind of smoke test that exercises a minimal set of operations on the shell to confirm it will end gracefully when given the correct exit. The second test tries to get the <strong>PShell</strong> to end disgracefully by omitting the required <strong>:exit</strong> command, which should trigger an exception. If the first test exits <em>without</em> an exception, it is a PASS. If the second test triggers <em>with</em> an exception it is a PASS.</p>
+
+<pre class="highlight text"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div></td><td class="code">import org.scalatest._
+import shell._
+
+class ExampleSpec extends FlatSpec with Matchers 
+   {
+   &quot;A PShell&quot; should &quot;Start and Exit with :exit&quot; in
+      {
+      val exitCmd = &quot;:exit&quot;
+      val shellCmds = &quot;&quot;
+
+      val ConsoleHarness(stdin, stdout, stderr) =
+          ConsoleHarness(PShell.run, shellCmds, exitCmd)
+
+      println(&quot;Input:\n&quot; + stdin)
+      println(&quot;Output:\n&quot; + stdout)
+      println(&quot;Error:\n&quot; + stderr)
+      }
+
+   it should &quot;Throw Exception if exit command not sent&quot; in
+      {
+      val exit = &quot;&quot;
+      val commands = &quot;&quot;
+
+      intercept[Exception]
+         {
+         val ConsoleHarness(stdin, stdout, stderr) =
+             ConsoleHarness(PShell.run, commands, exit)
+         }
+      }
+   }
+</td></tr></tbody></table></pre><p />
+
+<p>Here is a screen capture of the output of a test run by SBT. It shows stdin, stdout and stderr from the test, followed by green and blue test with a <em>success</em> statement from <em>ScalaTest</em> indicating both tests pass. For test failures, you will see red text.</p>
+
+<p>Well, that’s about it for now. I’ll try to build some shell functions and tests in another blog post.</p>
+
+<p><img src="../../../images/sbt-test-1.JPG" alt="SBT test outcome" /></p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>According to chatter on <a href="http://stackoverflow.com/questions/7219316/println-vs-system-out-println-in-scala">StackOverFlow</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>To get sophisticated line-by-line interaction betweeen streams we will likely need to employ pipes and <strong>Actors</strong>, which are threads that communicate with one another asynchronously through a mailbox scheme. I may further develop into this path. But for now, this crude harness will work for one or two commands at a time. The complexity of this task indicates one of the problems in TDD. In some cases, you need to make proper test frameworks from scratch whose development time and complexity can exceed the time and complexity of the original thing you are trying to build. In fact, it may become complex enough to require testing itself. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
