@@ -1,0 +1,415 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>Die Ickmascript, Ruby is the Funnest! | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+<!-- MathJax Library -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"> </script>
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2013/console-testing-with-execution-harness/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013/index.html" class="next details">Archive<i class="icon-reorder right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2013/opal-scripting/">Die Ickmascript, Ruby is the Funnest!</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Dec 14 2013</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/ruby/">ruby</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/opal/">opal</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/www/">www</a></span>
+	</span></span>
+        <p>I just think Javascript is really icky. Icky like HP printer layout language or raw RTF. I don’t know a lot about JavaScript, and I don’t really want to. But the world is going bonkers over this gross little language and it’s time to put an end to the myth that you must use it to do things in the browser.</p>
+
+<p>I said I don’t know a lot about it. Here is the <a href="http://abowhill.github.io/posts/2011/basic-javascript-call-types/">sum of my knowledge</a> and <a href="https://docs.google.com/document/d/18JDy6aYWoDWE9aWT6q9nJku3uBMzi6wrQ0CiLotdmWA/edit?usp=sharing">some badly scribbled notes here</a>. I choose to embrace my ignorance of JavaScript and just keep it that way. I am a naiive but happy person. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>So it’s kind of built into me to hate Javascript a bit. JavaScript is also at the center of <a href="https://raw.github.com/mauke/poly.poly/master/poly.poly">Polyglot programming</a> which I both admire and despise. I can’t deny I like the idea of a programming language in the web browser, but <em>does it have to be</em> <strong>Javascript</strong>? (and nine other languages thrown in?) Unfortunately, yes, it does. And yet it does not.</p>
+
+<p>Thanks to the promising work of some people out there, as Ruby-lovers and Humanists, we all just may be able to <strong>not</strong> program in JavaScript as much as possible, and still have the good things in life. This idea grasps at the core of what Ruby is all about. <strong>Programmer happiness</strong>.</p>
+
+<p>I name a couple of projects: <a href="http://blog .qiezi.me/">WebRuby by Xuejie Xiao</a> and <a href="http://opalrb.org/">Opal by Forrest Chang</a>, and I’m sure there are others, but these are the two I’ve investigated.</p>
+
+<p>The unique quality of these projects, is they run Ruby in the web browser. XueJie’s work compiles an entire Ruby VM into a JavaScript library, making it accessible from the browser as a kind of resident machine. Forrest’s work is a transliteration engine that recodes a very Ruby-like language into JavaScript - Check out his talk at <a href="http://confreaks.com/videos/2904-rubyconf2013-opal-a-new-hope-for-ruby-programmers">Miami Ruby Conference 2013</a>. He is not only an engaging speaker with a great slide deck, he has a mission he is passionate about. Coding should be fun, and as a community, Ruby people feel strongly about that.</p>
+
+<p>Both of these projects are highly experimental and I’ve gotten both to work, with a considerable amount of elbow-grease. XieJie was very helpful in getting my proof of concept running. I had fewer problems with Forrest’s project, but there was a lot of debugging that had to happen with my test program. Forrest has a number of people working on his project, so it was naturally able to handle a more challenging task. </p>
+
+<p>The test program I ran under his project was a copy of something I wrote a few years ago when I was unemployed for almost two years straight. Although that situation remedied itself then unremedied itself again, the program still works. The program just takes some dates of employment and displays a report telling you your total experience both employed and unemployed. I’ve Perl-tested it, meaning it seems to work fine for me.</p>
+
+<p>Here is the original copy that runs in the console with Ruby MRI:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div><div class="lineno">32</div><div class="lineno">33</div><div class="lineno">34</div><div class="lineno">35</div><div class="lineno">36</div><div class="lineno">37</div><div class="lineno">38</div><div class="lineno">39</div><div class="lineno">40</div><div class="lineno">41</div><div class="lineno">42</div><div class="lineno">43</div><div class="lineno">44</div><div class="lineno">45</div><div class="lineno">46</div><div class="lineno">47</div><div class="lineno">48</div><div class="lineno">49</div><div class="lineno">50</div><div class="lineno">51</div><div class="lineno">52</div><div class="lineno">53</div><div class="lineno">54</div><div class="lineno">55</div><div class="lineno">56</div><div class="lineno">57</div><div class="lineno">58</div><div class="lineno">59</div><div class="lineno">60</div><div class="lineno">61</div><div class="lineno">62</div><div class="lineno">63</div><div class="lineno">64</div><div class="lineno">65</div><div class="lineno">66</div><div class="lineno">67</div><div class="lineno">68</div><div class="lineno">69</div><div class="lineno">70</div><div class="lineno">71</div><div class="lineno">72</div><div class="lineno">73</div><div class="lineno">74</div><div class="lineno">75</div><div class="lineno">76</div><div class="lineno">77</div><div class="lineno">78</div><div class="lineno">79</div><div class="lineno">80</div></td><td class="code">
+<span class="nb">require</span> <span class="s1">&#39;date&#39;</span><span class="p">;</span>
+ 
+<span class="k">class </span><span class="nc">WorkHistoryAnalysis</span>
+   <span class="kp">attr_accessor</span> <span class="ss">:total</span><span class="p">,</span> <span class="ss">:company</span><span class="p">,</span> <span class="ss">:latest</span>
+ 
+   <span class="k">def </span><span class="nf">initialize</span><span class="p">()</span>
+      <span class="vi">@total_days</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="vi">@company</span> <span class="o">=</span> <span class="no">Hash</span><span class="nf">.new</span>
+      <span class="vi">@latest</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.new</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">workedFor</span><span class="p">(</span><span class="n">who</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">)</span>
+      <span class="n">to_d</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.new</span><span class="p">(</span><span class="n">to</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">to</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">to</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+      <span class="n">from_d</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.new</span><span class="p">(</span><span class="n">from</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">from</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">from</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+ 
+      <span class="n">latest?</span><span class="p">(</span><span class="n">to_d</span><span class="p">)</span>
+ 
+      <span class="n">days</span> <span class="o">=</span> <span class="p">(</span><span class="n">to_d</span> <span class="o">-</span> <span class="n">from_d</span><span class="p">)</span><span class="nf">.to_i</span>
+ 
+      <span class="k">if</span> <span class="p">(</span><span class="vi">@company</span><span class="nf">.has_key?</span><span class="p">(</span><span class="n">who</span><span class="p">))</span>
+         <span class="vi">@company</span><span class="o">[</span><span class="n">who</span><span class="o">]</span> <span class="o">+=</span> <span class="n">days</span>
+      <span class="k">else</span>
+         <span class="vi">@company</span><span class="o">[</span><span class="n">who</span><span class="o">]</span> <span class="o">=</span> <span class="n">days</span>
+      <span class="k">end</span>
+ 
+      <span class="vi">@total_days</span> <span class="o">+=</span> <span class="n">days</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">latest?</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">((</span><span class="n">dat</span> <span class="o">&lt;=&gt;</span> <span class="vi">@latest</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+         <span class="vi">@latest</span> <span class="o">=</span> <span class="n">dat</span>
+      <span class="k">else</span>
+         <span class="k">return</span> <span class="kp">false</span>
+      <span class="k">end</span>
+      <span class="k">return</span> <span class="kp">true</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">employed</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days2yrs</span><span class="p">(</span><span class="vi">@total_days</span><span class="p">)</span>
+      <span class="k">return</span> <span class="o">[</span><span class="s2">&quot;Employed for:&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;   </span><span class="si">#{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="vi">@total_days</span><span class="si">}</span><span class="s2"> total days]&quot;</span><span class="o">]</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">unemployed</span>
+      <span class="n">days</span> <span class="o">=</span> <span class="p">(</span><span class="no">Date</span><span class="nf">.today</span> <span class="o">-</span> <span class="vi">@latest</span><span class="p">)</span><span class="nf">.to_i</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days2yrs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+      <span class="k">return</span> <span class="o">[</span><span class="s2">&quot;Currently unemployed for:&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;   </span><span class="si">#{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="n">days</span><span class="si">}</span><span class="s2"> days]&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;Last worked:&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;   </span><span class="si">#{</span><span class="vi">@latest</span><span class="nf">.to_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">days2yrs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days</span><span class="o">/</span><span class="mi">365</span><span class="nf">.to_f</span>
+      <span class="k">return</span> <span class="p">(</span><span class="n">years</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="nf">.round.to_f</span> <span class="sr">/ 100
+      ## /</span> <span class="n">just</span> <span class="n">to</span> <span class="n">fix</span> <span class="n">syntax</span> <span class="n">highlighting</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">list_experiences</span>
+      <span class="n">str</span> <span class="o">=</span> <span class="s2">&quot;Employment breakdown by company:</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">co</span> <span class="o">=</span> <span class="vi">@company</span><span class="nf">.sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span> <span class="p">}</span>
+      <span class="n">co</span><span class="nf">.each</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">str</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">days2yrs</span><span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2"> days]</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="p">}</span>
+      <span class="k">return</span> <span class="n">str</span>      
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">print</span>
+      <span class="nb">puts</span> <span class="n">employed</span>
+      <span class="nb">puts</span> <span class="n">unemployed</span>
+      <span class="nb">puts</span> <span class="n">list_experiences</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+ 
+ 
+<span class="n">W</span> <span class="o">=</span> <span class="no">WorkHistoryAnalysis</span><span class="nf">.new</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;NWlink&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">1996</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">1997</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Orrtax&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">1997</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Hostpro&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2001</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;College&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2002</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2005</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Marchex&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2008</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2008</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2009</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">26</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2011</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2012</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="nf">.print</span>
+</td></tr></tbody></table></pre><p />
+
+<p>Below is the slightly modified copy of the same script that ran correctly under <code>Opal</code> in my web browser:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div><div class="lineno">32</div><div class="lineno">33</div><div class="lineno">34</div><div class="lineno">35</div><div class="lineno">36</div><div class="lineno">37</div><div class="lineno">38</div><div class="lineno">39</div><div class="lineno">40</div><div class="lineno">41</div><div class="lineno">42</div><div class="lineno">43</div><div class="lineno">44</div><div class="lineno">45</div><div class="lineno">46</div><div class="lineno">47</div><div class="lineno">48</div><div class="lineno">49</div><div class="lineno">50</div><div class="lineno">51</div><div class="lineno">52</div><div class="lineno">53</div><div class="lineno">54</div><div class="lineno">55</div><div class="lineno">56</div><div class="lineno">57</div><div class="lineno">58</div><div class="lineno">59</div><div class="lineno">60</div><div class="lineno">61</div><div class="lineno">62</div><div class="lineno">63</div><div class="lineno">64</div><div class="lineno">65</div><div class="lineno">66</div><div class="lineno">67</div><div class="lineno">68</div><div class="lineno">69</div><div class="lineno">70</div><div class="lineno">71</div><div class="lineno">72</div><div class="lineno">73</div><div class="lineno">74</div><div class="lineno">75</div><div class="lineno">76</div><div class="lineno">77</div><div class="lineno">78</div><div class="lineno">79</div><div class="lineno">80</div><div class="lineno">81</div><div class="lineno">82</div><div class="lineno">83</div><div class="lineno">84</div><div class="lineno">85</div><div class="lineno">86</div><div class="lineno">87</div><div class="lineno">88</div><div class="lineno">89</div><div class="lineno">90</div><div class="lineno">91</div><div class="lineno">92</div><div class="lineno">93</div></td><td class="code"><span class="nb">require</span> <span class="s1">&#39;opal&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;jquery&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;opal-jquery&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;date&#39;</span>
+
+ 
+<span class="k">class </span><span class="nc">WorkHistoryAnalysis</span>
+   <span class="kp">attr_accessor</span> <span class="ss">:total</span><span class="p">,</span> <span class="ss">:company</span><span class="p">,</span> <span class="ss">:latest</span>
+ 
+   <span class="k">def </span><span class="nf">initialize</span><span class="p">()</span>
+      <span class="vi">@total_days</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="vi">@company</span> <span class="o">=</span> <span class="no">Hash</span><span class="nf">.new</span>
+      <span class="vi">@last</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.new</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">workedFor</span><span class="p">(</span><span class="n">who</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">)</span>
+      <span class="n">to_d</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.new</span><span class="p">(</span><span class="n">to</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">to</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">to</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+      <span class="n">from_d</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.new</span><span class="p">(</span><span class="n">from</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">from</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">from</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+ 
+      <span class="n">latest?</span><span class="p">(</span><span class="n">to_d</span><span class="p">)</span>
+      <span class="n">days</span> <span class="o">=</span> <span class="p">(</span><span class="n">to_d</span> <span class="o">-</span> <span class="n">from_d</span><span class="p">)</span><span class="nf">.to_i</span>
+ 
+      <span class="k">if</span> <span class="p">(</span><span class="vi">@company</span><span class="nf">.has_key?</span><span class="p">(</span><span class="n">who</span><span class="p">))</span>
+         <span class="vi">@company</span><span class="o">[</span><span class="n">who</span><span class="o">]</span> <span class="o">+=</span> <span class="n">days</span>
+      <span class="k">else</span>
+         <span class="vi">@company</span><span class="o">[</span><span class="n">who</span><span class="o">]</span> <span class="o">=</span> <span class="n">days</span>
+      <span class="k">end</span>
+ 
+      <span class="vi">@total_days</span> <span class="o">+=</span> <span class="n">days</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">latest?</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">dat</span> <span class="o">&gt;</span> <span class="vi">@last</span><span class="p">)</span> 
+        <span class="vi">@last</span> <span class="o">=</span> <span class="n">dat</span> 
+      <span class="k">else</span> 
+        <span class="k">return</span> <span class="kp">false</span>
+      <span class="k">end</span>
+      <span class="k">return</span> <span class="kp">true</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">employed</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days2yrs</span><span class="p">(</span><span class="vi">@total_days</span><span class="p">)</span>
+      <span class="n">ret</span> <span class="o">=</span>  <span class="s2">&quot;Employed for:</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">#{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="vi">@total_days</span><span class="si">}</span><span class="s2"> total days]</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">unemployed</span>
+      <span class="n">days</span> <span class="o">=</span> <span class="no">Date</span><span class="nf">.today</span> <span class="o">-</span> <span class="vi">@last</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days2yrs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+      <span class="n">ret</span> <span class="o">=</span> <span class="s2">&quot;Currently unemployed for:</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">#{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="n">days</span><span class="si">}</span><span class="s2"> days]</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;Last worked:</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">#{</span><span class="vi">@last</span><span class="nf">.to_s</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">ret</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">days2yrs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+      <span class="n">pre_years</span> <span class="o">=</span> <span class="p">(</span><span class="n">days</span><span class="o">/</span><span class="mi">365</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="nf">.to_i</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">pre_years</span> <span class="o">/</span> <span class="mi">100</span>
+      <span class="k">return</span> <span class="n">years</span><span class="nf">.to_s</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">list_experiences</span>
+      <span class="n">str</span> <span class="o">=</span> <span class="s2">&quot;Employment breakdown by company:</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">co</span> <span class="o">=</span> <span class="vi">@company</span><span class="nf">.sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span> <span class="p">}</span>
+      <span class="n">co</span><span class="nf">.each</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">str</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">days2yrs</span><span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2"> days]</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="p">}</span>
+      <span class="k">return</span> <span class="n">str</span>
+   <span class="k">end</span>
+ 
+   <span class="k">def </span><span class="nf">print</span>
+      <span class="k">return</span> <span class="n">employed</span> <span class="o">+</span> <span class="n">unemployed</span> <span class="o">+</span> <span class="n">list_experiences</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+ 
+ 
+<span class="no">Document</span><span class="nf">.ready?</span> <span class="k">do</span>
+   <span class="n">body</span> <span class="o">=</span> <span class="no">Element</span><span class="o">[</span><span class="s1">&#39;body&#39;</span><span class="o">]</span>
+
+   <span class="n">W</span> <span class="o">=</span> <span class="no">WorkHistoryAnalysis</span><span class="nf">.new</span>
+
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;NWlink&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">1996</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">1997</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Orrtax&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">1997</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Hostpro&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2001</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;College&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2002</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2005</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Marchex&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2008</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2008</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2009</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">26</span><span class="o">]</span><span class="p">)</span>
+   <span class="n">W</span><span class="nf">.workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2011</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2012</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+
+   <span class="n">body</span><span class="nf">.append</span><span class="p">(</span><span class="s2">&quot;&lt;pre&gt;</span><span class="si">#{</span><span class="n">W</span><span class="nf">.print</span><span class="si">}</span><span class="s2">&lt;b&gt;&quot;</span><span class="p">)</span>
+<span class="k">end</span>
+</td></tr></tbody></table></pre><p />
+
+<p>There are a number of minor changes to this script with regard to math and comparison functions. Opal seemed not to like the spaceship operator <code>&lt;=&gt;</code> very much, so I had to simplify it. The major changes are at the top and bottom of the script and to the naiively-written <strong>print</strong> function. The top of the script contains <strong>require</strong> for things that must be in-order, with <strong>opal</strong> being the first module listed. The bottom section is wrapped by functions offered by the <code>opal-jquery</code> library, which essentially makes JQuery accessible to your Ruby script. Note that all JQuery selectors are funneled through <code>Element</code> objects in Opal.</p>
+
+<p>The goal of this experiment was to get this code to run in my web browser using Opal. First thing, get on IRC into the <strong>#opal</strong> channel. They can help. It was here I learned that the RVM installation option for Opal was grossly out of date. I discovered myself it had some permissions issues on installation, so I do not recommend installing it. RVM is in a state of flux right now, so this will get fixed at some point. But at the moment, just use the one at Opal’s main website: <a href="http://opalrb.org/">http://opalrb.org/</a>.</p>
+
+<p>Basically, I followed instructions there on how to <a href="http://opalrb.org/docs/static_applications/">build a static app</a> that outputs to the JavaScript dev console of Chrome, then when I got that running satisfactorily, I made some modifications to the project to make it run as an <strong>Opal JQuery app</strong> in the <a href="https://github.com/opal/opal-jquery">browser proper</a>.</p>
+
+<p>Hopefully, I can give a little auxiliary guidance in this post on how to get to that second stage directly. </p>
+
+<p>First, we will assume you have installed Ruby on your Linux system and created a project directory. We will also assume you have a small console app to test, something that is entirely self-contained for I/O and doesn’t need to access any files or take any user input to run. </p>
+
+<p>NOTE: Before any stuff happens, you will need to install <code>node.js</code> and <code>npm</code> (the JavaScript package manager) from your Linux distro’s package installation tool. These are needed by the cluster-muck of JavaScript frameworks to get the good things in life (and this project) running.</p>
+
+<p>So, once you have the system dependencies installed, the fist (real) step you need to take from your project directory, is to make a subdirectory called <code>app</code>, and place your script in there. (Use my script if you are not wanting to debug for the next few hours.) Rename it to be <code>application.rb</code>. You will also need to download a copy of <strong>JQuery</strong> (just a single file) and place it into the <em>app</em> directory as well, renaming it to <code>jquery.js</code>. We deal with fixed names here because we are clueless and it makes setup easier by conforming to the instructions.</p>
+
+<p>Next, you will want to create an HTML file in the toplevel project directory for this experiment called <code>simple.html</code> with the following contents:</p>
+
+<pre class="highlight html"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div></td><td class="code"><span class="nt">&lt;DOCTYPE</span> <span class="na">html</span><span class="nt">&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;build.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</td></tr></tbody></table></pre><p />
+
+<p>It references a single Javascript called <code>build.js</code> which we will compile with Opal momentarily. The deal here is the Ruby you wrote will be cross-compiled into this file, which in turn runs the JavaScript representation of your Ruby code in the web browser. Pretty awesome stuff when you think about it.</p>
+
+<p>Now onto the next step. Create a file in the toplevel called <code>Gemfile</code> and make sure it has the follwing contents:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div></td><td class="code"><span class="n">source</span> <span class="s1">&#39;https://rubygems.org&#39;</span>
+
+<span class="n">gem</span> <span class="s2">&quot;opal&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;= 0.4.3&quot;</span>
+<span class="n">gem</span> <span class="s2">&quot;opal-sprockets&quot;</span>
+<span class="n">gem</span> <span class="s2">&quot;opal-jquery&quot;</span>
+</td></tr></tbody></table></pre><p />
+
+<p>The source entry is somehwat optional, depending on how your Ruby installation is configured. I needed to insert that line for it to work. The <strong>Gemfile</strong> is standard equipment on all Ruby projects. It makes it possible to install dependent gems for the project, and we will be doing that in a minute.</p>
+
+<p>Next, create a file called <code>Rakefile</code> in your toplevel directory with the following contents:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div></td><td class="code"><span class="c1"># Rakefile</span>
+
+<span class="nb">require</span> <span class="s1">&#39;opal&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;opal-sprockets&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;opal-jquery&#39;</span>
+
+<span class="n">desc</span> <span class="s2">&quot;Build our app to build.js&quot;</span>
+<span class="n">task</span> <span class="ss">:build</span> <span class="k">do</span>
+  <span class="n">env</span> <span class="o">=</span> <span class="no">Opal</span><span class="o">::</span><span class="no">Environment</span><span class="nf">.new</span>
+  <span class="n">env</span><span class="nf">.append_path</span> <span class="s2">&quot;app&quot;</span>
+
+  <span class="no">File</span><span class="nf">.open</span><span class="p">(</span><span class="s2">&quot;build.js&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">out</span><span class="o">|</span>
+    <span class="n">out</span> <span class="o">&lt;&lt;</span> <span class="n">env</span><span class="o">[</span><span class="s2">&quot;application&quot;</span><span class="o">]</span><span class="nf">.to_s</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</td></tr></tbody></table></pre><p />
+
+<p>The <strong>Rakefile</strong> is the Ruby version of a makefile, normally used under <em>Ruby on Rails</em> to do various tasks, but in our case it is being used to cross-compile the Ruby script into JavaScript.</p>
+
+<p>OK, now you have all the startup files in place. </p>
+
+<p>Now for the first point of action. We need to obtain all the gems listed in the Gemfile. That’s easy. Not as root, but as yourself, just run <code>&gt; bundle install</code>. The gems listed on your screen should get downloaded and installed. <em>Bundle</em> is a kind of execution-doer for Ruby projects. <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+
+<p>After the two or three gems get installed, we will run <code>&gt; rake build</code> from the toplevel to do our first build. If everything goes well, nothing will show in your console after you run this command. But you will find a new file there called <em>build.js</em>. If you get a dump of errors, scroll back to the beginning of the error output for a clue on why the build didn’t work. Otherwise, you are ready to see the result.</p>
+
+<p>To do this, use this clever method of starting a quick web server in your project directory:</p>
+
+<pre class="highlight shell"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div></td><td class="code"><span class="gp">&gt; </span>ruby -run -e httpd . -p 3500
+</td></tr></tbody></table></pre><p />
+
+<p>(credit to <a href="http://justincampbell.me/til/start-an-http-server-with-ruby-run?utm_source=rubyweekly&amp;utm_medium=email">Justin Campbell</a>)</p>
+
+<p>This will run a quickie web server on your local machine at port 3500. You can get to it by opening a browser to <code>http://localhost:3500</code> and it will show a listing of files in that directory for viewing. Just click on <strong>simple.html</strong> and voila! The stuff in the text box below was Opal Ruby running in your web browser!</p>
+
+<p />
+
+<script src="/javascripts/build.js" type="text/javascript"></script>
+
+<p><textarea rows="20" cols="50"></textarea></p>
+
+<p>Footnotes:</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>I always objected to javaScript because I grew up online using the <a href="http://en.wikipedia.org/wiki/Commo">{COMMO} terminal</a> on BBS’s. It was written by <code>Fred Brucker</code> (one of my personal programming heroes) and had a large following among people who used screen readers, mostly visually impaired folk. Javascript always seemed like an alienating force to me, becuase is never creates tangible HTML. I don’t know for sure, but I’m pretty certain it doesn’t do a lot to enhance the user experience of sight-impaired users. Either way I think it’s just icky.  <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>You can make most Ruby setup stuff run properly with framworks and tools by running <code>bundle exec &lt;gizmo&gt;</code> instead of running the gizmo’s task directly. But that particular command won’t apply here. Just a good thing to know. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
