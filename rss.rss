@@ -5,14 +5,14 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Thu, 19 Dec 2013 07:46:39 -0800</lastBuildDate>
+        <lastBuildDate>Thu, 19 Dec 2013 08:14:08 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
         
         <item>
           <title>Quick Scala&#x2F;SBT Setup for JetBrains Intellij</title>
-          <description>I just recently replaced Win7 with Fedora Linux on my main workstation at home, because I became a bit frustrated with Win7’s TrustedInstaller anchoring itself on my disk and disallowing me as an administrator to move it or remove it. I’m of the opinion that if some other entity overrides your administrative privileges and installs filesystems and users without your permission and it fights you every step of the way if you attempt to remove them, that operating system installation is compromised. If it is the OS manufacturer doing that as part of the design, the OS is inherently compromised, and therefore unsuitable for purpose and needs replacing. So I sought to replace Win7 with something that will give me freedom of choice and total administrative control.</description>
+          <description>I just recently replaced Win7 with Fedora Linux on my main workstation at home, because I became a bit frustrated with Win7’s TrustedInstaller anchoring itself on my disk and disallowing me as an administrator to move it or remove it. I’m of the opinion that if some other entity overrides your administrative privileges and installs filesystems and users without your permission and it fights you every step of the way if you attempt to remove them, that operating system installation is compromised. If it is the OS manufacturer doing that as part of the design, the OS is inherently compromised, and therefore unsuitable for purpose. So I sought to replace Win7 with something that hasn’t been compromised, and can give me freedom of choice and total administrative control.</description>
           <link>http://localhost:4567/posts/2013/Intellij-setup-scala-linux/</link>
           <pubDate>Wed, 18 Dec 2013 00:00:00 +0000</pubDate>
         </item>
