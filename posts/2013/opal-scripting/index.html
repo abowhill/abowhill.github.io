@@ -18,7 +18,7 @@
     <meta name="author" content="">
     <meta name="description" content="Syntaxfx">
 
-    <title>Die Ickmascript, Ruby is the Funnest! | Syntax FX</title>
+    <title>Die Ickmascript, Ruby is der Funnest! | Syntax FX</title>
     <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
 <script src="../../../javascripts/core.js" type="text/javascript"></script>
@@ -98,7 +98,7 @@
         </nav>
       </header>
       <article class="single">
-        <h2><a href="/posts/2013/opal-scripting/">Die Ickmascript, Ruby is the Funnest!</a></h2>
+        <h2><a href="/posts/2013/opal-scripting/">Die Ickmascript, Ruby is der Funnest!</a></h2>
         <span class="postDetails clearfix"><time class="date details">Dec 14 2013</time><span class="tagLinks details">Tags: 	
 	  <span class="tags"><a class="tags" href="/posts/tags/ruby/">ruby</a></span>
 	
@@ -303,13 +303,15 @@
 <span class="k">end</span>
 </td></tr></tbody></table></pre><p />
 
-<p>There are a number of minor changes to this script with regard to math and comparison functions. Opal seemed not to like the spaceship operator <code>&lt;=&gt;</code> very much, so I had to simplify it. The major changes are at the top and bottom of the script and to the naiively-written <strong>print</strong> function. The top of the script contains <strong>require</strong> for things that must be in-order, with <strong>opal</strong> being the first module listed. The bottom section is wrapped by functions offered by the <code>opal-jquery</code> library, which essentially makes JQuery accessible to your Ruby script. Note that all JQuery selectors are funneled through <code>Element</code> objects in Opal.</p>
+<p>There are a number of minor changes to this script with regard to math and comparison functions. Opal seemed not to like the spaceship operator <code>&lt;=&gt;</code> very much, so I had to simplify it. The major changes are at the top and bottom of the script and to the naiively-written <strong>print</strong> function. The top of the script contains <strong>require</strong> for things that must be in-order, with <strong>opal</strong> being the first module listed. </p>
+
+<p>The bottom section is wrapped by functions offered by the <code>opal-jquery</code> library, which essentially makes JQuery accessible to your Ruby script. Note that all JQuery selectors are funneled through <code>Element</code> objects in Opal.</p>
 
 <p>The goal of this experiment was to get this code to run in my web browser using Opal. First thing, get on IRC into the <strong>#opal</strong> channel. They can help. It was here I learned that the RVM installation option for Opal was grossly out of date. I discovered myself it had some permissions issues on installation, so I do not recommend installing it. RVM is in a state of flux right now, so this will get fixed at some point. But at the moment, just use the one at Opal’s main website: <a href="http://opalrb.org/">http://opalrb.org/</a>.</p>
 
 <p>Basically, I followed instructions there on how to <a href="http://opalrb.org/docs/static_applications/">build a static app</a> that outputs to the JavaScript dev console of Chrome, then when I got that running satisfactorily, I made some modifications to the project to make it run as an <strong>Opal JQuery app</strong> in the <a href="https://github.com/opal/opal-jquery">browser proper</a>.</p>
 
-<p>Hopefully, I can give a little auxiliary guidance in this post on how to get to that second stage directly. </p>
+<p>Hopefully, I can give a little auxiliary guidance in this post on how to get to that second stage directly. The full source for this experiement is on <a href="https://github.com/abowhill/opal-basic-sample">GitHub</a>.</p>
 
 <p>First, we will assume you have installed Ruby on your Linux system and created a project directory. We will also assume you have a small console app to test, something that is entirely self-contained for I/O and doesn’t need to access any files or take any user input to run. </p>
 
@@ -376,7 +378,9 @@
 
 <p>(credit to <a href="http://justincampbell.me/til/start-an-http-server-with-ruby-run?utm_source=rubyweekly&amp;utm_medium=email">Justin Campbell</a>)</p>
 
-<p>This will run a quickie web server on your local machine at port 3500. You can get to it by opening a browser to <code>http://localhost:3500</code> and it will show a listing of files in that directory for viewing. Just click on <strong>simple.html</strong> and voila! The stuff in the text box below was Opal Ruby running in your web browser!</p>
+<p>This will run a quickie web server on your local machine at port 3500. You can get to it by opening a browser to <code>http://localhost:3500</code> and it will show a listing of files in that directory for viewing. Just click on <strong>simple.html</strong> and voila! </p>
+
+<p>I included this projects’ Opal Ruby script in this web page. If you see text in the box below, Opal Ruby ran in your web browser, and produced results from the script. It’s not just been pasted in to show you what it looks like. the great thing is no JavaScript had to be written to make this happen. Just Ruby.</p>
 
 <p />
 

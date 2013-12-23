@@ -5,20 +5,20 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Thu, 19 Dec 2013 09:01:51 -0800</lastBuildDate>
+        <lastBuildDate>Mon, 23 Dec 2013 09:19:53 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
         
         <item>
           <title>Quick Scala&#x2F;SBT Setup for JetBrains Intellij</title>
-          <description>I just recently replaced Win7 with Fedora Linux on my main workstation at home, because I became a bit frustrated with Win7’s TrustedInstaller anchoring itself on my disk and disallowing me as an administrator to move it or remove it. I’m of the opinion that if some other entity overrides your administrative privileges and installs filesystems and users without your permission and it fights you every step of the way if you attempt to remove them, that operating system installation is compromised. If it is the OS manufacturer doing that as part of the design, the OS is inherently compromised, and therefore unsuitable for purpose. So I sought to replace Win7 with something that hasn’t been compromised, and can give me freedom of choice and total administrative control.</description>
+          <description>I just recently replaced Win7 with Fedora Linux on my main workstation at home, because I became a bit frustrated with Win7’s TrustedInstaller anchoring itself on my disk and disallowing me as an administrator to move it or remove it. I’m of the opinion that if some other entity overrides your administrative privileges and installs filesystems and users without your permission and it fights you every step of the way if you attempt to remove them, that operating system installation is compromised. If it is the OS manufacturer doing that as part of the design, the OS is inherently compromised, and therefore unsuitable for certain purposes. So I sought to replace Win7 with something that hasn’t been compromised, and can give me freedom of choice and total administrative control.</description>
           <link>http://localhost:4567/posts/2013/Intellij-setup-scala-linux/</link>
           <pubDate>Wed, 18 Dec 2013 00:00:00 +0000</pubDate>
         </item>
         
         <item>
-          <title>Die Ickmascript, Ruby is the Funnest!</title>
+          <title>Die Ickmascript, Ruby is der Funnest!</title>
           <description>I just think Javascript is really icky. Icky like HP printer layout language or raw RTF. I don’t know a lot about JavaScript, and I don’t really want to. But the world is going bonkers over this gross little language and it’s time to put an end to the myth that you must use it to do things in the browser.</description>
           <link>http://localhost:4567/posts/2013/opal-scripting/</link>
           <pubDate>Sat, 14 Dec 2013 00:00:00 +0000</pubDate>
@@ -26,7 +26,7 @@
         
         <item>
           <title>Testing PShell with a Crude Console Execution Harness</title>
-          <description>Since my last post on it, the Empty Shell Project (now known as PShell) has moved forward a bit. I revised the shell itself, and moved it from the Source API to the Console API. I also built a special (but crude) Shell Execution Harness to isolate and capture I-O. Test-Driven Development TDD (or BDD - Behavior Driven Development) is the way we will develop this project, but it puts a heavy up-front load of system infrastructure preparation on. However, frameworks and harnesses need to be in place to execute automated tests before we can move much further.</description>
+          <description>Since my last post on it, the Empty Shell Project (now known as PShell) has moved forward a bit, and is on [Github] (https://github.com/abowhill/PShell). I revised the shell itself, and moved it from the Source API to the Console API. I also built a special (but crude) Shell Execution Harness to isolate and capture I-O. Test-Driven Development TDD (or BDD - Behavior Driven Development) is the way we will develop this project, but it puts a heavy up-front load of system infrastructure preparation on. However, frameworks and harnesses need to be in place to execute automated tests before we can move much further.</description>
           <link>http://localhost:4567/posts/2013/console-testing-with-execution-harness/</link>
           <pubDate>Fri, 06 Dec 2013 00:00:00 +0000</pubDate>
         </item>
