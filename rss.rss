@@ -5,10 +5,17 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Mon, 23 Dec 2013 09:24:46 -0800</lastBuildDate>
+        <lastBuildDate>Mon, 24 Feb 2014 22:38:59 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>Building Simple, Useful Object-Programs with Perl</title>
+          <description>The Perl language was not originally designed to do object-oriented programming. In its design evolution a set of mechanisms has been retrofitted to give it some objective-features. Both Ruby and Perl are capable of solving programming problems spanning a wide berth of complexity. However, when a project becomes large enough (say over 1000 lines of code), basic OO-principles like modularization, encapsulation and Separation of Concerns enter the picture.</description>
+          <link>http://localhost:4567/posts/2014/simple-objects-per-ruby/</link>
+          <pubDate>Mon, 24 Feb 2014 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>Quick Scala&#x2F;SBT Setup for JetBrains Intellij</title>
@@ -18,7 +25,7 @@
         </item>
         
         <item>
-          <title>Die Ickmascript, Ruby is der Funnest!</title>
+          <title>Using Opal to Generate JavaScript</title>
           <description>I just think Javascript is really icky. Icky like HP printer layout language or raw RTF. I don’t know a lot about JavaScript, and I don’t really want to. But the world is going bonkers over this gross little language and it’s time to put an end to the myth that you must use it to do things in the browser.</description>
           <link>http://localhost:4567/posts/2013/opal-scripting/</link>
           <pubDate>Sat, 14 Dec 2013 00:00:00 +0000</pubDate>
