@@ -1,0 +1,290 @@
+<!doctype html>
+<!--[if lte IE 7]>
+  <meta http-equiv="refresh" content="0" url="http://browsehappy.com/" />
+  <script type="text/javascript">
+  /* <![CDATA[ */
+  window.top.location = 'http://browsehappy.com/';
+  /* ]]> */
+  </script>
+<![endif]-->
+<!--[if IE 8]><html class="ie8"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="gt-ie8"><!--<![endif]-->
+  
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="cleartype" content="on">
+    <meta name="author" content="">
+    <meta name="description" content="Syntaxfx">
+
+    <title>Exploring Ruby Meta-Programming using the Template Pattern | Syntax FX</title>
+    <link href="../../../stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<script src="../../../javascripts/core.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      WebFontConfig = {
+         google: { families: [ 'IM+Fell+DW+Pica+SC::latin', 'Averia+Gruesa+Libre::latin', 'Asap::latin', 'Noto+Sans::latin' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+          '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })(); 
+    </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../../../images/favicon.png" rel="icon" type="image/png" />
+    <link href="../../../images/favicon.ico" rel="icon" type="image/ico" />
+<!-- MathJax Library -->
+<script type="text/javascript" src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG"> </script>
+  </head>
+  
+  <body lang="en">
+    <div id="container">
+      <header>
+        <h1>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink 
+  width="850" height="200" viewBox="0 0 850 200" 
+  preserveAspectRatio="slice">
+
+  <a xlink:href="/" xlink:show="replace">
+  <style type="text/css">
+     rect:hover {fill:green}
+     circle:hover {fill:green}
+     text:hover {fill:green}
+  </style>
+     <rect width="850" height="200" 
+        fill="#D6302B" fill-opacity="1.0" 
+        stroke="black" stroke-width="1" />
+     <circle cx="550" cy="100" r="140" 
+        fill="#E85832" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <circle cx="550" cy="100" r="100" 
+        fill="#FF7A26" fill-opacity="1.0" 
+        stroke="black" stroke-width="3" />
+     <circle cx="550" cy="100" r="60" 
+        fill="#E8AE63" fill-opacity="1.0" 
+        stroke="black" stroke-width="5" />
+     <circle cx="550" cy="100" r="30" 
+        fill="green" fill-opacity="1.0" 
+        stroke="black" stroke-width="10" />
+     <text x="0" y="195" font-size="180" text-anchor="left" 
+        fill="#FFC33B" stroke="black" 
+        stroke-width="3">Syntax FX</text>
+  </a>
+</svg>
+</h1>
+  <div id="intro">
+     <p class="subTitle details">Tech Blog by Allan Bowhill.</p>
+  </div>
+
+        <nav class="clearfix">
+          <div class="navButton button previousButton">
+            <a class="previous details" href="/posts/2014/simple-objects-per-ruby/"><i class="icon-backward left-more"></i>Earlier</a>
+          </div>
+          
+          
+            <div class="navButton button nextButton">
+              <a href="/posts/2013/index.html" class="next details">Archive<i class="icon-reorder right-more"></i></a>
+            </div>
+          
+         <span class="navLinks details"><a href="http://twitter.com"><i class="icon-twitter"></i>Twitter</a><a href="/rss.rss"><i class="icon-rss"></i>RSS</a><a class="last" href="mailto:blank@blank.com"><i class="icon-envelope-alt"></i>Contact</a></span>
+        </nav>
+      </header>
+      <article class="single">
+        <h2><a href="/posts/2014/template-metaprogramming/">Exploring Ruby Meta-Programming using the Template Pattern</a></h2>
+        <span class="postDetails clearfix"><time class="date details">Mar  1 2014</time><span class="tagLinks details">Tags: 	
+	  <span class="tags"><a class="tags" href="/posts/tags/design/">design</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/patterns/">patterns</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/ruby/">ruby</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/template/">template</a></span>
+	
+	  <span class="tags"><a class="tags" href="/posts/tags/metaprogramming/">metaprogramming</a></span>
+	</span></span>
+        <p>After reviewing my notes on Sandi Metz’ excellent book - <a href="http://www.amazon.com/Practical-Object-Oriented-Design-Ruby-Addison-Wesley/dp/0321721330">Practical Object-Oriented Design in Ruby</a>, I was persuaded to play with the <a href="http://userpages.umbc.edu/~tarr/dp/lectures/Template.pdf">Template Pattern</a> again. </p>
+
+<p>The Template Pattern is used mostly in <a href="https://en.wikipedia.org/wiki/Inheritance_(object-oriented_programming)">classical inheritance</a>. In class-based programming, strong types can be rigidly categorized and arranged in an <strong>IS-A</strong> relationship between the general and specific. Ascending this hierarchy, for example, A Dalmation <em>is-a</em> (type of) Dog, and a Dog <em>is-a</em> (type of) Mammal. Inheritance occurs when class features bubble-down to the lower-levels of this relationship. For example, if a Mammal <em>eats()</em> then a Dog <em>eats()</em> and so does a Dalmation. </p>
+
+<p>It’s a very natural model for strict hierarchies, but it creates entrenched interdependencies between classes, which is a problem for software. Why? Because designs and requirements change over time, and any fixed relationships between deeply-coupled modules create potential technical debt.</p>
+
+<p>Despite this risk, classical inheritance is still widely used with strongly-typed languages like C# and Java. Classical Inheritance is somewhat discouraged with weakly-typed languages like Ruby, because the focus isn’t on strict class relationships, but lateral, malleable relationships between objects.</p>
+
+<p>However, Ruby does offer single-class inheritance, and sometimes you just have to use it. To mitigate some of the “baggage” produced by direct class inheritance, (such as the use of <strong>Super</strong> to change program flow, calling of multiple constructors, etc.) the Template pattern (and accompanying Hook pattern) minimize code and reduce knowledge of an algorithm. Broadly, the pattern(s) allow top-down control of a sequence of steps from a superclass, which calls on subclasses to provide their own variations to these steps.</p>
+
+<p>In my exploration, I changed this pattern a little bit using meta-programming to create a layered, cascading order of property initialization between a superclass and subclasses. It makes things a bit easier than setting property defaults manually. Note this pattern is a little  hard to apply in Ruby, becuase programmer gratification doesn’t come from making a strong type system do the work of 10 men. Most Rubyists will implement this pattern much more succinctly without meta-programming, but implementing an ideal example of the pattern was less important to me than some of the idioms I came across.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> So, be warned this module is a bit rough and experimental. </p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div><div class="lineno">32</div><div class="lineno">33</div><div class="lineno">34</div><div class="lineno">35</div><div class="lineno">36</div><div class="lineno">37</div><div class="lineno">38</div><div class="lineno">39</div><div class="lineno">40</div><div class="lineno">41</div><div class="lineno">42</div><div class="lineno">43</div><div class="lineno">44</div><div class="lineno">45</div><div class="lineno">46</div><div class="lineno">47</div><div class="lineno">48</div><div class="lineno">49</div><div class="lineno">50</div><div class="lineno">51</div><div class="lineno">52</div><div class="lineno">53</div><div class="lineno">54</div><div class="lineno">55</div><div class="lineno">56</div><div class="lineno">57</div></td><td class="code"><span class="k">module</span> <span class="nn">Template</span>
+
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">included</span><span class="p">(</span><span class="n">base</span><span class="p">)</span>     <span class="c1"># ClassMethods idiom</span>
+    <span class="n">base</span><span class="nf">.extend</span><span class="p">(</span><span class="no">ClassMethods</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="c1"># Property name collision hash</span>
+  <span class="no">Template_accessor_names</span> <span class="o">=</span> <span class="no">Hash</span><span class="nf">.new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span><span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]=[]</span> <span class="p">}</span> <span class="c1"># Hash Array idiom</span>
+
+  <span class="k">module</span> <span class="nn">ClassMethods</span>
+
+    <span class="c1"># custom attr_accessor </span>
+    <span class="k">def </span><span class="nf">template_attr_accessor</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">args</span><span class="nf">.each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+      <span class="no">Template_accessor_names</span><span class="o">[</span><span class="nb">self</span><span class="nf">.__id__.to_s</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="n">arg</span>
+      <span class="nb">self</span><span class="nf">.class_eval</span><span class="p">(</span><span class="s2">&quot;def </span><span class="si">#{</span><span class="n">arg</span><span class="si">}</span><span class="s2">;@</span><span class="si">#{</span><span class="n">arg</span><span class="si">}</span><span class="s2">;end&quot;</span><span class="p">)</span>          
+      <span class="nb">self</span><span class="nf">.class_eval</span><span class="p">(</span><span class="s2">&quot;def </span><span class="si">#{</span><span class="n">arg</span><span class="si">}</span><span class="s2">=(val);@</span><span class="si">#{</span><span class="n">arg</span><span class="si">}</span><span class="s2">=val;end&quot;</span><span class="p">)</span>
+    <span class="k">end</span>
+   <span class="k">end</span>
+  <span class="k">end</span>
+
+
+  <span class="k">def </span><span class="nf">init_superclass_defaults</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="no">Template_accessor_names</span><span class="o">[</span><span class="nb">self</span><span class="nf">.class.ancestors</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="nf">.__id__.to_s</span><span class="o">]</span>
+    <span class="n">names</span><span class="nf">.each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+      <span class="nb">self</span><span class="nf">.send</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span><span class="s2">&quot;&lt;unknown&gt;&quot;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nf">init_specialization_defaults</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="no">Template_accessor_names</span><span class="o">[</span><span class="nb">self</span><span class="nf">.class.ancestors</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="nf">.__id__.to_s</span><span class="o">]</span>
+    <span class="n">names</span><span class="nf">.each</span> <span class="k">do</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span>
+      <span class="kp">attr</span> <span class="o">=</span> <span class="nb">self</span><span class="nf">.send</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="nb">self</span><span class="nf">.send</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="kp">attr</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+
+  <span class="k">def </span><span class="nf">init_instance_defaults</span><span class="p">(</span><span class="n">args_hash</span><span class="p">)</span>
+     <span class="n">args_hash</span><span class="nf">.keys.each</span> <span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="o">|</span> <span class="nb">self</span><span class="nf">.send</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">k</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">args_hash</span><span class="o">[</span><span class="n">k</span><span class="o">]</span><span class="p">}</span>
+  <span class="k">end</span>
+
+
+  <span class="k">def </span><span class="nf">template_attr_accessor_names</span>
+     <span class="no">Template_accessor_names</span><span class="o">[</span><span class="nb">self</span><span class="nf">.class.__id__.to_s</span><span class="o">]</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nf">template_attr_accessor_keys</span>
+     <span class="no">Template_accessor_names</span><span class="nf">.keys.to_ary</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nf">inspector</span>
+     <span class="nb">puts</span> <span class="no">Template_accessor_names</span><span class="nf">.inspect</span>
+     <span class="nb">puts</span> <span class="nb">self</span><span class="nf">.inspect</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</td></tr></tbody></table></pre><p />
+
+<p>OK, what does this module do specifically? If included in a superclass, the module allows default values to be set for properties of the hierarchy in three steps:</p>
+
+<p>1.) Superclass default is applied to all properties common to all classes in the heirarchy.</p>
+
+<p>2.) Subclass overrides these property defaults selectively.</p>
+
+<p>3.) Calling code selectively overrides properties set in steps 1 and 2.</p>
+
+<p>So, when calling code asks for something low in the hierarchy to be initialized (an implementation class), fields are populated at the appropriate levels in the hierarchy, even if some of the properties were mistakenly omitted by the caller. </p>
+
+<p>For example, here is some sample code that uses the module:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div></td><td class="code"><span class="k">class </span><span class="nc">Dog</span>
+   <span class="kp">include</span> <span class="no">Template</span>
+
+   <span class="n">template_attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:coat</span><span class="p">,</span> <span class="ss">:legs</span>
+
+   <span class="k">def </span><span class="nf">initialize</span><span class="p">(</span><span class="n">args_hash</span><span class="p">)</span>
+     <span class="n">init_superclass_defaults</span>          <span class="c1"># 1.) global defaults for all properties</span>
+     <span class="n">init_specialization_defaults</span>      <span class="c1"># 2.) subclass defaults via methods</span>
+     <span class="n">init_instance_defaults</span><span class="p">(</span><span class="n">args_hash</span><span class="p">)</span> <span class="c1"># 3.) args passed by caller via Hash</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class </span><span class="nc">Corgi</span> <span class="o">&lt;</span> <span class="no">Dog</span>
+  <span class="k">def </span><span class="nf">coat</span>
+    <span class="s2">&quot;tan&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+
+<span class="k">class </span><span class="nc">CockerSpaniel</span> <span class="o">&lt;</span> <span class="no">Dog</span>
+  <span class="k">def </span><span class="nf">coat</span>
+    <span class="s2">&quot;Golden Rust&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+
+<span class="n">corgi</span> <span class="o">=</span> <span class="no">Corgi</span><span class="nf">.new</span><span class="p">({</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Teddy&quot;</span><span class="p">})</span>
+<span class="n">corgi</span><span class="nf">.inspector</span>
+
+<span class="n">cockerspaniel</span> <span class="o">=</span> <span class="no">CockerSpaniel</span><span class="nf">.new</span><span class="p">({</span><span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">&quot;Jessie&quot;</span><span class="p">,</span> <span class="ss">:legs</span><span class="o">=&gt;</span><span class="mi">3</span><span class="p">})</span>
+<span class="n">cockerspaniel</span><span class="nf">.inspector</span>
+</td></tr></tbody></table></pre><p />
+
+<p>The output, an inpection of the objects with their properties:</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div></td><td class="code"><span class="c1">#&lt;Corgi:0x28a0d3e0 @name=&quot;Teddy&quot;, @coat=&quot;tan&quot;, @legs=&quot;&lt;unknown&gt;&quot;&gt;</span>
+<span class="c1">#&lt;CockerSpaniel:0x28a0cb48 @name=&quot;Jessie&quot;, @coat=&quot;Golden Rust&quot;, @legs=3&gt;</span>
+</td></tr></tbody></table></pre><p />
+
+<p>The superclass loads <strong>«unknown»</strong> value into all the properties. Then, the subclasses override some of these properties with their own values by returning them to the superclass in a method with the same name as the property to set. Finally, values passed by calling code are applied to selected properties. This way, all the properties are initialized: some globally, some according to type and some according to instance.</p>
+
+<p>That’s how the module works. Now for the interesting idioms I encountered:</p>
+
+<p><strong>The template_attr_accessor</strong></p>
+
+<p>In object oriented programming you build accessors around every property to make it possible to change the accessor’s implementation without breaking dependent code. If dependent code calls methods to gain access to properties, changing what happens under the hood of the accessor isn’t noticed by the caller.  </p>
+
+<p>C# plays this feature very well. You specify code attached to getters and setters and it’s all very flexible and straightforward. Ruby has a traditional approach (along the lines of C++ and Java) to make the programmer tediously write getters and setters for each and every property added to a class. </p>
+
+<p>This can be quite inconvenient, so there is a mechanism in Ruby called “attr_accessor” which will create the getters/setters for each property you declare, which really reduces code clutter and allows future changes to accessor code to occur transparently.</p>
+
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div></td><td class="code"><span class="k">class </span><span class="nc">A</span>
+   <span class="kp">attr_accessor</span> <span class="ss">:one</span><span class="p">,</span> <span class="ss">:two</span><span class="p">,</span> <span class="ss">:three</span>
+<span class="k">end</span>
+</td></tr></tbody></table></pre><p />
+
+<p>Unfortunately, this mechanism (which is just a disguised class method itself) only generates the accessors to an instance of the class. It doesn’t even initialize the attribute, let alone set defaults, so you have to come up with the code manually to do this. <strong>template_attr_accessor</strong>, however does this for you, so it’s pretty much hands-off for property initialization.</p>
+
+<p><strong>The Property Name Collision Hash</strong></p>
+
+<p>Even though modules aren’t supposed to store state, <strong>template_attr_accessor</strong> is able to remember names of properties by keeping a Hash of Arrays, one Array of property names for each heirarchy. The arrays are keyed in the Hash by superclass ID to keep them namespace-partitioned. Each use of <strong>template_attr_accessor</strong> in a superclass generates a unique hash ID entry pointing to a set of properties. The reason for this workaround is that only a single copy of a given Ruby Module is shared by all classes that include it. Module a singleton object. Name collisions will occur with multiple uses.</p>
+
+<p><strong>The Hash Array Idiom</strong></p>
+
+<p>This an interesting mechanism. You can initialize any hash with a default behavior on access if you include a code block with the initialization. In this case, the code block <code>{ |h,k| h[k]=[] }</code> takes the Hash (h) and key (k) on input, and initializes that key with an empty array reference if there is no value pre-existing in that slot. Subsequent accesses will return the array reference, allowing you to append it with a new element value using the <code>&lt;&lt;</code> append operator. Very clever custom built-in behavior.</p>
+
+<p><strong>The ClassMethods Idiom</strong></p>
+
+<p>This code device makes it possible to define class methods from a module context by embedding a module within a module, and giving it special powers of the <strong>extend</strong> keyword. Methods defined in ruby modules are converted into instance methods by default. If you use the keyword <strong>include</strong> in the file that includes the module, all your module methods will be converted to instance methods. However, if you use the keyword <strong>extend</strong> in the file that includes the module, all your methods get placed as class methods. To achieve the mixture of the two, a second module is created within the first, and forced to be interpreted as an <strong>extend</strong> entity when it’s included. The enclosing module is forced to be an <em>include</em> module. So the deal is, you put all your class-specific meta-code into the inner module and all your instance-specific meta-code in the outer one. That way your meta-code attaches to the right runtime context of the class you are mutating.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>The <strong>attr_accessor</strong> code was based on code and explanation of <a href="http://mikeyhogarth.wordpress.com/2011/12/01/creating-your-own-attr_accessor-in-ruby/">Mikey Hogarth</a>. The <strong>ClassMethods</strong> idiom was explained by <a href="http://www.railstips.org/blog/archives/2009/05/15/include-vs-extend-in-ruby/">John Nunemaker</a> and the <strong>Hash array idiom</strong> was found on <a href="http://stackoverflow.com/questions/5009295/pushing-elements-onto-an-array-in-a-ruby-hash">StackOverflow</a>. The Property name collision hash was inspired by some sample code in <em>Programming Ruby</em> (Pickaxe Book, p.123), Thomas, Fowler and Hunt (2005). <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+      </article>
+      <footer class="footer clearfix">
+	<div class="contact">
+		<p class="details">Contact me, if that's what you want.</p>
+	</div>
+	<div class="links">
+		<ul class="clearfix">
+			<li class="details"><a href="/posts/2013.html">Archive</a></li>
+			<li class="details"><a href="/rss.rss">RSS</a></li>
+			<li class="details"><a href="mailto:allanbowhill@yahoo.com">Contact</a></li>
+		</ul>
+	</div>
+</footer>
+
+    </div>
+  </body>
+</html>
