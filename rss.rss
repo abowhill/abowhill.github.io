@@ -5,10 +5,17 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Sat, 01 Mar 2014 22:57:33 -0800</lastBuildDate>
+        <lastBuildDate>Wed, 05 Mar 2014 21:26:10 -0800</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>Configuring FreeBSD with Tmux</title>
+          <description>I just replaced gnu screen with tmux, a newer and better-written terminal multiplexer. This was pretty much an all-day activity on FreeBSD due the research, reading and mucking about. But it’s such an important shell utility, and the configuration time is worth it. I hope these steps can help you with this task.</description>
+          <link>http://localhost:4567/posts/2014/config-tmux-freebsd/</link>
+          <pubDate>Wed, 05 Mar 2014 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>Exploring Ruby Meta-Programming using the Template Pattern</title>
