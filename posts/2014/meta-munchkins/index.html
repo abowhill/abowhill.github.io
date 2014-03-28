@@ -106,21 +106,27 @@
 	
 	  <span class="tags"><a class="tags" href="/posts/tags/configuration/">configuration</a></span>
 	</span></span>
-        <p>It is your current “project” and you have been induging in secret thought plans about it for weeks. Planning happens in the shower, on the bus, or when your wife is talking about what her favorite TV show. It happens when you talk to relatives on the phone, or standing in line for coffee. At any spare moment it can be opportunistically slipped into your personal awareness space. The master plan is unrolled on a mental table and worked-upon. There are notebooks with diagrams at home. Perhaps functional specs, at least sketchy attempts to define.</p>
+        <p>It is your current project and you have been induging in secret thought plans about it for weeks. Planning happens in the shower, on the bus, or when your wife is talking about her favorite TV show. It happens when you talk to relatives on the phone, or standing in line for coffee. At any spare moment it can be opportunistically slipped into your personal awareness space. The Master Plan is unrolled on a mental table and worked-upon. There are notebooks with diagrams at home. Perhaps functional specs, or at least sketchy attempts to define.</p>
 
-<p>Incubation of any project, no matter how small, is like being the producer of “The Wizard of Oz II: The Revenge of Dorothy” or some similarly dubious idea. After doing this awhile, you reach a pregnant moment when the project must come off the mental table and into a code editor. The rubber must hit the road, Son. You muster resources, hire old actors back for another chop, ready the scripts, cameras and sets. Perhaps one night, assisted by caffeine, you enter headlong into the chaos. You may knock-out classes like Sarah Palin shooting fish in her swimming pool. Until certain forgotten needs arise.</p>
+<p>Incubation of any project, no matter how small, is like being the producer of <strong>“The Wizard of Oz II: The Revenge of Dorothy”</strong> or some similarly dubious idea. After doing this awhile, you reach a pregnant moment when the project must come off the mental table and into a code editor. The rubber must hit the road, Son. You muster resources, hire old actors back for another chop, ready the scripts, cameras and sets. Perhaps one night, assisted by caffeine, you enter headlong into the chaos. You may knock-out classes like Sarah Palin shooting fish in her swimming pool. Until certain forgotten needs arise.</p>
 
-<p>“What about logging? I can’t see what my code is doing.”</p>
+<blockquote>
+  <p><em>“What about logging? I can’t see what my code is doing.”</em></p>
+</blockquote>
 
-<p>“I’m not going to parse all these options on a command-line. I need a configuration file.”</p>
+<blockquote>
+  <p><em>“I’m not going to parse all these options on a command-line. I need a configuration file.”</em></p>
+</blockquote>
 
-<p>“I think I need a driver for all this.”</p>
+<blockquote>
+  <p><em>“I think I need a driver for all this.”</em></p>
+</blockquote>
 
-<p>You were setup to film “The lollipop kids” number and discovered 3 or 4 Munchkins have gone missing. It turns out they were never hired. So everything pretty much comes to a stop.</p>
+<p>You were setup to film “The Lollipop Kids” number and discovered three or four Munchkins have gone missing. It turns out they were never hired. So everything pretty much comes to a stop.</p>
 
-<p>So, for me, this is pretty much what it’s like writing console applications with Ruby, Perl, or whatever. Great plans, no tests, continous build, Intellij setup or Maven. Just an editor and some consoles, preferably several - possibly over 10 - and start writing, monitoring, editing, copying, and see how it goes. It’s all there, but sometimes the show stops.</p>
+<p>So, for me, this is what it’s like writing console applications with Ruby, Perl, or whatever. Great plans, no tests, no continous build, no Intellij or Maven. Just an editor and some consoles, preferably several - possibly over 10 - and start writing, monitoring, editing, copying, and see how it goes. It’s all there, yet sometimes the show stops.</p>
 
-<p>So we are missing pretty standard things. <strong>Logging</strong>, <strong>Driver</strong>, <strong>Configuration</strong>, <strong>Argument Handling</strong>. These small things link arms and do the critical Munchkin dance. You can’t go on without them. They are like light sabres in Star Wars films.</p>
+<p>So we are missing pretty standard things. <strong>Logging</strong>, <strong>Driver</strong>, <strong>Configuration</strong>, <strong>Argument Handling</strong>. These small things link arms and do the critical, iconic Munchkin dance. You can’t go on without them. They are like light sabres in Star Wars films. </p>
 
 <p>Let’s address one at a time:</p>
 
@@ -153,15 +159,15 @@
 <pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div></td><td class="code"><span class="n">require_relative</span> <span class="s1">&#39;&lt;project&gt;Logger.rb&#39;</span>
 <span class="n">require_relative</span> <span class="s1">&#39;&lt;project&gt;Args.rb&#39;</span>
 
-<span class="no">Log</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="no">Logger</span><span class="nf">.new</span><span class="p">(</span><span class="no">STDERR</span><span class="p">)</span>
-<span class="no">Log</span><span class="nf">.level</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="no">Logger</span><span class="o">::</span><span class="no">DEBUG</span>
+<span class="no">Log</span> <span class="o">=</span> <span class="no">MyProjectLogger</span><span class="nf">.new</span><span class="p">(</span><span class="no">STDERR</span><span class="p">)</span>
+<span class="no">Log</span><span class="nf">.level</span> <span class="o">=</span> <span class="no">MyProjectLogger</span><span class="o">::</span><span class="no">DEBUG</span>
 
 <span class="k">def </span><span class="nf">main</span><span class="p">()</span>
 
    <span class="c1">## cleanup old junk, check for duplicate instances of program, etc.</span>
 
    <span class="c1">## obtain and validate command line arguments</span>
-   <span class="n">args</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">your_project_name</span><span class="o">&gt;</span><span class="no">Args</span><span class="nf">.new</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+   <span class="n">args</span> <span class="o">=</span> <span class="no">MyProjectArgs</span><span class="nf">.new</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
    <span class="n">args</span><span class="nf">.run</span>
 
    <span class="c1">## read configuration file options</span>
@@ -177,7 +183,7 @@
 
 <p>You could use frameworks, but if you keep your arguments <strong>out of</strong> the command line and <em>in</em> a configuration file, you only have to deal with a simple argument validation class. The whole purpose of this class is to exit early on invalid user input. One of the arguments you handle here should always be the path to your configuration file. I also like a <strong>mode=</strong> option. It’s like an “anything else I might want to add later” card.</p>
 
-<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div></td><td class="code"><span class="k">class </span><span class="o">&lt;</span><span class="n">project</span><span class="o">&gt;</span><span class="no">Args</span>
+<pre class="highlight ruby"><table><tbody><tr><td class="gutter gl"><div class="lineno">1</div><div class="lineno">2</div><div class="lineno">3</div><div class="lineno">4</div><div class="lineno">5</div><div class="lineno">6</div><div class="lineno">7</div><div class="lineno">8</div><div class="lineno">9</div><div class="lineno">10</div><div class="lineno">11</div><div class="lineno">12</div><div class="lineno">13</div><div class="lineno">14</div><div class="lineno">15</div><div class="lineno">16</div><div class="lineno">17</div><div class="lineno">18</div><div class="lineno">19</div><div class="lineno">20</div><div class="lineno">21</div><div class="lineno">22</div><div class="lineno">23</div><div class="lineno">24</div><div class="lineno">25</div><div class="lineno">26</div><div class="lineno">27</div><div class="lineno">28</div><div class="lineno">29</div><div class="lineno">30</div><div class="lineno">31</div></td><td class="code"><span class="k">class </span><span class="nc">MyProjectArgs</span>
 
    <span class="kp">attr_reader</span> <span class="ss">:argv</span><span class="p">,</span> <span class="ss">:mode</span><span class="p">,</span> <span class="ss">:config</span>
 
