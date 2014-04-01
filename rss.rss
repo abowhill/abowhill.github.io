@@ -5,10 +5,17 @@
         <description>Technical blog of Allan Bowhill.</description>
         <link>http://localhost:4567</link>
         <language>en-us</language>
-        <lastBuildDate>Thu, 27 Mar 2014 17:58:02 -0700</lastBuildDate>
+        <lastBuildDate>Mon, 31 Mar 2014 21:49:50 -0700</lastBuildDate>
         <pubDate>Mon, 13 Oct 1970 16:45:00 +0000</pubDate>
         <ttl>1800</ttl>
  
+        
+        <item>
+          <title>Preserving ssh-agent credentials in Tmux</title>
+          <description>Tmux is a terminal multiplexor. It lets you manage many simultaneous running shells from a single ssh protected console window. It has a flexible windowing scheme that gives you multiple groups of resizable panels and stateful protection of your terminal sessions wether you wilfully or accidentally detach a working session. It’s a must-have for a console ssh user, but there can be problems with maintaining ssh-agent (passwordless) connections after logout, which requires some setup tactics to preserve.</description>
+          <link>http://localhost:4567/posts/2014/tmux-ssh-agent/</link>
+          <pubDate>Mon, 31 Mar 2014 00:00:00 +0000</pubDate>
+        </item>
         
         <item>
           <title>The Forgotten Munchkins of Console Application Development</title>
