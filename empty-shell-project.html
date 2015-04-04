@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>An Empty Shell Project</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./empty-shell-project.html" rel="bookmark"
+                   title="Permalink to An Empty Shell Project">An Empty Shell Project</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-11-27T00:00:00-08:00">
+                Wed 27 November 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>I've been playing around a little with writing a shell in scala, just to see what kinds of issues I'd come across. I remember writing most of a pipeline shell in college using C++, and it was kind of fun because it involved IO and interprocess communication: the "useful" aspects of programming as opposed to the "safe" ones. </p>
+<p>So I did a bit of looking into what scala offered for IO and console development. There are many options, not all are easy to use or understand, since the API documentation is distinctly lacking clear examples. There is the <strong>Console</strong> class, the <strong>Source</strong> class, <strong>Streams</strong>, and <strong>Java libraries</strong> as potential entities that can be used to handle console input and output. It's pretty confusing, and hard to tell which ones are heading for deprection and which ones are "the right ones" to use. </p>
+<p>I decided I would go with <strong>Source</strong> as the class to leverage, because it is common generic means to read and write file streams in most examples I've seen. This should work just as easily for console IO. I also decided to use a <em>line-by-line</em> approach to shell interaction, rather than a character-by-character based scheme which is too granular for the purpose. After all, a shell bases its IO on complete lines of input. </p>
+<p>Originally, each line of code I used was developed in <strong>REPL</strong> (the acronym in common use to describe the scala development shell) a place you can execute scala commands to investigate how they behave). It's accessible simply by entering </p>
+<div class="highlight"><pre>&gt; scala
+</pre></div>
+
+
+<p>at a non-root command prompt.</p>
+<p>When I settled on some lines of code that worked, I moved them into a <em>scala script</em>. A scala script is not compiled, but interpreted scala that can run prototypes of code you write without having to setup a project development enviroment. Doing this after playing with little solutions in <strong>REPL</strong> allows you to see how everything works together.</p>
+<p>So for an intermediate scala script, I came up with the following, (named <em>scalashell.script</em>) which simply creates empty shell behavior and has a way of exiting cleanly, in addition to a couple of junk commands to capture any other input. </p>
+<div class="highlight"><pre><span class="k">import</span> <span class="nn">scala.io.Source</span>
+
+<span class="k">val</span> <span class="n">prompt</span> <span class="k">=</span> <span class="sc">&#39;&gt;&#39;</span>
+
+<span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="n">prompt</span><span class="o">)</span>
+
+<span class="k">for</span> <span class="o">(</span><span class="n">line</span> <span class="k">&lt;-</span> <span class="nc">Source</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">getLines</span><span class="o">.</span><span class="n">takeWhile</span><span class="o">(</span><span class="k">_</span> <span class="o">!=</span> <span class="s">&quot;:exit&quot;</span><span class="o">)</span> <span class="o">)</span>
+   <span class="o">{</span>
+   <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="n">prompt</span><span class="o">)</span>
+
+   <span class="k">val</span> <span class="n">wordgroups</span> <span class="k">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">).</span><span class="n">toList</span>
+
+   <span class="k">if</span> <span class="o">(</span><span class="n">wordgroups</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;someword&quot;</span><span class="o">))</span>
+      <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="s">&quot;someword found&quot;</span><span class="o">)</span>
+   <span class="o">}</span>
+</pre></div>
+
+
+<p><p/>
+It can be run with </p>
+<div class="highlight"><pre>&gt; scala scalashell.script
+</pre></div>
+
+
+<p><p/></p>
+<p>from a non-root prompt.</p>
+<p>The script is an intermediate point of development, with the ultimate goal of making a compilable project. Now, since I have a bit of working code for something (admittedly not much at the moment) it seems right to setup the project more formally. Since I want to encorporate testing in this project, and some modern build tools, I decided to use <strong>Scalatest</strong> for testing and <strong>SBT</strong> for builds. This is a fairly common setup.</p>
+<p><a href="http://www.scalatest.org">Scalatest</a> is a versatile test framework that can do a variety of styles of testing: BDD (Behavior Driven Development), simple unit testing, integration testing. It has several different styles of expression for tests. FunSuite, FlatSpec, FunSpec, WordSpec, FreeSpec, Spec, PropSpec, and FeatureSpec. <strong>FlatSpec</strong> is recommended for <em>Unit tests</em>. <strong>FeatureSpec</strong> is recommended for <em>integration tests</em>. You just download the latest jarfile from the website to use it in your project.</p>
+<p><a href="http://www.scala-sbt.org">SBT</a> is a build framework that can continuously build and test your code as you modify it, publish jars, and generate documentation. Sounds neat. <strong>SBT</strong> can be installed using a downloaded jar and shell script, or in FreeBSD directly from the ports collection:</p>
+<div class="highlight"><pre>&gt; <span class="nb">cd</span> /usr/ports/devel/sbt
+&gt; sudo make install clean
+</pre></div>
+
+
+<p><p/></p>
+<p>Finally, version control with <a href="http://www.git-scm.com">Git</a> and <a href="http://www.github.com">Github</a> should also be encorporated. Since I'm working inside a FreeBSD jail for this, I installed <strong>Git</strong> from the ports collection, and have established an account on <strong>Github</strong> through my web browser. You'll need to setup git/github properly following instructions on their respective websites.</p>
+<div class="highlight"><pre>&gt; <span class="nb">cd</span> /usr/ports/devl/git
+&gt; sudo make install clean
+</pre></div>
+
+
+<p><p/></p>
+<p>Since SBT requires a baked directory structure to operate in, I chose a project name: <strong>scalashell</strong> for this project and started off by making the following basic directories underneath it:</p>
+<div class="highlight"><pre>&gt; <span class="nb">cd </span>scalashell
+&gt; mkdir src lib project target
+&gt; mkdir -p src/main/scala src/test/scala
+</pre></div>
+
+
+<p><p/></p>
+<p>Then I copied in the scalatest jar to:</p>
+<div class="highlight"><pre>lib/scalatest_2.10-2.0.RC2.jar
+</pre></div>
+
+
+<p>I then copied the scala shell script into <code>src/main/scala</code> in the project. Since the script is not compilable, I renamed it to <strong>shell.scala</strong> and wrapped it in an object (the scala way of making a static class) adding code wrapper to <strong>main</strong> to make it run as a driver. Not sure this was the best choice, but the simple looping shell interface isn't really something that belongs in a class, so it's going to be the driver.</p>
+<div class="highlight"><pre><span class="k">import</span> <span class="nn">scala.io.Source</span>
+
+<span class="k">object</span> <span class="nc">Shell</span>
+   <span class="o">{</span>
+   <span class="k">def</span> <span class="n">main</span> <span class="o">(</span><span class="n">args</span><span class="k">:</span> <span class="kt">Array</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span>
+      <span class="o">{</span>
+      <span class="k">val</span> <span class="n">prompt</span> <span class="k">=</span> <span class="sc">&#39;&gt;&#39;</span>
+
+      <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="n">prompt</span><span class="o">)</span>
+
+      <span class="k">for</span> <span class="o">(</span><span class="n">line</span> <span class="k">&lt;-</span> <span class="nc">Source</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">getLines</span><span class="o">.</span><span class="n">takeWhile</span><span class="o">(</span><span class="k">_</span> <span class="o">!=</span> <span class="s">&quot;:exit&quot;</span><span class="o">)</span> <span class="o">)</span>
+         <span class="o">{</span>
+         <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="n">prompt</span><span class="o">)</span>
+
+         <span class="k">val</span> <span class="n">wordgroups</span> <span class="k">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">).</span><span class="n">toList</span>
+
+         <span class="k">if</span> <span class="o">(</span><span class="n">wordgroups</span><span class="o">.</span><span class="n">contains</span><span class="o">(</span><span class="s">&quot;someword&quot;</span><span class="o">))</span>
+            <span class="nc">System</span><span class="o">.</span><span class="n">out</span><span class="o">.</span><span class="n">print</span><span class="o">(</span><span class="s">&quot;someword found&quot;</span><span class="o">)</span>
+         <span class="o">}</span>
+      <span class="o">}</span>
+   <span class="o">}</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>So for this project setup, the basic mechanics of development are to have two terminal windows open: A and B. One terminal (A) is running an editor with project sources and test code, and another terminal window (B) is hosting the SBT shell which spits out compile and test messages as you edit sources in window A.</p>
+<p>For the editor window A, source code is located in <code>src/main/scala</code></p>
+<p>Test code is located in the shell running the SBT shell, window B: <code>src/tests/scala</code> </p>
+<p>To get SBT running, all you do is move to the toplevel directory for the project and call up the SBT shell:</p>
+<div class="highlight"><pre>&gt; <span class="nb">cd </span>scalashell
+&gt; sbt
+</pre></div>
+
+
+<p><p/></p>
+<p>SBT intelligently finds your sources and compiles them for you into the project's <em>target</em> directory. You can force a simple compile and run for demo purposes with the following command from the SBT shell: <code>&gt; run</code></p>
+<p>This will compile and run our <strong>scalashell</strong> driver, allowing interacton with it. Typing <code>:exit</code> will exit the running <strong>scalashell</strong>, and return to the SBT shell with a green status message.</p>
+<p><img alt="Show" src="./images/sbt-1.jpg" /></p>
+<p>Additonally, if you type in: <code>~ compile</code> in the SBT shell, the framework will recompile sources <em>every time you make a change</em>. Furthermore, if you type: <code>~ test</code> in the SBT shell, tests will be run against the sources as you make changes to code, if either of your code or tests change. This is probably the mode we will develop in.</p>
+<p>For example, if you edit a test file called <strong>ExampleSpec.scala</strong> in the <code>src/test/scala</code> directory:</p>
+<div class="highlight"><pre><span class="k">import</span> <span class="nn">org.scalatest._</span>
+
+<span class="k">class</span> <span class="nc">ExampleSpec</span> <span class="k">extends</span> <span class="nc">FlatSpec</span> <span class="k">with</span> <span class="nc">Matchers</span> <span class="o">{</span>
+
+  <span class="s">&quot;A Shell&quot;</span> <span class="n">should</span> <span class="s">&quot;Start&quot;</span> <span class="n">in</span> <span class="o">{</span>
+   <span class="o">}</span>
+
+  <span class="s">&quot;A Shell&quot;</span> <span class="n">should</span> <span class="s">&quot;Exit&quot;</span> <span class="n">in</span> <span class="o">{</span>
+   <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>You should see the following output from the SBT window as long as you last typed: <em>~ test</em> in the SBT shell. If either tests or source code are edited, SBT will trigger a rebuild and test automatically each time.</p>
+<p><img alt="Show again" src="./images/sbt-2.jpg" /></p>
+<p>The test in <strong>ExampleSpec.scala</strong> was just an empty one that will always succeeed. In a following post, I should be able to work out how to redirect IO and harness the execution of the <strong>Shell</strong> class so I can inject input and read output from the test.</p>
+<p>But this is a good starting point.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/benchmarks.html">benchmarks</a></li>
+		<li><a href="./category/design.html">design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/perl.html">Perl</a></li>
+		<li><a href="./category/ruby.html">ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">scala</a></li>
+		<li><a href="./category/shell.html">Shell</a></li>
+		<li><a href="./category/ssh.html">ssh</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">tmux</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-3"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/arma3.html">arma3</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">Perl</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">Object</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Building Simple, Useful Object-Programs with Perl</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./simple-objects-perl-ruby.html" rel="bookmark"
+                   title="Permalink to Building Simple, Useful Object-Programs with Perl">Building Simple, Useful Object-Programs with Perl</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-02-24T00:00:00-08:00">
+                Mon 24 February 2014
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>The Perl language was not originally designed to do object-oriented programming. In its design evolution a set of mechanisms has been retrofitted to give it some objective-features. Both Ruby and Perl are capable of solving programming problems spanning a wide berth of complexity. However, when a project becomes large enough (say over 1000 lines of code), basic OO-principles like modularization, encapsulation and Separation of Concerns enter the picture.</p>
+<p>Software development is notoriously difficult to plan and map out accurately. Since you never really know how complex a project will end up being, requirements can change over time. You have to be confident the tools you're using will scale up to unknown tasks in later stages of development. The most Perl I've seen in one file was 18,000 lines of procedural code. This was someone else's work, but it is not unusual to come across Perl projects with tens of modules in them, and I have worked with one or two medium-sized projects like this. Needless to say, most Perl projects are somewhat small because people don't generally like to deal with tons of Perl.</p>
+<p>But sometimes you have to do The Big Porgram Thing, and being able to divide code into meaningful modules or objects and interfaces is a valuable asset for organizing your code and maintaining sanity.</p>
+<p>Truth be told, OO-Perl involves a lot of scaffolding, like 99%. There are over 10 uniquely different and nasty ways to make Perl "do" objects with progressive levels of sophistication. If you have read <em>Damian Conway's</em> book: <em>Object-Oriented Perl</em>, and surfed the manpages you should have a pretty good idea of what kind of treat you have in store for you.</p>
+<p>The syntax of the scaffolding is not straightforward, and bears considerable explanation. You therefore must be a lover of books. Fortunately, you only have to "do" the scaffolding once, and can re-use it in your project's classes. Keeping to a simplified definition of Objects and classes makes for an easier time. If you omit some of the more subtley-corrupting ideas of OO-programming, such as <em>classical inheritance</em>, <em>type-casting</em>, <em>exceptions</em>, <em>method overrides</em>, etc. you can still use <em>encapsulation</em>, <em>has-a relationships</em>, <em>simple design patterns</em>, <em>abstract interfaces</em> and use Separation of Concerns and other principles to your advantage without too many problems.</p>
+<p>Perl can be incredibly useful for fairly large projects if you are selective about which 00-approaches to adopt. Note that in most cases, useing a language like Ruby for the same thing will be <em>much</em> easier to read and write, and much cleaner. It's been my experience that they both take about the same time to write equivalent code, but Perl involves a lot of back-reading and document consulting to make the right scaffolding choices.</p>
+<p>I mentioned earlier that Perl has many ways to implement objects and classes. This turns out not to be all that good a thing for consistency's sake, so you should stick with your choices. As the complexity of scaffolding increases to accomodate this OO-feature or that, the backreading and concept-bloat increases, similar in concpetual difficulty to some of the under-the-hood details of the <em>Scala</em> language. With <em>Perl</em> building capacity into sophisticated objects can be like weaving an elaborate lie; conflicts and inconsistencies creep into your tale as it becomes more complex.</p>
+<p>First, on a scale of 1-10 of Perl object-oriented sophistication, the following driver file and class file rate 2/10: simple. It is a <em>HelloWorld</em> program. Each piece of code resides in a separate file in the same directory. You run the driver from the command line, and it calls into the class to do the dirty-work. This is basic file-level encapsulation. If you're not doing this in any OO-language, you are being a slob. </p>
+<p><strong>HelloWorld in 10 lines of code and 2 files</strong></p>
+<p>The Driver (you can name it anything)</p>
+<div class="highlight"><pre><span class="c1"># Driver</span>
+
+<span class="k">use</span> <span class="n">HelloWorld</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$obj</span> <span class="o">=</span> <span class="n">HelloWorld</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">();</span>
+<span class="k">print</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">message</span><span class="p">();</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>The Class (must be named HelloWorld.pm)</p>
+<div class="highlight"><pre><span class="c1"># OO Class Module</span>
+
+<span class="nb">package</span> <span class="n">HelloWorld</span><span class="p">;</span>
+
+<span class="k">sub </span><span class="nf">new</span>
+   <span class="p">{</span>
+   <span class="nb">bless</span> <span class="p">{</span> <span class="n">msg</span> <span class="o">=&gt;</span> <span class="s">&quot;hello world&quot;</span> <span class="p">},</span> <span class="nb">shift</span><span class="p">;</span>
+   <span class="p">}</span>
+
+<span class="k">sub </span><span class="nf">message</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="nv">$a</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+   <span class="k">return</span> <span class="nv">$a</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">msg</span><span class="p">};</span>
+   <span class="p">}</span>
+
+<span class="mi">1</span><span class="p">;</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>Explanation. The driver has a <code>use HelloWorld;</code> statement which imports the HelloWorld class file so it can be accessed.</p>
+<p>The <code>my $obj = HelloWorld-&gt;new();</code> line is a call to the object's constructor subroutine: named <em>new()</em>. This is a convention. The constructor can be named anything you like, but "new" suggests object creation and is self-documenting to many people. When this line is executed, an instance of the class is created (an object) which is stored as a reference in local scalar variable <em>$obj</em> (in this case $obj holds a hash reference, explained later). </p>
+<p>The last line in the driver calls a method in the object named <strong>message</strong>, which it then prints to standard output, and the program ends.</p>
+<p>In order to understand the driver, you need to know about Perl's data types, what a reference to a data structure is, and about accessing information stored in data structure references with the '-&gt;' arrow-operator. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1" rel="footnote">1</a></sup></p>
+<p>Ok, onto the second part of the explanation, the class file, <strong>HelloWorld.pm</strong> <sup id="fnref:2"><a class="footnote-ref" href="#fn:2" rel="footnote">2</a></sup> <sup id="fnref:3"><a class="footnote-ref" href="#fn:3" rel="footnote">3</a></sup></p>
+<p>It is here we encounter the first of a few oddities with Perl's object implementation, the <strong>Package</strong> declaration near the top of the file. Perl implements class definitions as unique namespaces. The package declaration <strong>is</strong> the class declaration. Since we have achieved some separation at the file level, this namespace applies only to the entire file, HelloWorld.pm. Note the namespace matches the filename. Also note the entire file is also a bona-fide Perl module, and ends with a <strong>1</strong> to return <em>true</em> to things that evaluate it. Note also the filename ends in <strong>.pm</strong>, indicating it is a (P)erl (M)odule. You don't run code directly in modules. You include modules in other code, and make calls from from there. So, this module is not a standalone program. It is a class that uses the library idiom. No <em>Export</em> or other directives are required as with regular Perl modules. Object-oriented code doesn't need that particular scaffolding.</p>
+<p>The next block of code (the <strong>new()</strong> sub) is the constructor. It is named new by convention so people understand this function serves as the constructor. It is the only entrypoint to this module, and the only class-level method that should be run by calling code from the outside.</p>
+<p>Inside the constructor we have one line of code to initialize an object. It is a call to the <strong>bless()</strong> function. This is the second oddity of Perl objects. Bless makes an object out of the class namespace by blessing a reference (usually to a data structure) into the namespace. The data structure in this case is a hash reference holding a key/value pair. The key/value pair represents a settable property or attribute of the object and its value. Once <strong>bless</strong> blesses the structure into the namespace, that structure and all the instance methods listed in the file become part of the object reference it returns. Its return value ends the construction process, so it's the last step in the constructor. In the two-argument form, <strong>bless</strong> takes two arguments, the first being a reference, and the second being the name of the class. </p>
+<p>When a line of code calls a method in Perl-OO, the name of the class it's calling the method on is included as a string in the first parameter to the function being called. Parameters are always passed as arrays to functions in Perl, so the name of the targeted class or object is always <code>@_[0]</code>. The rest of the parameters (if any) follow in subsequent indexes of the array starting at <code>@_[1]</code>. This also applies to the constructor, which is just a function that recieves parameters. This is why <code>shift</code> is used here. It pops-off the first item in the implicit argument array, which is always <code>@_[0]</code>. This is the string <strong>HelloWorld</strong>, from <code>HelloWorld-&gt;new()</code> which is what appears to the left of the arrow-operator in the second line of the driver. In this case, <strong>HelloWorld</strong>'s <strong>new()</strong> is what is being called, so the <em>new</em> function that recieves it knows how the name of the class is being expressed. More Perl oddity.</p>
+<p>The last code block in the class is <strong>sub message()</strong> which is simply an instance method to return the contents of the <strong>msg</strong> attribute defined in the constructor. It is called via the intialized object.</p>
+<p><strong>Hey Let's get more complex scaffolding in place</strong></p>
+<p>To make a practical starting template for classes, we will resort to adding in more sophistication. This class hits about a 4 or a 5 on the sophistication meter, and can be used as a cut-and-paste template for real projects. It has a few more OO-features and extra robustness for common cases of use. </p>
+<p>Keeper class: (Keeper.pm)</p>
+<div class="highlight"><pre><span class="nb">package</span> <span class="n">Keeper</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="nv">$_count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+   <span class="k">sub </span><span class="nf">_incr_count</span> <span class="p">{</span> <span class="o">++</span><span class="nv">$_count</span> <span class="p">}</span>
+   <span class="k">sub </span><span class="nf">_decr_count</span> <span class="p">{</span> <span class="o">--</span><span class="nv">$_count</span> <span class="p">}</span>
+   <span class="k">sub </span><span class="nf">get_count</span>   <span class="p">{</span> <span class="nv">$_count</span> <span class="p">}</span>
+   <span class="p">}</span>
+
+
+<span class="k">sub </span><span class="nf">new</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$self</span><span class="p">,</span><span class="nv">$args</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+
+   <span class="k">my</span> <span class="nv">$class</span> <span class="o">=</span> <span class="nb">ref</span> <span class="p">(</span><span class="nv">$self</span><span class="p">)</span> <span class="o">||</span> <span class="nv">$self</span><span class="p">;</span>
+
+   <span class="k">my</span> <span class="nv">$properties</span> <span class="o">=</span>
+      <span class="p">{</span>
+      <span class="n">_name</span>   <span class="o">=&gt;</span> <span class="nv">$args</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">name</span><span class="p">}</span>   <span class="o">||</span> <span class="s">&quot;&lt;unknown&gt;&quot;</span><span class="p">,</span>
+      <span class="n">_gender</span> <span class="o">=&gt;</span> <span class="nv">$args</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">gender</span><span class="p">}</span> <span class="o">||</span> <span class="s">&quot;&lt;unknown&gt;&quot;</span><span class="p">,</span>
+      <span class="p">};</span>
+
+   <span class="k">my</span> <span class="nv">$instance</span> <span class="o">=</span> <span class="nb">bless</span> <span class="nv">$properties</span><span class="p">,</span> <span class="nv">$class</span><span class="p">;</span>
+   <span class="nv">$class</span><span class="o">-&gt;</span><span class="n">_incr_count</span><span class="p">;</span>
+
+   <span class="k">return</span> <span class="nv">$instance</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+<span class="k">sub </span><span class="nf">DESTROY</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="nv">$class</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+   <span class="nv">$class</span><span class="o">-&gt;</span><span class="n">_decr_count</span><span class="p">;</span>
+   <span class="p">}</span>
+
+
+<span class="k">sub </span><span class="nf">name</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">,</span><span class="nv">$arg</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">_name</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$arg</span> <span class="p">}</span>
+   <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">_name</span><span class="p">};</span>
+   <span class="p">}</span>
+
+
+<span class="k">sub </span><span class="nf">gender</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">,</span><span class="nv">$arg</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$arg</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">_gender</span><span class="p">}</span> <span class="o">=</span> <span class="nv">$arg</span><span class="p">;</span> <span class="p">}</span>
+   <span class="nv">$obj</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">_gender</span><span class="p">};</span>
+   <span class="p">}</span>
+
+<span class="mi">1</span><span class="p">;</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>Driver for Keeper class: </p>
+<div class="highlight"><pre><span class="nb">require</span> <span class="nn">Zoo::</span><span class="n">Keeper</span><span class="p">;</span>
+
+
+<span class="n">MAIN:</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="nv">$zookeeper_1</span> <span class="o">=</span> <span class="n">Keeper</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="p">{</span><span class="n">name</span><span class="o">=&gt;</span><span class="s">&quot;Fred&quot;</span><span class="p">,</span><span class="n">gender</span><span class="o">=&gt;</span><span class="s">&quot;Male&quot;</span><span class="p">}</span> <span class="p">);</span>
+   <span class="n">inspect</span> <span class="p">(</span><span class="nv">$zookeeper_1</span><span class="p">);</span>
+
+   <span class="nv">$zookeeper_1</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">(</span><span class="s">&quot;Thomas&quot;</span><span class="p">);</span>
+   <span class="n">inspect</span> <span class="p">(</span><span class="nv">$zookeeper_1</span><span class="p">,</span><span class="s">&quot;\n[Changing name]\n&quot;</span><span class="p">);</span>
+
+   <span class="k">my</span> <span class="nv">$zookeeper_2</span> <span class="o">=</span> <span class="n">Keeper</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="p">{</span><span class="n">name</span><span class="o">=&gt;</span><span class="s">&quot;Selma&quot;</span><span class="p">,</span><span class="n">gender</span><span class="o">=&gt;</span><span class="s">&quot;Female&quot;</span><span class="p">}</span> <span class="p">);</span>
+   <span class="n">inspect</span> <span class="p">(</span><span class="nv">$zookeeper_2</span><span class="p">);</span>
+
+   <span class="k">my</span> <span class="nv">$zookeeper_3</span> <span class="o">=</span> <span class="n">Keeper</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span> <span class="p">{</span><span class="n">gender</span><span class="o">=&gt;</span><span class="s">&quot;Female&quot;</span><span class="p">}</span> <span class="p">);</span>
+   <span class="n">inspect</span> <span class="p">(</span><span class="nv">$zookeeper_3</span><span class="p">);</span>
+   <span class="p">}</span>
+
+
+<span class="k">sub </span><span class="nf">inspect</span>
+   <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$obj</span><span class="p">,</span><span class="nv">$msg</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+   <span class="k">print</span> <span class="nv">$msg</span> <span class="o">||</span> <span class="s">&quot;\n[Creating object]\n&quot;</span><span class="p">;</span>
+   <span class="k">print</span> <span class="s">&quot;Object: &quot;</span><span class="p">,</span> <span class="nv">$obj</span> <span class="p">?</span> <span class="s">&quot;allocated&quot;</span> <span class="p">:</span> <span class="s">&quot;not allaocated&quot;</span><span class="p">,</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+   <span class="k">print</span> <span class="s">&quot;Name: &quot;</span><span class="p">,</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+   <span class="k">print</span> <span class="s">&quot;Gender: &quot;</span><span class="o">.</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">gender</span><span class="p">,</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+   <span class="k">print</span> <span class="s">&quot;Count: &quot;</span><span class="p">,</span> <span class="nv">$obj</span><span class="o">-&gt;</span><span class="n">get_count</span><span class="p">,</span> <span class="s">&quot;\n&quot;</span><span class="p">;</span>
+   <span class="p">}</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>The intended directory structure for this pair of files is to name the driver anything you want, and store the driver in a top-level project directory. Below this directory, make a subdirectory called <code>Zoo</code>, and place the class file in there, naming it <code>Keeper.pm</code>. This sets a small example on how to address classes for import in a directory structure by using the <code>require Zoo::Keeper</code> to access Keeper.pm inside the Zoo subdirectory.</p>
+<p>The main body of the driver is wrapped in a closure and labeled <code>MAIN:</code>. This is simply for visual organization and documentation. The MAIN function in the driver creates three zookeeper objects with different name and gender properties. It also changes one of the zookeeper names to exercise the setting option on one of the properties. It makes use of a small diagnostic output function <code>sub inspect</code> to printout what's going on with the objects.</p>
+<p>The class file itself uses <code>use strict;</code> as a robustness feature, which is followed by a closure containing class-level members. This is how Perl defines class methods and properties, inside closures. In this case a simple classwide object counter is implemented as a class property, and three accessors are used to increment, decrement and fetch the counter respectively.</p>
+<p>The constructor handles multiple initialization arguments, but sticks to the common practice of passing in properties as a single hash reference, which has the feature of being self-documenting. Two properties <strong>name</strong> and <strong>gender</strong> are expected to be supplied by the calling code, using the keys <code>name</code> and <code>gender</code> and the passed values are stored in a property hash if the keys match. If one or all properties are not set, the constructor supplies the default value of <code>&lt;unknown&gt;</code>. This is a robustness feature.</p>
+<p>The two-argument form of <code>bless()</code> is used to allow for inheritance via the <code>@isa</code> array, but the class is not otherwise structured to handle inheritance in any way. This should not be done unless you have a full reading of Damian Conway's book to understand the pitfalls of using inheritance in OO-Perl. </p>
+<p>The constructor increments the class object counter at object creation time, and the <code>sub DESTROY</code> method decrements the counter if one of the objects is destroyed. This is mainly for show, but should function and is logically required to maintain this type of class variable.</p>
+<p>Read/write accessors for <strong>name</strong> and <strong>gender</strong> are supplied, and make a determination on whether the calling function is setting or getting the value, responding accordingly. The value is always returned irrespective of getting or setting.</p>
+<p>Most of these idioms and forms come from Damian Conway's book, Object Orient Perl, but a lot of my own stuff is added in. This is something I would probably use as a starting point at work, if I had to build a reasonably sized Perl project.</p>
+<p>Below, I've included the rough Ruby equivalent of the above class and driver but won't explain it, except by making the general observation that it took me just about as long to write, but Ruby syntax is so crisp, with almost no scaffolding that I just did coding and hardly any reading on syntactical oddities and workarounds. With Perl, alas, I spent a majority of my time reading and trying to remember particular oddities of the language in addition to writing / debugging code.</p>
+<p>So if you want my honest opinion, don't get seduced by CPAN or nice people who are enthusiasts of a terrible solution. Take it from me: <strong><em>go with Ruby if you any choice whatsoever</em></strong>. And I mean this advice to be taken in all seriousness of heart. Perl has had it. Although still quite useful, it's seen its heyday. There are better scripting languages nowadays, (Ruby may be the best) which don't have the shameful, hackish awfulness of OO-Perl.</p>
+<p>Ruby Equivalent Driver:</p>
+<div class="highlight"><pre><span class="n">require_relative</span> <span class="s2">&quot;Foo/Keeper.rb&quot;</span>
+
+<span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="n">keeper</span><span class="p">,</span><span class="o">*</span><span class="n">msg</span><span class="p">)</span>
+   <span class="k">if</span> <span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">empty?</span><span class="p">)</span>
+     <span class="n">msg</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;[New object]&quot;</span>
+   <span class="k">end</span>
+   <span class="nb">puts</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">msg</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+   <span class="nb">puts</span> <span class="s2">&quot;Object &quot;</span> <span class="o">+</span> <span class="n">keeper</span><span class="o">.</span><span class="n">works</span>
+   <span class="nb">puts</span> <span class="s2">&quot;Count: &quot;</span> <span class="o">+</span> <span class="no">Keeper</span><span class="o">.</span><span class="n">get_count</span>
+   <span class="nb">puts</span> <span class="s2">&quot;Name: &quot;</span> <span class="o">+</span> <span class="n">keeper</span><span class="o">.</span><span class="n">name</span>
+   <span class="nb">puts</span> <span class="s2">&quot;Gender: &quot;</span> <span class="o">+</span> <span class="n">keeper</span><span class="o">.</span><span class="n">gender</span>
+<span class="k">end</span>
+
+<span class="n">keeper_1</span> <span class="o">=</span> <span class="no">Keeper</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Fred&quot;</span><span class="p">,</span><span class="s2">&quot;Male&quot;</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">keeper_1</span><span class="p">)</span>
+
+<span class="n">keeper_1</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Tim&quot;</span>
+<span class="n">show</span><span class="p">(</span><span class="n">keeper_1</span> <span class="p">,</span> <span class="s2">&quot;[Name change]&quot;</span><span class="p">)</span>
+
+<span class="n">keeper_2</span> <span class="o">=</span> <span class="no">Keeper</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Selma&quot;</span><span class="p">,</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">keeper_2</span><span class="p">)</span>
+
+<span class="n">keeper_3</span> <span class="o">=</span> <span class="no">Keeper</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;Mary&quot;</span><span class="p">,</span><span class="s2">&quot;Female&quot;</span><span class="p">)</span>
+<span class="n">show</span><span class="p">(</span><span class="n">keeper_3</span><span class="p">)</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>Ruby Equivalent Class File:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">Keeper</span>
+
+   <span class="vc">@@count</span> <span class="o">=</span> <span class="mi">0</span>
+
+   <span class="k">def</span> <span class="nc">Keeper</span><span class="o">.</span><span class="nf">incr_count</span>
+      <span class="vc">@@count</span> <span class="o">+=</span> <span class="mi">1</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nc">Keeper</span><span class="o">.</span><span class="nf">decr_count</span>
+      <span class="vc">@@count</span> <span class="o">-=</span> <span class="mi">1</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nc">Keeper</span><span class="o">.</span><span class="nf">get_count</span>
+      <span class="vc">@@count</span><span class="o">.</span><span class="n">to_s</span>
+   <span class="k">end</span>
+
+   <span class="kp">attr_accessor</span> <span class="ss">:name</span><span class="p">,</span> <span class="ss">:gender</span>
+
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="o">=</span><span class="s2">&quot;unknown&quot;</span><span class="p">,</span> <span class="n">gender</span><span class="o">=</span><span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+      <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+      <span class="vi">@gender</span> <span class="o">=</span> <span class="n">gender</span>
+      <span class="no">Keeper</span><span class="o">.</span><span class="n">incr_count</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">works</span>
+      <span class="s2">&quot;works&quot;</span>
+   <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
+
+
+<p><p/></p>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>(1) To get to this level of knowledge, you'll need to read the book (cover to cover): <strong>Learning Perl</strong> by Randal L. Schwartz, in my opinion the best technical book ever written for the uninitiated. You will also need to read <strong>Chapter 2 - Essential Perl</strong> of Damian Conway's book <strong>Object Oriented Perl</strong> to understand what references are. Fortunately, Perl authors and the community as a whole has a sense of humor, so it's a lot more fun to learn than it sounds.&#160;<a class="footnote-backref" href="#fnref:1" rev="footnote" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>(2) A class is a blueprint which defines variables and functions closely (topically) related to one another in a package. An object is a live, usable copy of that package. In a program, you generally interact with objects. The code itself is defined by the class and does not change.&#160;<a class="footnote-backref" href="#fnref:2" rev="footnote" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>(3) A basic class is like a <strong>blueprint</strong>. It is inactive, and just defines code. Only one function can be called directly on it from the outside: the <strong>constructor</strong>. The constructor, in this case is the <em>new</em> function. When outside code calls the constructor it is like a call to manufacture a working copy of the class from the blueprint. This working copy of the class is called an <strong>object</strong>. A fresh object is returned to the calling code by the constructor, and assigned to a <strong>variable</strong> so it can be interacted-with later. The variable in this case is the <strong>$obj</strong> variable, and is located in the driver.&#160;<a class="footnote-backref" href="#fnref:3" rev="footnote" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/benchmarks.html">benchmarks</a></li>
+		<li><a href="./category/design.html">design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/perl.html">Perl</a></li>
+		<li><a href="./category/ruby.html">ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">scala</a></li>
+		<li><a href="./category/shell.html">Shell</a></li>
+		<li><a href="./category/ssh.html">ssh</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">tmux</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-3"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/arma3.html">arma3</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">Perl</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">Object</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

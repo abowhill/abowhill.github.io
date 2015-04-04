@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Basic items for Console Application Development</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./meta-items-console.html" rel="bookmark"
+                   title="Permalink to Basic items for Console Application Development">Basic items for Console Application Development</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-03-27T00:00:00-07:00">
+                Thu 27 March 2014
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>It is your current project and you have been induging in secret thought plans about it for weeks. Planning happens in the shower, on the bus, or when your wife is talking about her favorite TV show. It happens when you talk to relatives on the phone, or standing in line for coffee. At any spare moment it can be opportunistically slipped into your personal awareness space. The Master Plan is unrolled on a mental table and worked-upon. There are notebooks with diagrams at home. Perhaps functional specs, or at least sketchy attempts to define.</p>
+<p>Incubation of any project may call the following questions:</p>
+<blockquote>
+<p><em>"What about logging? I can't see what my code is doing."</em></p>
+<p><em>"I'm not going to parse all these options on a command-line. I need a configuration file."</em></p>
+<p><em>"I think I need a driver for all this."</em></p>
+</blockquote>
+<p>So we are missing pretty standard things. <strong>Logging</strong>, <strong>Driver</strong>, <strong>Configuration</strong>, <strong>Argument Handling</strong>. These small things link arms and do the critical, iconic Munchkin dance. You can't go on without them. They are like light sabres in Star Wars films. </p>
+<p>Let's address one at a time:</p>
+<h3>Logging</h3>
+<p>If you write Ruby you are in for a real treat. The system libraries support <strong>Logger</strong> and are fully thread-safe in the latest version. The documentation, as usual is ungenerous, but the facility can be included easily with some modifications shown below. For normal use, you shouldn't need to download dependency gems. The built-in logger is top-notch, and better for general purpose than most other 3rd-party logging frameworks.</p>
+<div class="highlight"><pre><span class="c1"># from http://apidock.com/ruby/Logger (suggestion by tadman)</span>
+
+<span class="nb">require</span> <span class="s1">&#39;logger&#39;</span>
+
+<span class="k">class</span> <span class="nc">MyProjectLogger</span> <span class="o">&lt;</span> <span class="no">Logger</span>
+
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+     <span class="k">super</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">format_message</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">progname</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+     <span class="s2">&quot;[%s %s] %s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="o">[</span> <span class="n">severity</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M&quot;</span><span class="p">),</span> <span class="n">msg</span> <span class="o">]</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p><p/></p>
+<h3>Driver</h3>
+<p>You need to have one. It needs to be in a separate file. You will be running it all the time. I like to pretend it's C, so I put in a <strong>main()</strong> method.</p>
+<p>Use <strong>require_relative</strong> to include custom modules and classes in the project directory and subdirectories. You can log directly using <strong>Log</strong>. It's wise to keep this ultra-simple. A driver is a place to move code <strong>out</strong> of and into classes or modules. Whatever is left behind should just be a skeleton of commands. You could say a driver is a client that execrises the API in some way, and you'd be correct. But don't think of it like that. It's the main operational recipe of your program, and deals with <strong>phases</strong> of execution. Big-picture stuff only.</p>
+<div class="highlight"><pre><span class="n">require_relative</span> <span class="s1">&#39;MyProjectLogger.rb&#39;</span>
+<span class="n">require_relative</span> <span class="s1">&#39;MyProjectArgs.rb&#39;</span>
+
+<span class="no">Log</span> <span class="o">=</span> <span class="no">MyProjectLogger</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">STDERR</span><span class="p">)</span>
+<span class="no">Log</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="no">MyProjectLogger</span><span class="o">::</span><span class="no">DEBUG</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">()</span>
+
+   <span class="c1">## cleanup old junk, check for duplicate instances of program, etc.</span>
+
+   <span class="c1">## obtain and validate command line arguments</span>
+   <span class="n">args</span> <span class="o">=</span> <span class="no">MyProjectArgs</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="no">ARGV</span><span class="p">)</span>
+   <span class="n">args</span><span class="o">.</span><span class="n">run</span>
+
+   <span class="c1">## read configuration file options</span>
+
+   <span class="c1">## start modules, threads, whatever and wait on some condition</span>
+   <span class="c1">## loop or sleep or something...</span>
+<span class="k">end</span>
+
+<span class="n">main</span> <span class="c1"># &lt;--- Where program begins.</span>
+</pre></div>
+
+
+<p><p/></p>
+<h3>Argument Handler</h3>
+<p>You could use frameworks, but if you keep your arguments <strong>out of</strong> the command line and <em>in</em> a configuration file, you only have to deal with a simple argument validation class. The whole purpose of this class is to exit early on invalid user input. One of the arguments you handle here should always be the path to your configuration file. I also like a <strong>mode=</strong> option. It's like an "anything else I might want to add later" card.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">MyProjectArgs</span>
+
+   <span class="kp">attr_reader</span> <span class="ss">:argv</span><span class="p">,</span> <span class="ss">:mode</span><span class="p">,</span> <span class="ss">:config</span>
+
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+      <span class="vi">@argv</span> <span class="o">=</span> <span class="n">argv</span>
+      <span class="vi">@mode</span> <span class="o">=</span> <span class="kp">nil</span>
+      <span class="vi">@config</span> <span class="o">=</span> <span class="kp">nil</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">run</span><span class="p">()</span>
+
+      <span class="n">argv</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">arg</span><span class="o">|</span>
+         <span class="k">case</span> <span class="n">arg</span>
+
+            <span class="k">when</span> <span class="sr">/mode=(.+)/i</span>
+               <span class="vi">@mode</span> <span class="o">=</span> <span class="vg">$1</span>
+               <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s2">&quot;standalone&quot;</span>
+                  <span class="no">Log</span><span class="o">.</span><span class="n">error</span> <span class="s2">&quot;Wrong mode assigned [</span><span class="si">#{</span><span class="n">arg</span><span class="si">}</span><span class="s2">]&quot;</span>
+               <span class="k">end</span>
+
+            <span class="k">when</span> <span class="sr">/config=(.+)/i</span>
+               <span class="k">if</span> <span class="ow">not</span> <span class="no">File</span><span class="o">.</span><span class="n">exist?</span> <span class="vg">$1</span>
+                  <span class="no">Log</span><span class="o">.</span><span class="n">error</span> <span class="s2">&quot;Config file [</span><span class="si">#{</span><span class="vg">$1</span><span class="si">}</span><span class="s2">]doesn&#39;t exist, [</span><span class="si">#{</span><span class="n">arg</span><span class="si">}</span><span class="s2">]&quot;</span>
+               <span class="k">else</span>
+                  <span class="vi">@config</span><span class="o">=</span><span class="vg">$1</span>
+               <span class="k">end</span>
+         <span class="k">end</span>
+      <span class="k">end</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+
+<p><p/></p>
+<h4>Configuration File</h4>
+<p>This can be tough because it is a database. Which means design. On one hand, you ideally need <code>&lt;variable&gt; = &lt;value&gt;</code> fields. On the other hand, you also need sections of configuration options, and defaults. I typically think of Windows <strong>.ini files</strong> as being the easiest, most straightforward way of doing this, but consider this possibility: using a Ruby Module to store values which can be later accessed in a struct.</p>
+<p>Ruby has such a clean syntax, its code is almost like configuration. Why not leverage the mechanisms of modules to play the role of a simple configuration file with sections of keys/values?</p>
+<div class="highlight"><pre><span class="c1"># source: http://aphyr.com/posts/173-monkeypatching-is-for-wimps-use-set-trace-func</span>
+
+<span class="nb">require</span> <span class="s1">&#39;ostruct&#39;</span>
+
+<span class="n">opts</span> <span class="o">=</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span>
+
+<span class="k">module</span> <span class="nn">Institutions</span>
+  <span class="k">def</span> <span class="nf">Zoo</span>
+    <span class="n">date_open</span><span class="o">=</span><span class="s2">&quot;March&quot;</span>
+    <span class="n">date_closed</span><span class="o">=</span><span class="s2">&quot;Feb&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="s2">&quot;Value for opt.zoo.aa&quot;</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="s2">&quot;Value for opt.zoo.b&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;Value for opt.zoo.c&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="s2">&quot;Value for opt.zoo.d&quot;</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">Railroad</span>
+    <span class="n">date_open</span><span class="o">=</span><span class="s2">&quot;1970&quot;</span>
+    <span class="n">date_closed</span><span class="o">=</span><span class="s2">&quot;1980&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mi">1000001</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="mi">2000002</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">3000003</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="mi">4000004</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">A</span>
+   <span class="kp">extend</span> <span class="no">Institutions</span>
+<span class="k">end</span>
+
+<span class="c1"># get sections (&quot;def &lt;section&gt;&quot; parts of code) and deepen the OpenStruct</span>
+
+<span class="n">funcs</span> <span class="o">=</span> <span class="no">Institutions</span><span class="o">.</span><span class="n">instance_methods</span> <span class="kp">false</span>
+<span class="n">funcs</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="nb">name</span><span class="o">|</span> <span class="n">opts</span><span class="o">.</span><span class="n">send</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="no">OpenStruct</span><span class="o">.</span><span class="n">new</span> <span class="p">)</span> <span class="p">}</span>
+
+<span class="c1"># trace each assignment inconfig file as it is &quot;executed&quot;, filtering junk</span>
+
+<span class="nb">set_trace_func</span> <span class="nb">proc</span> <span class="p">{</span> <span class="o">|</span><span class="n">event</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="nb">binding</span><span class="p">,</span> <span class="n">classname</span><span class="o">|</span> <span class="c1"># trace on</span>
+   <span class="k">if</span> <span class="n">opts</span><span class="o">[</span><span class="nb">id</span><span class="o">.</span><span class="n">to_s</span><span class="o">]</span>
+      <span class="n">locals</span> <span class="o">=</span> <span class="nb">binding</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span> <span class="s2">&quot;local_variables&quot;</span> <span class="p">)</span>
+      <span class="n">locals</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">var</span><span class="o">|</span>
+         <span class="n">val</span> <span class="o">=</span> <span class="nb">binding</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span> <span class="n">var</span><span class="o">.</span><span class="n">to_s</span> <span class="p">)</span>
+         <span class="n">section</span> <span class="o">=</span> <span class="n">opts</span><span class="o">.</span><span class="n">send</span><span class="p">(</span> <span class="nb">id</span> <span class="p">)</span>
+         <span class="n">section</span><span class="o">.</span><span class="n">send</span><span class="p">(</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">var</span><span class="si">}</span><span class="s2">=&quot;</span><span class="p">,</span> <span class="n">val</span> <span class="p">)</span> <span class="c1"># assign to correct section in OpenStruct</span>
+      <span class="p">}</span>
+   <span class="k">end</span>
+<span class="p">}</span>
+
+<span class="c1"># &quot;run&quot; each section of configuration file</span>
+<span class="n">funcs</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">meth</span><span class="o">|</span> <span class="n">A</span><span class="o">.</span><span class="n">send</span> <span class="n">meth</span> <span class="p">}</span>
+
+<span class="c1"># trace off</span>
+<span class="nb">set_trace_func</span><span class="p">(</span><span class="kp">nil</span><span class="p">)</span>
+
+
+<span class="c1"># some proof of concept it works...</span>
+<span class="nb">puts</span> <span class="n">opts</span><span class="o">.</span><span class="n">Zoo</span><span class="o">.</span><span class="n">date_open</span>
+<span class="nb">puts</span> <span class="n">opts</span><span class="o">.</span><span class="n">Railroad</span><span class="o">.</span><span class="n">date_open</span>
+<span class="nb">puts</span> <span class="n">opts</span><span class="o">.</span><span class="n">Zoo</span><span class="o">.</span><span class="n">a</span>
+<span class="nb">puts</span> <span class="n">opts</span><span class="o">.</span><span class="n">Railroad</span><span class="o">.</span><span class="n">a</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>Above, we have some blobs of monkeypatch code that handles simple configuration options contained in a module that has sections of configuration options. A demo configuration module called <strong>Institutions</strong> is defined, and contains sections <strong>Zoo</strong> and <strong>Railroad</strong>. Within each section are values assigned to keys. <strong>Class A</strong> uses the config module by <strong>extending</strong> it. The configuration logic acts upon Class A to get the options out of the file. The options are then directly accessible by: <code>opts.&lt;section&gt;.&lt;variable&gt;</code></p>
+<p>We load the module, grab the sections and drill separate rooms for each in the OpenStruct, flip on <code>set_trace_func</code> and run each sectionof the config file, transferring the loot from the module into the OpenStruct. We then flip off the trace, and voila! All configuration options are conveniently available in dot-notation!</p>
+<p>This of course is very limited, but the concept is comparatively clean and sensible. No external dependencies. No explicit file reads or decisions to make about format.</p>
+<p>Now the Munchkins are happy. We can move on with the project!</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/benchmarks.html">benchmarks</a></li>
+		<li><a href="./category/design.html">design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/perl.html">Perl</a></li>
+		<li><a href="./category/ruby.html">ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">scala</a></li>
+		<li><a href="./category/shell.html">Shell</a></li>
+		<li><a href="./category/ssh.html">ssh</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">tmux</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-3"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/arma3.html">arma3</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">Perl</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">Object</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

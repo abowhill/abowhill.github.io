@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Shelling it again</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./shelling-it-again.html" rel="bookmark"
+                   title="Permalink to Shelling it again">Shelling it again</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-03-23T00:00:00-07:00">
+                Sat 23 March 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Sadly again, I find myself using the punishing /bin/sh to script tasks in FreeBSD. And again, I am reminded how painful and time-consuming it can be to do some of the simplest things.</p>
+<p>One of the first things you should realize is that sh is not Bash. It is Bash featureless ancestor - a kind of pygmy caveman. It is smaller, faster, and somewhat harder to work with. It has nearly meaningless error-messages.</p>
+<p>One thing I am absorbing about the language this shell speaks is that variables take several forms.</p>
+<p><strong>Left-hand side name:</strong></p>
+<div class="highlight"><pre><span class="nv">dinosaur</span><span class="o">=</span><span class="s2">&quot;Dino&quot;</span>
+</pre></div>
+
+
+<p>In this form, a variable is recieving a value. </p>
+<p><strong>Right-hand side name:</strong></p>
+<div class="highlight"><pre><span class="nv">animal</span><span class="o">=</span><span class="nv">$dinosaur</span>
+</pre></div>
+
+
+<p>In tools form, $dinosaur is a variable is being used for something. Here, assignment to another variable.</p>
+<p><strong>Formal name:</strong></p>
+<div class="highlight"><pre><span class="si">${</span><span class="nv">dinosaur</span><span class="si">}</span>
+</pre></div>
+
+
+<p>The same as $dinosaur, but in this form you can change the entire tone and context of the name, like <strong>_$(dinosaur)!!_</strong>, which will translate to <strong>_dino!!_</strong>. </p>
+<p><strong>Verbing-name</strong></p>
+<div class="highlight"><pre><span class="nv">animal</span><span class="o">=</span><span class="k">$(</span>dinosaur<span class="k">)</span>
+</pre></div>
+
+
+<p>Although it looks like it, this is not a variable, but a command to do something in a shell. In this case, we are trying to call a program name "dinosaur" in the operating system. If dinosaur exists and replies, <strong>$animal</strong> will hold the response.</p>
+<p><strong>Deep verbing-name:</strong></p>
+<div class="highlight"><pre><span class="k">$(</span><span class="nv">$dinosaur</span><span class="k">)</span>
+</pre></div>
+
+
+<p>Just like the verbing name, but specificlly calling the program "Dino" in the operating system.</p>
+<p><strong>Subshell verbing-name:</strong></p>
+<div class="highlight"><pre><span class="sb">`</span>dinosaur<span class="sb">`</span>
+</pre></div>
+
+
+<p>Here, we are calling a subshell to try to run the program "dinosaur".</p>
+<p>And so on. It's worth noting the shell has two parts:</p>
+<ul>
+<li>The enviroment storage area</li>
+<li>The shell storage area</li>
+</ul>
+<p>The environment contains all the variables that have been exported to semi-protected storage, and will persist throughout the shell's various operating modes and subshells. However, the shell's unprotected variable storage area can be assigned-to without using the export command.</p>
+<p>This is important in shell programming, because when you assign some value to a variable, names and values are stored in this unprotected environment. Unlike programming languages, the shell has no other way to store names and values. </p>
+<p>When you run a script from the prompt like this:</p>
+<div class="highlight"><pre>&gt; scriptname.sh
+</pre></div>
+
+
+<p>It runs in a subshell, and all the unprotected storage it used is destroyed when it returns, but the semi-protected environment is transferred to the subshell. When you run a script like this:</p>
+<div class="highlight"><pre>&gt; <span class="nb">source </span>scriptname.sh
+</pre></div>
+
+
+<p>it is not run in a subshell, and all the variables and values the script created are retained in the unprotected environment. This can have ramifications between subsequent runs if you don't reset your variables in your script.</p>
+<p>It is also true that all variables are global by default in a script. So although these variables are often destroyed after the script has completed running in a subshell, you can get into trouble by assuming names are localized inside the body of the script itself.</p>
+<p>Shell scripts do have callable functions, but they can't return values other than exit codes. If you want return values, you have to assign a global variable the role of holding a return value from all functions, and clear that variable at the beginning of every function. This is called defensive programming.</p>
+<p>So the deal is, you can have functions effectively return two values: the status code (an integer, usually indicating failure or success) and a string containing some result data. </p>
+<p>Below, is a function to take a pathname as a string and and clean out duplicate slashes from it, returning it as a string. It also returns a status code, on whether the clean path was found (0) or not found (1). If the function was handed an empty input string, it returns (2) and if some other error occurs, it returns that too.</p>
+<p>The test driver for the function basically calls the function and parses the results. The input to the test driver are various unclean paths.</p>
+<p>I think it shows functions are viable in sh scripts, which can serve as an advantage to programming these things. But getting the syntax and behavior correct is actually quite hard to. </p>
+<p>Using Perl or Ruby, something like this can be done in minutes. Doing it in shell can take a lot longer, especially because it's a blind man's walk of trial and error, especially if you're used to more sophisticated languages where true is true and false is false; not having to call external programs for regular expressions, or are unaccustomed to built-in variables disappearing if you don't capture them right away.</p>
+<div class="highlight"><pre><span class="nb">unset </span>ret
+
+fixpath<span class="o">()</span>
+   <span class="o">{</span>
+   <span class="nb">unset </span>ret
+   <span class="o">[</span> -z <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> 2
+   <span class="nv">ret</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="si">${</span><span class="nv">1</span><span class="si">}</span> <span class="p">|</span> sed -r <span class="s1">&#39;s/\/+/\//g&#39;</span><span class="sb">`</span>
+   <span class="o">[</span> -e <span class="s2">&quot;</span><span class="nv">$ret</span><span class="s2">&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">return</span> <span class="m">0</span> <span class="o">||</span> <span class="k">return</span> 1
+   <span class="o">}</span>
+
+testfixpath<span class="o">()</span>
+   <span class="o">{</span>
+   <span class="nb">unset </span>ret
+   <span class="nv">path</span><span class="o">=</span><span class="nv">$1</span>
+   <span class="nb">echo</span> <span class="s2">&quot;Input path: </span><span class="nv">$path</span><span class="s2">&quot;</span>
+   fixpath <span class="s2">&quot;</span><span class="nv">$path</span><span class="s2">&quot;</span>
+   <span class="nv">err</span><span class="o">=</span><span class="nv">$?</span>
+   <span class="nb">echo</span> <span class="s2">&quot;Output path: </span><span class="si">${</span><span class="nv">ret</span><span class="si">}</span><span class="s2">&quot;</span>
+
+   <span class="k">case</span> <span class="nv">$err</span> in
+     0<span class="o">)</span>   <span class="nb">echo</span> <span class="s2">&quot;Return code </span><span class="nv">$err</span><span class="s2"> (true) </span><span class="si">${</span><span class="nv">ret</span><span class="si">}</span><span class="s2"> exists.&quot;</span><span class="p">;;</span>
+     1<span class="o">)</span>   <span class="nb">echo</span> <span class="s2">&quot;Return code </span><span class="nv">$err</span><span class="s2"> (false) </span><span class="si">${</span><span class="nv">ret</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">;;</span>
+     2<span class="o">)</span>   <span class="nb">echo</span> <span class="s2">&quot;Return code </span><span class="nv">$err</span><span class="s2"> (error) missing argument </span><span class="si">${</span><span class="nv">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;;</span>
+     *<span class="o">)</span>   <span class="nb">echo</span> <span class="s2">&quot;Return code </span><span class="nv">$err</span><span class="s2"> (undefined error) </span><span class="si">${</span><span class="nv">ret</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;;</span>
+   <span class="k">esac</span>
+   <span class="nb">echo</span> <span class="s2">&quot;---&quot;</span>
+   <span class="o">}</span>
+
+testfixpath <span class="s2">&quot;/foobar/me/////me///me//you.txt&quot;</span>
+testfixpath <span class="s2">&quot;/usr/local/////sbin///&quot;</span>
+testfixpath <span class="s2">&quot;&quot;</span>
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/benchmarks.html">benchmarks</a></li>
+		<li><a href="./category/design.html">design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/perl.html">Perl</a></li>
+		<li><a href="./category/ruby.html">ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">scala</a></li>
+		<li><a href="./category/shell.html">Shell</a></li>
+		<li><a href="./category/ssh.html">ssh</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">tmux</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-3"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/arma3.html">arma3</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">Perl</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">Object</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

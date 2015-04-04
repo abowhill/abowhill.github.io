@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Preserving ssh-agent credentials in Tmux</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./tmux-ssh-agent.html" rel="bookmark"
+                   title="Permalink to Preserving ssh-agent credentials in Tmux">Preserving ssh-agent credentials in Tmux</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-03-31T00:00:00-07:00">
+                Mon 31 March 2014
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Tmux is a terminal multiplexor. It lets you manage many simultaneous running shells from a single ssh protected console window. It has a flexible windowing scheme that gives you multiple groups of resizable panels and stateful protection of your terminal sessions wether you wilfully or accidentally detach a working session. It's a must-have for a console ssh user, but there can be problems with maintaining <strong>ssh-agent</strong> (passwordless) connections after logout, which requires some setup tactics to preserve.</p>
+<h3>SSH practice</h3>
+<hr />
+<p>Typically, with ssh, you'd take a copy of your public key on Host A, and drop it into <code>~./ssh/authorized_keys</code> on <em>Hosts B, C, and D</em>. On <em>Host A</em>, you'd start the agent, authenticate once, then gain secure access to hosts B, C, and D without entering a password. </p>
+<p>The agent invokation might go something like this:</p>
+<div class="highlight"><pre>HOST_A &gt; ssh-agent bash 
+<span class="o">(</span>subshell entered<span class="o">)</span>
+HOST_A &gt; ssh-add 
+Enter passphrase <span class="k">for</span> /home/myuser/.ssh/id_rsa: &lt;you enter passphrase&gt;
+Identity added: /home/myuser/.ssh/id_rsa <span class="o">(</span>/home/myuser/.ssh/id_rsa<span class="o">)</span>
+</pre></div>
+
+
+<p>Then doing:</p>
+<div class="highlight"><pre>HOST_A &gt; ssh host_b
+<span class="o">(</span>passwordless login<span class="o">)</span>
+HOST_B &gt; 
+</pre></div>
+
+
+<p>Will get you into <em>Host B</em> with no passphrase.</p>
+<p>A lot of stateful work is held in tmux shells. Typically you may have a dozen or more of these passwordless ssh sessions running, all connected to various hosts and to different projects. What you do not want to have happen is to lose the agent authentication for all these connections when you detach and reattach a tmux session, something often done when switching from a workstation to a laptop, for instance. Losing ssh passwordless connections is a huge headache to deal with.</p>
+<p>Depending on how you call tmux directly will determine if you lose passwordless authentication on disconnect. If you start tmux with </p>
+<div class="highlight"><pre>HOST_A&gt; ssh-agent tmux   &lt;-- big mistake!
+</pre></div>
+
+
+<p>Everything will run as expected until you disconnect. Then suddenly when you reconnect, all your subshells will have lost their authentication, and will fallback to manual passphrase entry if they are reconnected to an ssh host.  The tactic I want to show you is how to use indirection to preserve all your agent sessions in tmux, so that detaching and reattaching will leave everything unaffected.</p>
+<h3>The configuration road-map</h3>
+<hr />
+<p>Essentially, you start a top-level tmux session without ssh agent. Let's call this session the <strong>CONTROL</strong> session. The <strong>CONTROL</strong> session is a wrapper that prevents ssh from being informed about connection information. Within <strong>CONTROL</strong>, you create windows, each establishing a single ssh-agent tmux subsession to be used generally with a single remote host. Within each of these nested tmux ssh sessions, you can add windows and panels. Each window and panel will inherit passwordless authentication for free. When you detach or disconnect, all the capabilities of each terminal are preserved, no matter what machine you login with or what network you're using.</p>
+<p>I will try to use the following terms to describe tmux by it's stucture in this scenario. It may not agree with the docs. Basically a tmux process consists of one or more sessions, which consist of one or more windows, which consist of one or more panels.</p>
+<div class="highlight"><pre>tmux --&gt; sessions --&gt; windows --&gt; panels
+         named        named       shells
+</pre></div>
+
+
+<p><p/></p>
+<p>As shown in the diagram above, sessions and windows can be named. These names display on a status bar at the bottom of the tmux screen if the following configuration file is used in <code>~/.tmux.conf</code>:</p>
+<div class="highlight"><pre><span class="c"># set putty window &gt; translation is-8859-1</span>
+<span class="c"># export TERM=screen-256color</span>
+<span class="c"># http://blog.gmane.org/gmane.comp.terminal-emulators.tmux.user/month=20101101</span>
+<span class="c"># http://blog.ijun.org/2011/09/install-tmux-on-freebsd-tutorial-step.html</span>
+
+<span class="nb">set</span> -g default-terminal screen-256color
+<span class="nb">set</span> -g status-bg red
+<span class="nb">set</span> -g status-fg green
+<span class="nb">set</span> -g status-right <span class="s1">&#39;#(sysctl vm.loadavg)&#39;</span>
+setw -g window-status-current-attr underscore
+<span class="nb">bind </span>r <span class="nb">source</span>-file ~/.tmux.conf
+setw -g utf8 on
+<span class="nb">set</span> -g status-utf8 on
+</pre></div>
+
+
+<p><p/></p>
+<p>Overall we aim to have some kind of structure similar to the following diagram, with a <strong>CONTROL</strong>, <strong>LOCAL</strong> and <strong>WWW</strong> sessions as examples.</p>
+<p><strong>CONTROL</strong> is the wrapper session, and not used for anything other than housing the other sessions.  <strong>LOCAL</strong> is a graph of terminals being used on the main host. <strong>WWW</strong> is the set of terminals on a web machine connected by ssh agent passwordless logins.</p>
+<div class="highlight"><pre>             tmux
+             |
+             + CONTROL session
+             |
+             +---&gt; CONTROL MASTER
+             |
+             +---&gt; LOCAL MASTER  (ssh-agent)
+             |     LOCAL
+             |        |
+             |        +---&gt;LOCAL (Window 1)
+             |        |   |
+             |        |   +---&gt; Panel 1 (shell)
+             |        |   |
+             |        |   +---&gt; Panel 2 (shell)
+             |        |   |
+             |        |   +---&gt; Panel 3 (shell)
+             |        |
+             |        +---&gt;LOCAL (Window 2)
+             |            |
+             |            +---&gt; Panel 1 (shell)
+             |            |
+             |            +---&gt; Panel 2 (shell)
+             |
+             +---&gt; WWW MASTER (ssh-agent)
+             |     WWW 
+             |        |
+             |        +---&gt;WWW 
+             |        |   |
+             |        |   +---&gt; Panel 1 (shell)
+             |        |  
+             |        |
+             |        +---&gt;WWW 
+             |            |
+             |            +---&gt; Panel 1 (shell)
+             |            |
+             |            +---&gt; Panel 2 (shell)
+             (ad nauseum...)
+</pre></div>
+
+
+<p>Switching between sessions on this tree is accomplished by <code>CTRL-B s</code>, while switching between each session's windows is done with <code>CTRL-B w</code>. <code>CTRL-B &lt;arrow&gt;</code> moves focus between panels in a window. You do all your work inside panels each containing a shell prompt.  Panels can be resized, even to look like windows.  <code>CTRL-B ALT &lt;arrow&gt;</code> resizes a panel by one character in the arrow-direction, and <code>CTRL-B z</code> toggles maximize/minimize on a panel to full-screen.</p>
+<p>To start our setup we need to issue the tmux command <code>&gt; tmux</code>. This will create a session and a window with a shell and a status bar.</p>
+<p><img alt="tmux shell" src="./images/1-tmux-login-first.PNG" /></p>
+<p>We need to rename the session to <strong>CONTROL</strong> by issuing <code>CTRL-B $</code> editing at the prompt on the status bar. The current sesssion name always appears on the far left, contained within square brackets.</p>
+<p><img alt="tmux rename session" src="./images/2-tmux-rename-session.PNG" /></p>
+<p>We also need to rename the window (window zero) to <strong>CONTROL-MASTER</strong> by issuing <code>CTRL-B ,</code> and overwriting the text there with <strong>"CONTROL-MASTER"</strong>. The current window in tmux is always underlined on the status bar.</p>
+<p><img alt="tmux rename window" src="./images/3-tmux-rename-window.PNG" /></p>
+<p>The <strong>CONTROL</strong> session should not really be used for anything. It's just a wrapper to hold the leaders of other sessions. After we have named it, it's best to block input to this window with some kind of system status tracker like top, systat or tail -f /var/log/messages.</p>
+<p><img alt="block control-master window" src="./images/4-tmux-block-control-master.PNG" /></p>
+<p>To create our first ssh-agent authenticated session: <strong>LOCAL</strong>, we open a new window in the <strong>CONTROL</strong> session by typing <code>CTRL-B c</code>. <strong>LOCAL</strong> will just be used for shells spawned on the localhost, but we still want the capability of quick passwordless access to our other machines from here. We need to name this window <strong>LOCAL-MASTER</strong> via <code>CTRL-B ,</code>. When we finish setup in this window, it will become the top-level authenticator for all other working <strong>LOCAL</strong> ssh connections.</p>
+<p>Next, we setup the ssh-authenticator for <strong>LOCAL</strong> session by:</p>
+<div class="highlight"><pre><span class="nb">unset </span>TMUX<span class="p">;</span> ssh-agent tmux
+</pre></div>
+
+
+<p>We have to unset the TMUX environment variable to unlock the safety switch placed in by the TMUX authors. Then, when the nested tmux shell boots, you will see two status bars at the bottom of the screen:</p>
+<p><img alt="nested tmux" src="./images/5-tmux-local-ssh.PNG" /></p>
+<p>At this point, type <strong>ssh-add</strong> and enter your passphrase.</p>
+<p>Note that this can be quite confusing to look at. We are still in the <strong>CONTROL</strong> session, but have established a new, unnamed session for <strong>LOCAL</strong>. It's important to remember a few things about being in the <strong>CONTROL</strong> session.</p>
+<ul>
+<li>
+<p>What you see in the <strong>CONTROL</strong> session window will vary later on, so you can't trust its contents.</p>
+</li>
+<li>
+<p>The bottom status bar in this session is the only relevant one, and belongs to <strong>CONTROL</strong>. This means we are in the <strong>CONTROL</strong> session context.</p>
+</li>
+<li>
+<p>This <strong>CONTROL</strong> window X is shared in the LOCAL session context as Window zero.</p>
+</li>
+</ul>
+<p>We are still in the <strong>CONTROL</strong> session at this point, but have setup an anonymous session for <strong>LOCAL</strong>. Now let's change context to <strong>LOCAL</strong> by using <code>CTRL-B s</code> (the session menu) and selecting the session that is <strong>not</strong> <strong>CONTROL</strong>.</p>
+<p><img alt="switch to unnamed context" src="./images/6-session-context-control-to-local.PNG" /></p>
+<p>Note the status bar is back to one, but the window contents did not change. It is a shared window. To complete bootstrapping this session we need to:</p>
+<p>a. Use <code>CTRL-B ,</code> to change the window name to <strong>LOCAL</strong>.
+b. Use <code>CTRL-B $</code> to change the session name to <strong>LOCAL</strong>.
+c. Start a copy of something like top, systat or tail -f /var/log/messages to block input.</p>
+<p><img alt="finish local context setup" src="../../../images/7-finish-local-context.PNG" /></p>
+<p>To establish sessions with other machines, we simply repeat the steps above:</p>
+<ol>
+<li><code>CTRL-B s</code> to select the <strong>CONTROL</strong> session.</li>
+<li><code>CTRL-B c</code> to open a new <strong>CONTROL</strong> window.</li>
+<li><code>CTRL-B ,</code> to change the window name to <em><code>&lt;session_name&gt;-MASTER</code></em></li>
+<li><code>unset TMUX; ssh-agent tmux</code></li>
+<li><code>ssh-add &lt;enter passphrase&gt;</code></li>
+<li><code>CTRL-B s</code> to select the context of new anonymous session we just made.</li>
+<li><code>CTRL-B ,</code> to change the window name to <em><code>&lt;&lt;session_name&gt;&gt;</code></em></li>
+<li><code>CTRL-B $</code> to change the session name to <em><code>&lt;&lt;session_name&gt;&gt;</code></em></li>
+<li>Login to the associated remote host for this session, and run <code>top</code>, <code>systat</code>, or <code>tail -f</code> to block input.</li>
+</ol>
+<p>Once you have all your sessions established, you can switch to a given session, and open any number of windows with <code>CTRL-B c</code> and panels with <code>CTRL-B &amp;</code> (to the right) or <code>CTRL-"</code> (below). All of them will have their <strong>ssh-agent</strong> sessions and runtime preserved between sessions.</p>
+<p><img alt="open windows and panels" src="./images/8-www-complete.PNG" /></p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/benchmarks.html">benchmarks</a></li>
+		<li><a href="./category/design.html">design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/perl.html">Perl</a></li>
+		<li><a href="./category/ruby.html">ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">scala</a></li>
+		<li><a href="./category/shell.html">Shell</a></li>
+		<li><a href="./category/ssh.html">ssh</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">tmux</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-3"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/arma3.html">arma3</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">Perl</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">Object</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>
