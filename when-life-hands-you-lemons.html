@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>When life hands you lemons...</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./when-life-hands-you-lemons.html" rel="bookmark"
+                   title="Permalink to When life hands you lemons...">When life hands you lemons...</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2011-05-06T00:00:00-07:00">
+                Fri 06 May 2011
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>If you're unemployed and want to know how many days it's been, how many years experience you have, and with which companies, this Ruby class will tell you. Basically, initialize the WorkHistoryAnalysis class, pass in each experience as "<name>, [start date], [end date]" in YYYY,MM,DD format as shown at the bottom of the file. A little report will be generated at the console.</p>
+<div class="highlight"><pre><span class="nb">require</span> <span class="s1">&#39;date&#39;</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="nc">WorkHistoryAnalysis</span>
+   <span class="kp">attr_accessor</span> <span class="ss">:total</span><span class="p">,</span> <span class="ss">:company</span><span class="p">,</span> <span class="ss">:latest</span>
+
+   <span class="k">def</span> <span class="nf">initialize</span><span class="p">()</span>
+      <span class="vi">@total_days</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="vi">@company</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span>
+      <span class="vi">@latest</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">workedFor</span><span class="p">(</span><span class="n">who</span><span class="p">,</span> <span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">)</span>
+      <span class="n">to_d</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">to</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">to</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">to</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+      <span class="n">from_d</span> <span class="o">=</span> <span class="no">Date</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">from</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="n">from</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="n">from</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+
+      <span class="n">latest?</span><span class="p">(</span><span class="n">to_d</span><span class="p">)</span>
+
+      <span class="n">days</span> <span class="o">=</span> <span class="p">(</span><span class="n">to_d</span> <span class="o">-</span> <span class="n">from_d</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="vi">@company</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">who</span><span class="p">))</span>
+         <span class="vi">@company</span><span class="o">[</span><span class="n">who</span><span class="o">]</span> <span class="o">+=</span> <span class="n">days</span>
+      <span class="k">else</span>
+         <span class="vi">@company</span><span class="o">[</span><span class="n">who</span><span class="o">]</span> <span class="o">=</span> <span class="n">days</span>
+      <span class="k">end</span>
+
+      <span class="vi">@total_days</span> <span class="o">+=</span> <span class="n">days</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">latest?</span><span class="p">(</span><span class="n">dat</span><span class="p">)</span>
+      <span class="k">if</span> <span class="p">((</span><span class="n">dat</span> <span class="o">&lt;=&gt;</span> <span class="vi">@latest</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+         <span class="vi">@latest</span> <span class="o">=</span> <span class="n">dat</span>
+      <span class="k">else</span>
+         <span class="k">return</span> <span class="kp">false</span>
+      <span class="k">end</span>
+      <span class="k">return</span> <span class="kp">true</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">employed</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days2yrs</span><span class="p">(</span><span class="vi">@total_days</span><span class="p">)</span>
+      <span class="k">return</span> <span class="o">[</span><span class="s2">&quot;Employed for:&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;   </span><span class="si">#{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="vi">@total_days</span><span class="si">}</span><span class="s2"> total days]&quot;</span><span class="o">]</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">unemployed</span>
+      <span class="n">days</span> <span class="o">=</span> <span class="p">(</span><span class="no">Date</span><span class="o">.</span><span class="n">today</span> <span class="o">-</span> <span class="vi">@latest</span><span class="p">)</span><span class="o">.</span><span class="n">to_i</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days2yrs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+      <span class="k">return</span> <span class="o">[</span><span class="s2">&quot;Currently unemployed for:&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;   </span><span class="si">#{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="n">days</span><span class="si">}</span><span class="s2"> days]&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;Last worked:&quot;</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="s2">&quot;   </span><span class="si">#{</span><span class="vi">@latest</span><span class="o">.</span><span class="n">to_s</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">]</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">days2yrs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span>
+      <span class="n">years</span> <span class="o">=</span> <span class="n">days</span><span class="o">/</span><span class="mi">365</span><span class="o">.</span><span class="n">to_f</span>
+      <span class="k">return</span> <span class="p">(</span><span class="n">years</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="o">.</span><span class="n">to_f</span> <span class="o">/</span> <span class="mi">100</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">list_experiences</span>
+      <span class="n">str</span> <span class="o">=</span> <span class="s2">&quot;Employment breakdown by company:</span><span class="se">\n</span><span class="s2">&quot;</span>
+      <span class="n">co</span> <span class="o">=</span> <span class="vi">@company</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span> <span class="p">}</span>
+      <span class="n">co</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">a</span><span class="o">|</span> <span class="n">str</span> <span class="o">+=</span> <span class="s2">&quot;   </span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> </span><span class="si">#{</span><span class="n">days2yrs</span><span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span><span class="si">}</span><span class="s2"> years [</span><span class="si">#{</span><span class="n">a</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="si">}</span><span class="s2"> days]</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="p">}</span>
+      <span class="k">return</span> <span class="n">str</span>      
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">print</span>
+      <span class="nb">puts</span> <span class="n">employed</span>
+      <span class="nb">puts</span> <span class="n">unemployed</span>
+      <span class="nb">puts</span> <span class="n">list_experiences</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># Part where you enter your own work history </span>
+
+<span class="n">W</span> <span class="o">=</span> <span class="no">WorkHistoryAnalysis</span><span class="o">.</span><span class="n">new</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;NWlink&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">1996</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">1997</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;Orrtax&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">1997</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;Hostpro&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2001</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;College&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2002</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2005</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">16</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;Marchex&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2006</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2008</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2008</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2009</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">26</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">workedFor</span><span class="p">(</span><span class="s2">&quot;Microsoft&quot;</span><span class="p">,</span><span class="o">[</span><span class="mi">2011</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="o">[</span><span class="mi">2012</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">1</span><span class="o">]</span><span class="p">)</span>
+<span class="n">W</span><span class="o">.</span><span class="n">print</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>The report will look something like this:</p>
+<div class="highlight"><pre>Employed <span class="k">for</span>:
+   13.45 years <span class="o">[</span><span class="m">4909</span> total days<span class="o">]</span>
+Currently unemployed <span class="k">for</span>:
+   1.19 years <span class="o">[</span><span class="m">435</span> days<span class="o">]</span>
+Last worked:
+   2012-09-01
+Employment breakdown by company:
+   NWlink 1.41 years <span class="o">[</span><span class="m">516</span> days<span class="o">]</span>
+   Hostpro 1.75 years <span class="o">[</span><span class="m">639</span> days<span class="o">]</span>
+   Marchex 1.84 years <span class="o">[</span><span class="m">670</span> days<span class="o">]</span>
+   Microsoft 2.32 years <span class="o">[</span><span class="m">846</span> days<span class="o">]</span>
+   Orrtax 2.42 years <span class="o">[</span><span class="m">883</span> days<span class="o">]</span>
+   College 3.71 years <span class="o">[</span><span class="m">1355</span> days<span class="o">]</span>
+</pre></div>
+
+
+<p><p/></p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

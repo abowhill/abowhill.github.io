@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Extractors in Scala</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./vararg-extractors.html" rel="bookmark"
+                   title="Permalink to Extractors in Scala">Extractors in Scala</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-12-03T00:00:00-08:00">
+                Tue 03 December 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Extraction and reporting are intertwined. Data is presented to you in some kind of structured source, and you must pull it into meaningful program variables to be able to manipulate it and return a result. Some of the best language designs make this easy. <strong>Perl</strong> (Practical Extraction and Reporting Language) recognized this use case, and built a neat little feature into the language that transforms serialized data into variables in a single line of code.</p>
+<p>The form looks similar to this:</p>
+<div class="highlight"><pre><span class="x">(</span><span class="p">$</span><span class="nv">var1</span><span class="x">, </span><span class="p">$</span><span class="nv">var2</span><span class="x">, </span><span class="p">$</span><span class="nv">var3</span><span class="x">) = some_sequential_data_source</span>
+</pre></div>
+
+
+<p>So, if I create an array reference in Perl:</p>
+<div class="highlight"><pre><span class="nv">$a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>I can extract data from that array into meaningful variables with one line of code:</p>
+<div class="highlight"><pre><span class="p">(</span><span class="nv">$one</span><span class="p">,</span> <span class="nv">$two</span><span class="p">,</span> <span class="nv">$three</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@$a</span><span class="p">;</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>This has big payoff when reading all the metadata in a UNIX filename:</p>
+<div class="highlight"><pre><span class="c1"># from man perlfunc and [perldoc](http://perldoc.perl.org/functions/stat.html)</span>
+
+<span class="p">(</span><span class="nv">$dev</span><span class="p">,</span><span class="nv">$ino</span><span class="p">,</span><span class="nv">$mode</span><span class="p">,</span><span class="nv">$nlink</span><span class="p">,</span><span class="nv">$uid</span><span class="p">,</span><span class="nv">$gid</span><span class="p">,</span><span class="nv">$rdev</span><span class="p">,</span><span class="nv">$size</span><span class="p">,</span><span class="nv">$atime</span><span class="p">,</span><span class="nv">$mtime</span><span class="p">,</span><span class="nv">$ctime</span><span class="p">,</span><span class="nv">$blksize</span><span class="p">,</span><span class="nv">$blocks</span><span class="p">)</span> <span class="o">=</span> <span class="nb">stat</span><span class="p">(</span><span class="nv">$filename</span><span class="p">);</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>It is definitely a convenience. Try doing that in C++ in a single line!</p>
+<p>In <strong>Scala</strong>, there is a mechanism that can be constructed that appears to resemble this Perl-ism. It's called an extractor. Although there is a lot more code than one line to make it, plus a lot of implicit behavior under the hood, you can still employ a</p>
+<div class="highlight"><pre>sink = source
+</pre></div>
+
+
+<p>kind of pattern in your own code. With extractors you can transform a data source (even with variable arguments) into a set of coherent, meaningful variables in one line. Yes, you can kind of imitate <strong>Perl</strong> in <strong>Scala</strong>!</p>
+<p>Just like the left hand side of the Perl-ism, out of the box you can write something like:</p>
+<div class="highlight"><pre><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="nc">Array</span><span class="o">(</span><span class="n">one</span><span class="o">,</span> <span class="n">two</span><span class="o">,</span> <span class="n">three</span><span class="o">)</span> <span class="k">=</span> <span class="nc">Array</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="mi">3</span><span class="o">)</span>
+<span class="n">one</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">two</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">three</span><span class="k">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>As you may have noticed, the left hand side names some variables to recieve data, and the right hand side supplies them. Source to Sink. Furthermore, you can create your own objects, with their very own transformation rules. This is done through the <strong>unapply()</strong> method, which can be added to an object. It is called implicitly like a constructor, when you use it on the left hand side of an assignment.</p>
+<p><strong>Unapply()</strong> is kind of the opposite of a mock constuctor for an object. Since objects are singleton entities that have no actual type, they have no constructor. But a mock constructor of a kind can be created by adding an <strong>apply()</strong> method. </p>
+<div class="highlight"><pre><span class="k">object</span> <span class="nc">SillyPerson</span> <span class="o">{</span>
+   <span class="k">def</span> <span class="n">apply</span> <span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=</span> <span class="n">name</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">);</span>
+   <span class="o">}</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>The <strong>apply()</strong> construct can only be used in a right-hand-side capacity (aka: as a Source, or supplier of data):</p>
+<div class="highlight"><pre><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="n">s</span> <span class="k">=</span> <span class="nc">SillyPerson</span><span class="o">(</span><span class="s">&quot;Elmer&quot;</span><span class="o">::</span><span class="s">&quot;J.&quot;</span><span class="o">::</span><span class="s">&quot;Fudpucker&quot;</span><span class="o">::</span><span class="nc">Nil</span><span class="o">)</span>
+<span class="n">s</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="nc">Elmer</span> <span class="n">J</span><span class="o">.</span> <span class="nc">Fudpucker</span>
+</pre></div>
+
+
+<p><p/></p>
+<p><strong>Unapply()</strong> is like a <em>deconstructor</em>. It can be designed to undo everything that an <strong>apply()</strong> method does. If we add one, we can now "deconstruct" a structured data source -- even the apply method itself, which is a good test.</p>
+<div class="highlight"><pre><span class="c1">// based on examples from &quot;Programming in Scala&quot;, Odersky, Spoon &amp; Venners</span>
+
+<span class="k">object</span> <span class="nc">SillyPerson</span> <span class="o">{</span>
+   <span class="k">def</span> <span class="n">apply</span> <span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">List</span><span class="o">[</span><span class="kt">String</span><span class="o">])</span> <span class="k">=</span> <span class="n">name</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">)</span>
+   <span class="k">def</span> <span class="n">unapply</span> <span class="o">(</span><span class="n">name</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[(</span><span class="kt">String</span>, <span class="kt">String</span>, <span class="kt">String</span><span class="o">)]</span> <span class="k">=</span> 
+       <span class="o">{</span> 
+        <span class="k">val</span> <span class="n">bits</span> <span class="k">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot; &quot;</span><span class="o">)</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">bits</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="mi">3</span><span class="o">)</span> <span class="nc">Some</span><span class="o">(</span><span class="n">bits</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="n">bits</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="n">bits</span><span class="o">(</span><span class="mi">2</span><span class="o">))</span>
+        <span class="k">else</span> <span class="nc">None</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</pre></div>
+
+
+<p><p/></p>
+<div class="highlight"><pre><span class="n">scala</span><span class="o">&gt;</span> <span class="k">val</span> <span class="nc">SillyPerson</span><span class="o">(</span><span class="n">first</span><span class="o">,</span> <span class="n">middle</span><span class="o">,</span> <span class="n">last</span><span class="o">)</span> <span class="k">=</span> <span class="nc">SillyPerson</span><span class="o">(</span><span class="s">&quot;Elmer&quot;</span><span class="o">::</span><span class="s">&quot;J.&quot;</span><span class="o">::</span><span class="s">&quot;Fudpucker&quot;</span><span class="o">::</span><span class="nc">Nil</span><span class="o">)</span>
+<span class="n">first</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="nc">Elmer</span>
+<span class="n">middle</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="n">J</span><span class="o">.</span>
+<span class="n">last</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="nc">Fudpucker</span>
+</pre></div>
+
+
+<p><p/></p>
+<p>Above, the left hand side of = represents an implicit call to the <strong>unapply()</strong> method: the object's acting pseudo-deconstructor and data sink. The right-hand-side represents a call to the objects pseudo-constructor and data source. Assigning the source to the sink should result in the same data we supplied to the source. The two methods should symmetrically compose and decompose the data to be considered correctly-implemented.</p>
+<p>Note the <strong>unapply()</strong> method provides a return type of </p>
+<div class="highlight"><pre>Option[(String, String, String)]
+</pre></div>
+
+
+<p>Which gives structure and type-casting to the receiving variables: <strong>first</strong>, <strong>middle</strong> and <strong>last</strong>. The <strong>Some</strong> and <strong>None</strong> classes are wrappers around the data which tell the calling method there is either something or nothing returned, which is better than sending Null.</p>
+<p>Below is an example of a <strong>varargs extractor</strong>, an <strong>unapply()</strong> that allows variable length lists to be processed and transformed. Seauences are used instead of a fixed <strong>Option</strong> type, allowing for more flexibility in handling paramters. In this case, a special variant of <em>unapply</em> is used, called <strong>unapplySeq()</strong>. This variant allows for sequences to be used in the Options return type, which can be iterated over by the caller. There is other special syntax when the unapplySeq() is actually called. </p>
+<p>The basic description of this program is that a royal court (TheCourt) has been assembled. The Lord, Lady, an advisor, a general and some servants are all on a list of approved court-attenders. The list is ordered in a most-important to least-important ranking. The list starts off with a sloppy form, so it is first cleaned-up. Then someone in the court gets hold of it, and runs <strong>apply()</strong>. The <strong>apply()</strong> method messes up the list, reversing it and adding in an enemy spy. Last, the <strong>unapplySeq()</strong> method is run, and sets it all back correctly, removing the spy from the list and placing the ranks it back in the right order. </p>
+<div class="highlight"><pre><span class="c1">// based on sect 24.5 Programming in scala</span>
+<span class="c1">// varags extractor example.</span>
+
+<span class="k">object</span> <span class="nc">TheCourt</span>
+   <span class="o">{</span>
+   <span class="c1">// apply puts the list in the wrong order and there is an unwanted guest.</span>
+
+   <span class="k">def</span> <span class="n">apply</span><span class="o">(</span><span class="n">cleanList</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">String</span> <span class="o">=</span>
+      <span class="o">{</span>
+      <span class="o">(</span><span class="n">cleanList</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">)</span> <span class="o">:+</span> <span class="s">&quot;EnemySpy&quot;</span><span class="o">).</span><span class="n">reverse</span><span class="o">.</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">)</span>
+      <span class="o">}</span>
+
+   <span class="c1">// unapply dissects the list and undoes the damage</span>
+
+   <span class="k">def</span> <span class="n">unapplySeq</span><span class="o">(</span><span class="n">wronglyOrderedList</span><span class="k">:</span> <span class="kt">String</span><span class="o">)</span><span class="k">:</span> <span class="kt">Option</span><span class="o">[(</span><span class="kt">String</span>, <span class="kt">String</span>, <span class="kt">Seq</span><span class="o">[</span><span class="kt">String</span><span class="o">])]</span> <span class="k">=</span>
+      <span class="o">{</span>
+      <span class="k">val</span> <span class="n">rightList</span> <span class="k">=</span> <span class="n">wronglyOrderedList</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">).</span><span class="n">reverse</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">rightList</span><span class="o">.</span><span class="n">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="o">)</span>
+        <span class="nc">Some</span><span class="o">(</span><span class="n">rightList</span><span class="o">(</span><span class="mi">0</span><span class="o">),</span> <span class="n">rightList</span><span class="o">(</span><span class="mi">1</span><span class="o">),</span> <span class="n">rightList</span><span class="o">.</span><span class="n">drop</span><span class="o">(</span><span class="mi">2</span><span class="o">).</span><span class="n">dropRight</span><span class="o">(</span><span class="mi">1</span><span class="o">))</span>
+      <span class="k">else</span>
+         <span class="nc">None</span>
+       <span class="o">}</span>
+   <span class="o">}</span>
+
+<span class="k">val</span> <span class="n">sloppyList</span> <span class="k">=</span> <span class="s">&quot;Olaf the Magnificent, Helga the Great,&quot;</span> <span class="o">+</span>
+   <span class="s">&quot;Advisor Sollop,  General Cranston      ,       Jeeves,  Seppings  ,&quot;</span> <span class="o">+</span>
+   <span class="s">&quot;Mrs. North,Grell,    and whatsisface&quot;</span><span class="o">;</span>
+
+<span class="k">val</span> <span class="n">cleanList</span> <span class="k">=</span> <span class="n">sloppyList</span><span class="o">.</span><span class="n">split</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">).</span><span class="n">map</span><span class="o">(</span><span class="k">_</span><span class="o">.</span><span class="n">trim</span><span class="o">).</span><span class="n">mkString</span><span class="o">(</span><span class="s">&quot;,&quot;</span><span class="o">)</span>
+
+<span class="c1">// assign the manipulations of the apply method to the unapply method. It should &quot;undo&quot; when combined</span>
+
+<span class="k">val</span> <span class="nc">TheCourt</span><span class="o">(</span><span class="n">lord</span><span class="o">,</span> <span class="n">lady</span><span class="o">,</span> <span class="n">theRest</span> <span class="k">@</span> <span class="k">_</span><span class="o">*)</span> <span class="k">=</span> <span class="nc">TheCourt</span><span class="o">(</span><span class="n">cleanList</span><span class="o">)</span>
+
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;Original List: (cleaned up a bit)&quot;</span><span class="o">)</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;--------------&quot;</span><span class="o">)</span>
+<span class="n">println</span><span class="o">(</span><span class="n">cleanList</span><span class="o">)</span>
+<span class="n">println</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;Modified List: (apply)&quot;</span><span class="o">)</span>
+<span class="n">println</span><span class="o">(</span><span class="s">&quot;----------------------&quot;</span><span class="o">)</span>
+<span class="n">println</span><span class="o">(</span><span class="nc">TheCourt</span><span class="o">(</span><span class="n">cleanList</span><span class="o">))</span>
+<span class="n">println</span>
+<span class="n">println</span> <span class="o">(</span><span class="s">&quot;Fixed and Restored List: (unapply)&quot;</span><span class="o">)</span>
+<span class="n">println</span> <span class="o">(</span><span class="s">&quot;----------------------------------&quot;</span><span class="o">)</span>
+<span class="n">println</span> <span class="o">(</span><span class="s">&quot;The Lord: [&quot;</span> <span class="o">+</span> <span class="n">lord</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span><span class="o">)</span>
+<span class="n">println</span> <span class="o">(</span><span class="s">&quot;The Lady: [&quot;</span> <span class="o">+</span> <span class="n">lady</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span><span class="o">)</span>
+<span class="k">for</span> <span class="o">(</span><span class="n">name</span> <span class="k">&lt;-</span> <span class="n">theRest</span><span class="o">)</span>
+   <span class="n">println</span> <span class="o">(</span><span class="s">&quot;  The court: [&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&quot;]&quot;</span><span class="o">)</span>
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

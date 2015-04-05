@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Quick Scala/SBT Setup for JetBrains Intellij</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./Intellij-setup-scala-linux.html" rel="bookmark"
+                   title="Permalink to Quick Scala/SBT Setup for JetBrains Intellij">Quick Scala/SBT Setup for JetBrains Intellij</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-12-18T00:00:00-08:00">
+                Wed 18 December 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>I just recently replaced Win7 with Fedora Linux on my main workstation at home, because I became a bit frustrated with Win7's TrustedInstaller anchoring itself on my disk and disallowing me as an administrator to move it or remove it. I'm of the opinion that if some other entity overrides your administrative privileges and installs filesystems and users without your permission and it fights you <em>every step of the way</em> if you attempt to remove them, that operating system installation is compromised. If it is the OS manufacturer doing that as part of the design, the OS is <em>inherently</em> compromised, and therefore unsuitable for certain purposes. So I sought to replace Win7 with something that hasn't been compromised, and can give me freedom of choice and total administrative control.
+:
+I settled on Fedora Linux after days of trying out other OSs. The machine I installed this on has my best hardware, an SSD, 8G of memory, and a fairly good ATI video card in it (a Radeon HD 6800) that feeds into a dual monitor setup. I wanted to retain this configuration, and make full use of my system's resources. I tried FreeBSD 9 &amp; 10, PC-BSD, Ubuntu, Suse and Fedora. Only Ubuntu, Fedora, Suse and PC-BSD were able to recognize my minimally-exotic video hardware, and only Ubuntu and Fedora were able to operate with multiple displays as well. I eliminated Ubuntu because it has become crazily commericalized, with "social search" badly mixed into sane, down-to-earth tasks like looking for a file on the disk. Ubuntu has become poorly monetized, and that's a Bad Thing. Truth be told, I am a big BSD fan, and would have given anything (except my dual-monitor seetup) to play with PC-BSD, which is incredibly interesting. Sadly, it could only deal with one monitor. So Back on Earth, in the here and now, the winner is <strong>Fedora</strong>, which hit the setup mark flawlessly, as it has done in the past, even on the old Google Chromebook prototype hardware, the CR-48. With the Hard Choices out of the way, I am now using Fedora Linux on my desktop.</p>
+<p>But there are more problems. (Would it be *nix if there were not?) I was toying with the idea of moving away from Vim6 for awhile for Scala development, but it's a bit like the Hotel California. I guess the motivating factor is I kind of feel my Scala learning is slowing down, and made even slower by almost tortuous coding episodes lasting 10+ hours in which I bounce around between documents, books, internet searches and Scala REPL looking for the "rightest" way to write Scala and which abstractions to use. I am secretly hoping an IDE will make learning a bit faster by doing API lookups or code linting or refactoring rather than doing all that manually with VIM windows and a copy of SBT auto-building in the background. </p>
+<p>One guy I used to work with said IDEs are like training wheels on a bike. He felt you don't actually get the opportunity to learn the language you're writing if you use an IDE. As fundamentally true as that might be in many respects, an IDE can offer the advantage of <em>making you think in the API</em> of these Boroque languages that have small cores and humongous libraries, like <em>C#</em> and <em>Java</em>. I call them <em>Boroque</em> because unlike C++ or C, or even Perl, the key to programming productively isn't technique using idioms of the core language, but technique using idioms of complex and massive libraries. IDEs can theoretically help by offerering up active documentation and choices in almost any context, right in the editor. Whether this actually helps you learn or not is still an open question, but I'm concerned about my ability to produce anything of any size other than very small programs without using one. So I will investigate this. It may turn out to be a wild goose-chase.</p>
+<p>Which brings me to the pinultimate point of this post, the IDEs themselves. Specifically which one for Fedora? I looked at two. One was a Boroque adaptation of the Eclipse platform, an Indian product called <strong>Aptana Studio</strong>. It seemed to be able to handle every conceivable language known to Man, but I never even got to the stage of plugging in Scala support, because it kept on segfaulting the JVM on one of its dozens of modules every time I tried to use it for longer than a few minutes in Linux. I tried frobbing memory settings for the JVM, and even went to the long effort of installing "the official" Sun JDK on Fedora (no trivial task) to replace the default OpenJDK. Still no change. It's worth noting there are apparently no problems with it on Win8. Very stable. Ironic, considering Eclipse is Open Source. But I decided I do not want this thing on Linux nor do I want any sort of Eclipse. (I included instructions to install a new JVM in Linux are at the bottom of the post.)</p>
+<p>So what's left? Jetbrains Intellij Idea Community Edition. It's no coincedence this is a first-choice for a lot of Scala developers. It works well on both Linux and Windows. It's free as in beer, and can be downloaded from <a href="http://www.jetbrains.com/idea/">here:</a>. If you're on Linux and a fix it yourself type, <a href="http://www.aptana.com">Aptana Studio can be found here</a>. Aptana looks very promising. Just not quite ready for Linux yet.</p>
+<p>Now for the meat of the setup for JetBrains, Scala and SBT. They all work together rather nicely, and SBT is used externally for builds. Still playing with how to integrate that, but it can be done. I'd like to mention these setup steps are basically a short version of what you can find from <a href="http://tv.jetbrains.net/videocontent/working-with-scala-in-intellij-idea">Scalacourses.com</a> but I've put them in this post, partly for my own quick personal reference. The speaker, <strong>Mike Slynn</strong>, explains everything much better in his video. View it. There are other videos available as well from JetBrains on Scala setup, but they are done by Eastern Europeans with extremely thick accents which makes it problematic to grok. They are specialists, and can't be all things to all people. But they make good software. Unfortunately, in its all-consuming way, that counts for everything these days.</p>
+<p>So for my interpretation of the setup instructions from Mike, let us begin:</p>
+<p>NOTE: Scala Compiler Requires more memory than Java, so you will want to tweak it. See tweaking starter somwhere below.</p>
+<ul>
+<li>In the <code>bin</code> subdir of installation, there is both a shell script and batch file to start the IDE.</li>
+<li>So, start the IDE. (You need Java installed. If you don't, stop at this step and install it.)</li>
+<li>Now you get some thing about plugins. It's ok to opt-out of. Just forge past it. Ignore temptation.</li>
+<li>Now you're at the Opening Quick Selection Screen</li>
+<li>Click Configure &gt; Plugins</li>
+<li>Select Jetbrains repository</li>
+<li>Get Scala plugin</li>
+<li>Select the <strong>Browse Repositories</strong> button. (3rd party repos)</li>
+<li>Get the SBT plugin</li>
+<li>Get the Markdown plugin</li>
+</ul>
+<p>NOTE: Don't run any of this stuff in the background or you'll regret it. Just be patient and wait for each download to finish and index. Think about all the time you're saving.</p>
+<ul>
+<li>
+<p>Allow the IDE to restart</p>
+</li>
+<li>
+<p>Goto Configure &gt; Settings again.</p>
+</li>
+</ul>
+<p>Notice there are two sections of options </p>
+<ol>
+<li>Template Project (default for all projects)</li>
+<li>IDE settings (global defaults)</li>
+</ol>
+<p>Go into Compiler Settings</p>
+<ul>
+<li>Tick the option to compile projects in parallel</li>
+<li>Tick the option to make projects automatically <em>OR</em> leave unchecked and do ALT-F9 to build at will. Like a pro. (On the other hand, if you are reading this, better take the first option.)</li>
+</ul>
+<p>NOTE that if we go to <em>Compiler &gt; Scala Compiler</em>, there is nothing to set. It's all external builds and taken care of by SBT.</p>
+<ul>
+<li>Click OK</li>
+<li>Goto <strong>Project Defaults &gt; Project Structure &gt; Project</strong> (in project settings section)</li>
+</ul>
+<p>NOTE: No SDK selected.</p>
+<ul>
+<li>Click <strong>New</strong> and select JDK</li>
+</ul>
+<p>NOTE: You should be placed in or near your JDK directory (Unix: /usr/lib/jvm/<version>, usually "Latest"). Once selected, make sure it's found a Java SDK and it shows in the little window. </p>
+<p>OK, we are DONE with setup for Scala.</p>
+<p>Now for the <strong>MEMORY TWEAKING</strong>:</p>
+<ul>
+<li>
+<p>Open a console prompt</p>
+</li>
+<li>
+<p>run <code>/usr/java/&lt;java_dir&gt;/bin/jvisualvm &amp;</code></p>
+</li>
+<li>Open <strong>Intellij</strong> </li>
+</ul>
+<p>NOTE: </p>
+<ol>
+<li>The <strong>Overview Panel</strong> provides arguments you gave the IDE</li>
+<li>The <strong>Monitor Panel</strong> lets you observe usage to tune these values</li>
+<li>The <strong>Permgen Panel</strong> is marginally of interest. Nothing ever really goes beyond 250 MB here. Move along folks.</li>
+</ol>
+<p>It helps to open a Scala project to see the difference in load in the <strong>Monitor Panel</strong>. You care about orange area (allocated heap) and blue area (the amount of heap being used). Your IDE should stay within the limits you allocate for memory. If it doesn't, the system gets bogged down, so allocate more memory and startup the IDE again. This is a thing you just have to watch.</p>
+<ul>
+<li>You can manually change startup optons by editing: 
+<code>&lt;intellij_dir/bin/idea(64)vmoptions</code></li>
+</ul>
+<p>NOTE: This stuff can be found in the setup screens, so it's best to do it there. But if you must edit this file, back it up or bad things will happen. Like Intellij not starting ever again. The safe way to change the base heap to 2048 MB is from the menus, so go into <strong>Configure &gt; IDE Settings &gt; Scala</strong> and set memory to 2048. This is your main tweaking knob.</p>
+<p>And last but not least, to change the Theme of the IDE:</p>
+<p>Configure&gt; Settings &gt; Appearance (under IDE section)</p>
+<ul>
+<li>Select Darcula for theme, allow restart</li>
+</ul>
+<p>OK, bad enough, right? But there's more BAD for Linux users, as usual. If you want to change your JVM installation to something other than <strong>OpenJDK</strong> (and I'm not sure there is a good reason to in most cases) please <a href="http://www.if-not-true-then-false.com/2010/install-sun-oracle-java-jdk-jre-7-on-fedora-centos-red-hat-rhel/">check out this blog</a> which shows the BEST set of instructions I could find for installing the Sun/Oracle version of Java on your Fedora system. I ran the following subset of the commands listed on my 64-bit Fedora workstation from this blog, and it worked just fine:</p>
+<p>(copied shamelessly from the pros, as usual)</p>
+<div class="highlight"><pre><span class="c">## JDK 64-bit ##</span>
+rpm -Uvh jdk-7u45-linux-x64.rpm
+
+<span class="c">## JRE 64-bit ##</span>
+rpm -Uvh jre-7u45-linux-x64.rpm
+
+<span class="c"># java ##</span>
+alternatives --install /usr/bin/java java /usr/java/latest/jre/bin/java 200000
+
+<span class="c">## javaws ##</span>
+alternatives --install /usr/bin/javaws javaws /usr/java/latest/jre/bin/javaws 200000
+
+<span class="c">## Java Browser (Mozilla) Plugin 64-bit ##</span>
+alternatives --install /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/jre/lib/amd64/libnpjp2.so 200000
+
+<span class="c">## Install javac only if you installed JDK (Java Development Kit) package ##</span>
+alternatives --install /usr/bin/javac javac /usr/java/latest/bin/javac 200000
+alternatives --install /usr/bin/jar jar /usr/java/latest/bin/jar 200000
+
+<span class="c">## java ##</span>
+alternatives --install /usr/bin/java java /usr/java/latest/bin/java 200000
+
+<span class="c">## javaws ##</span>
+alternatives --install /usr/bin/javaws javaws /usr/java/latest/bin/javaws 200000
+
+<span class="c">## Java Browser (Mozilla) Plugin 64-bit ##</span>
+alternatives --install /usr/lib64/mozilla/plugins/libjavaplugin.so libjavaplugin.so.x86_64 /usr/java/latest/lib/amd64/libnpjp2.so 200000
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

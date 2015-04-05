@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Scala First Impressions</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./scala-first-impressions.html" rel="bookmark"
+                   title="Permalink to Scala First Impressions">Scala First Impressions</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-11-15T00:00:00-08:00">
+                Fri 15 November 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Over the mast month or so I've been studying the <a href="http://www.scala=lang.org">Scala</a> programming language, and am about halfway through the book<a href="http://www.artima.com/shop/programming_in_scala_2ed">Programming in Scala, Odersky, Spoon and Venners</a>. </p>
+<p>My initial exposure to Scala was kind of double-edged. On one edge, attraction; the other, revulsion. All great technologies, works of art, areas of learning can have this duality. Obviously, these works initially attract me. From that set, many succeed in subsequently repelling me forever for one reason or another. Ruby succeeded in not repelling me forever. Only time will tell with Scala.</p>
+<p>The initial attractions of Scala were through advocates. One who worked for Twitter, who showed some Scala code in his blog that replaced lower-performing Ruby on the Twitter platform. Another, <a href="https://github.com/vkostyukov/scalacaster">Vladmir Kostyukov's ScalaCaster collection of data structures on Github</a>, includes some code that implements the <a href="https://github.com/vkostyukov/scalacaster/blob/master/src/sort/QuickSort.scala">Quicksort</a> algrorithm in about 20 lines. </p>
+<p>What else constitutes attraction? Simon Peyton Jones  (a principal researcher at Microsoft) has <a href="http://www.youtube.com/watch?v=iSmkqocn0oQ&amp;feature=youtu.be">some thoughts on this regarding Haskell</a>. "Nirvana" according to Jones, is where a language is both safe and useful. Scala, (although unmentioned in this video) resides in the upper-right hand corner of Peyton's chart. It's arrived to Nirvana prematurely. Scala code and methodology is alien to most of us. But it's friendly. Like a friendly Alien. It can be elegant and beautiful, and hides/eliminates a lot of programmer design work from plain sight by leveraging implicit behavior and functional design. (The latter being a core capability of the language.) Like Ruby, Scala crosses-into a higher threshold of legitimacy when well-written code becomes more or less self-documenting. Other languages simply cannot do this. Both Scala and Ruby can be written in concise and high-level manner, such that the design of good code can approach the special virtue of being correctly interpreted by a non-language-expert. In my mind, this shows exceptional thought placed into language design. An Alien that can communicate to common-folk.</p>
+<p>So those are a couple of the major attractions. The revulsion side of the two-edged Scala sword is the complexity and steep learning curve. One of my biggest turnoffs when I was initially clueless about the language, was to try to make sense of it by reading a <a href="http://www.scala-lang.org/docu/files/ScalaOverview.pdf">whitepaper overview of Scala</a>. I managed to get about halfway through. Not exacly the most compelling piece of marketing material. Although improvements have been made to the appeal of the Scala website and documentation, it would be unfair to say the language is simple and easy to learn. It is not. It is a complex language, a kind of Ruby++0x. Scala itself is comparatively new and ambitious in design, attempting to bridge the gap between two (or possibly even three) disparate worlds: those of imperative programming, functional programming, and object-oriented programming.</p>
+<p>Remember the original selling points of C++? It was designed to be a dual-purpose language, so users of C (procedural programming practitioners) could transition conveneintly and logically into object-oriented programming practitioners. The C++ package offered programmers the ability to use the language as conventional, procedural C, or as newer, object-oriented C++. One language, supporting two convertible methodologies. The procedural mode was played-up as "A better C" -- and it arguably was. Error messages were much better for one. </p>
+<p>Scala is offering the same kind of deal to programmers. Essentially, the language is built atop the JVM, and almost suggests it's "A Better Java", although there are too many differences to make this claim. There are features here and there that clearly fill in the potholes of Java language design failures. For example, all Java primitive types (int, float, long, etc.) are first-class objects in Scala. There is no special disctinction between object String and primitive string. No "wrapper" classes to objectify something that is not an object. Like Ruby, everything is object-oriented. </p>
+<p>The big pitfall to Scala adoption may be the ability of users to adopt. Java programmers may be technically ready to learn, but have a tendency to rubber-band back to Java after trodding on Alien turf, inventing sophisticated excuses to return to the Old Ways. Why do something new and unfamiliar when you can get paid the same to do things in the old, familiar way? Ruby programmers, on the other hand, may very well not be technically ready to handle some of the computer-sciency aspects of Scala but may also have a head-start with regard to familiar syntax and principles of elegance that Scala offers. I don't know how Haskell users respond to Scala. My guess would be a tendency to return to the procedural ways of Haskell?</p>
+<p>In any case the Scala effort is ambitious, and although it faces many adoption problems of transitioning programmers across language cultures, there is nothing that would match the average business manager to recoil in horror at having their code-base change to something any of their programmers would have difficulty with. Why make business harder than it is? Sure, the language has a lot to offer. Perfect code (or something close to it) may be achievable. But we already have systems that work, and we can easily find programmers in the market to replace or augment those we already employ. Scala programmers are too rare and expensive. We would hurt ourselves by transitioning.</p>
+<p>Here lies the big advantage in being an unemployed technical person. You can spend time learning something everyone else is too scared to learn or use. You can pick up the gauntlet, face the intellectual challenge and enjoy the ride to enlightenment.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

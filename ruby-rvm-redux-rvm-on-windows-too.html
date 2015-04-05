@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Ruby RVM redux (RVM on Windows too!)</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./ruby-rvm-redux-rvm-on-windows-too.html" rel="bookmark"
+                   title="Permalink to Ruby RVM redux (RVM on Windows too!)">Ruby RVM redux (RVM on Windows too!)</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-02-21T00:00:00-08:00">
+                Thu 21 February 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <h3>Installing Ruby using RVM</h3>
+<p>Using Wayne Seguin's RVM (Ruby Version Manager) is definitely the best way to go for installing Ruby on most UNIX platforms. It allows any kind of Ruby to be installed, even multiple versions, and will keep everything in the home directory under .RVM, so no admin-level system installations are required. It is very well maintained, and considered the defacto standard for maintaining and updating Ruby installations. Visit <a href="http://rvm.io">http://rvm.io</a> for more information. After installation, use: rvm notes for up-to-date information about the installed framework.</p>
+<h3>UNIX Installation</h3>
+<p>These instructions should help you get RVM and Ruby MRI installed. During this process, you must be connected to the network the whole time. RVM will download things during the build.</p>
+<p>First, install the bash shell. Bash is the required login shell for the account in which RVM is installed. RVM installs itself as a Bash function. For X-Windows: Make sure your terminal is set to call a login shell with</p>
+<div class="highlight"><pre>bash --login 
+</pre></div>
+
+
+<p><p/></p>
+<p>Next, install the package: curl</p>
+<p>Do this as  root using your OS package manager. The specifics will depend on your system.</p>
+<p>NOTE: Do not run the rest of these commands as root. RVM requires they be run with the same privileges as the account you.re logged into.</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="se">\c</span>url -L https://get.rvm.io <span class="p">|</span> bash -s stable 
+</pre></div>
+
+
+<p><p/></p>
+<p>(Include the forward slash at the beginning of the command line.)
+This installs the RVM framework</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm list known 
+</pre></div>
+
+
+<p><p/></p>
+<p>The above command list all the possible rubies that can be installed. We will use MRI version 1.9.3 in this example, but the latest one should be used. That.s the one under the MRI section listed just before -head. The current minor version is p385.</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm requirements
+</pre></div>
+
+
+<p><p/></p>
+<p>The above command lists all dependencies and tasks needed to build and install Ruby. Execute all instructions given. These are required software installations. Failure is likely to occur with the build or runtime if the steps are not taken. RVM will tell you what you need to do to prepare your system, and hand you the command lines to do it.</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm install 1.9.3 
+</pre></div>
+
+
+<p><p/></p>
+<p>The above command compiles Ruby 1.9.3</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm use 1.9.3 --default 
+</pre></div>
+
+
+<p><p/></p>
+<p>The above command sets the built ruby as current and default version.</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm info 
+</pre></div>
+
+
+<p><p/></p>
+<p>The command above verifies the Ruby installation.</p>
+<div class="highlight"><pre><span class="nv">$ </span>ruby --version 
+</pre></div>
+
+
+<p><p/></p>
+<p>Now all that's left is to verify IRB behaves properly:</p>
+<div class="highlight"><pre><span class="nv">$ </span>irb  
+</pre></div>
+
+
+<p><p/></p>
+<h3>Windows installation (cygwin)</h3>
+<p>Goto <a href="http://www.cygwin.com">Cygwin's web site</a> and download setup.exe from the link on that page. Save the program to your desktop. It is your only package manager. This is the <a href="http://cygwin.com/setup.exe">direct URL to the binary</a></p>
+<p>Double-click setup.exe and follow the wizard steps to the package manager screen. That's the one with all the software categories in a tree. Use the search box to locate and install the following packages and all their dependencies:</p>
+<div class="highlight"><pre>curl <span class="o">(</span>net/curl<span class="o">)</span> 
+libcurl-devel <span class="o">(</span>net/libcurl-devel<span class="o">)</span> 
+cert <span class="o">(</span>net/ca-certificates<span class="o">)</span> 
+</pre></div>
+
+
+<p><p/></p>
+<p>Open the cygwin bash shell from the desktop icon or start menu. Install RVM from inside the shell:</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="se">\c</span>url -L https://get.rvm.io <span class="p">|</span> bash -s stable 
+</pre></div>
+
+
+<p><p/></p>
+<p>Exit the shell and re-open it.</p>
+<p>Run:</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm requirements
+</pre></div>
+
+
+<p><p/></p>
+<p>The above command lists all dependencies and tasks needed to build and run Ruby. This is a must-do step. But since the cygwin third-party packages change so much in their availability, you may have to fudge a bit in installing some things listed.</p>
+<p>For example, rvm requirements lists the build-essential package to be installed. That is a meta-port of a bunch of build tools. At the time of writing and testing this, the build-essential package was available in the cygwin package manager. An hour later it disappeared without a trace.</p>
+<p>Since this ingredient is so important, I.ve listed the tools below that I think were in the meta-port.. When possible, choose -devel versions of the software, and select the mingw ports if available.</p>
+<p>Here is a mostly-correct list of packages to select and install:</p>
+<div class="highlight"><pre>mingw-gcc-g++ 
+make 
+mingw-zlib1 
+libyaml-devel 
+libsqlite-3-devel 
+sqlite3 
+libxml2-devel 
+libxslt-devel 
+autoconf <span class="o">(</span>highest version<span class="o">)</span> 
+libgdbm-devel 
+ncurses-devel 
+automake <span class="o">(</span>latest<span class="o">)</span> 
+libtool 
+bison 
+pkg-config
+readline: GNU readline
+</pre></div>
+
+
+<p><p/></p>
+<p>Now compile Ruby 1.9.3:</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm install 1.9.3 
+</pre></div>
+
+
+<p><p/></p>
+<p>And now set the built ruby as current and default version:</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm use 1.9.3 --default 
+</pre></div>
+
+
+<p><p/></p>
+<p>Verify the Ruby installation:</p>
+<div class="highlight"><pre><span class="nv">$ </span>rvm info 
+<span class="nv">$ </span>ruby --version 
+</pre></div>
+
+
+<p><p/></p>
+<p>Lastly, verify irb does not crash</p>
+<div class="highlight"><pre><span class="nv">$ </span>irb
+</pre></div>
+
+
+<p><p/></p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

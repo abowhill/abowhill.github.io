@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>The Importance of Object-Oriented Design</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./the-importance-of-object-oriented-design.html" rel="bookmark"
+                   title="Permalink to The Importance of Object-Oriented Design">The Importance of Object-Oriented Design</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2013-05-13T00:00:00-07:00">
+                Mon 13 May 2013
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>One of the more stifling features of object-oriented programming is trying to figure out what classes to design.</p>
+<p>Unlike its venerated, comparatively simple tribal cousin, procedural programming, object-oriented programming requires you to invent abstractions in the form of classes that describe the problem domain, or selected parts of it - and package functions with data. The classes you design are blueprints from which objects are manufactured at runtime.</p>
+<p>Depending on the language, there can also be inheritance, mixins, access permissions, generics, collections, interfaces, and even Eigenclasses that allow you to mutate the original classes and objects at runtime. And for the truly discriminating, pedantic programmer, there are design patterns.</p>
+<p>The big advantage of object-oriented design is the ability to speak to the computer in terms of the problem's domain. The prodecedural approach makes you to speak to the computer on its own terms, requiring you to translate the problem domain into terms the computer understands.</p>
+<p>But the object-oriented approach is actually just an extension of the procedural approach. It's just the procedural parts (both functions and variables) are heavily modularized and cast into types - protected data structures. We cannot escape the procedural nature of programming. Programs are implementations of algorithms, and algorithms are sequences of steps -- recipes for solving problems.</p>
+<p>It follows that as a complex wrapper to procedural methodology, there will be more design decisions to make when using an object-oriented methodology. And design is all about how to get problem P to solution S with code. The design you devise can vary depending on what type of problem you're solving, and the tools you have available.</p>
+<p>This is one of the reasons I am trying to leave Perl in favor of Ruby. I've done a fair amount of reading on Ruby, and don't care to delve more deeply into Perl. Unfortunately, most of my practice with Perl has been through jobs. I was always hired as a "perl programmer" no matter what I did until recently. So, although I've had plenty of exposure and education centering on object-oriented design, I haven't had much opportunity to use it - at work or on my own projects. There just hasn't been a need.</p>
+<p>However, what little project exposure I've had, has been revealing when it comes to the task of designing classes. There is more than one way to do it. One piece of advise I can give about programming is that you must know your problem domain very well to successfully address it in code. This is especially important with object-oriented class design, as it requires you to declare the problem domain up-front.</p>
+<p>So, getting class design correct before coding starts is very important. With reflection and Eigenclassess, it may not be as critical, because you can posthumously mutate objects at runtime with code. Although this violates some of the principles of class-based object-oriented design (encapsulation) it holds some promise of allowing softer, more simplistic cookie-cutter class designs to be planned before coding gets underway, which can be later be mutated and specialized as the project progresses. This saves time over devising rigid strongly-typed blueprints which become, in a way, immutable before coding begins. Reflection may allow for extra refinement to take place after the initial general design is settled-upon. So in this respect, there may be a tradeoff between encapsulation and flexibility with object design.</p>
+<p>Using a softly-typed language like Ruby or Python over a strongly-typed one like Java or C++ still doesn't substantially relieve the pain of a blank slate when it comes to devising a correct or suitable class model to address a domain-specific problem, but perhaps it can reduce size of the "blank page" you are required to fill in before coding starts.</p>
+<p>On top of that, what layer of coding you are doing has everything to do with what language you might be using. By layer, I'm suggesting how close to the hardware you are. Below is a rough diagram of languages vs. layers for most computing problems:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Layer</th>
+<th align="left">Languages most used</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Hardware</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">Software: No OS</td>
+<td align="left">(Hardware Engineering: ASM, C, Verilog</td>
+</tr>
+<tr>
+<td align="left">Software: BIOS</td>
+<td align="left">(ASM, C)</td>
+</tr>
+<tr>
+<td align="left">Software: Bootstrap Loaders</td>
+<td align="left">(OS Engineering: C, Forth, ASM)</td>
+</tr>
+<tr>
+<td align="left">Software: OS Kernel</td>
+<td align="left">(C)</td>
+</tr>
+<tr>
+<td align="left">Software: Filesystems and Drivers</td>
+<td align="left">(C)</td>
+</tr>
+<tr>
+<td align="left">Software: Privileged User Mode</td>
+<td align="left">(Critical Operations: C, C++)</td>
+</tr>
+<tr>
+<td align="left">Software: OS utilities</td>
+<td align="left">(Standard Operations: C, C++)</td>
+</tr>
+<tr>
+<td align="left">Software: 3rd party system</td>
+<td align="left">(Application: Java, C#, C++, C)</td>
+</tr>
+<tr>
+<td align="left">Software: Services Frameowrks</td>
+<td align="left">(Services: Perl Ruby, Python, Java, C#, C++)</td>
+</tr>
+<tr>
+<td align="left">Software: Glue, Build, Admin code</td>
+<td align="left">(Production: Perl, Ruby, Python, Shells)</td>
+</tr>
+<tr>
+<td align="left">Software: Domain specific langs</td>
+<td align="left">(Integration: JavaScript, ERB, Jquery, SQL)</td>
+</tr>
+<tr>
+<td align="left">Software: Entertainment, utilities</td>
+<td align="left">(Sourceless: C++, C#, Java, JavaScript)</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left" rules="groups"></td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>Above, I have tried to rougly outline the layers at which coding occurs, and associated heirarchy of useage realms. Each realm can be composed of one or more layers, and there are no firm boundaries.</p>
+<ol>
+<li>Hardware Engineering - making hardware do something. (embedded)</li>
+<li>OS Engineering       - making hardware do something sophisticated. (kernel) </li>
+<li>Critical Ops         - making sure the OS is running. (critical utils)</li>
+<li>Standard Ops         - making the OS fully usable.    (complete OS binaries)</li>
+<li>Application          - making the OS extra usable.    (3rd party software)</li>
+<li>Services             - making the OS serve an automated purpose. (servers)</li>
+<li>Production           - using the OS to produce software and services.(glue)</li>
+<li>Integration          - using client installs for consumption (web browser) </li>
+<li>Sourceless           - making self-contained applications (turbo-tax, games)</li>
+</ol>
+<p>Whether or not you agree with the categories, there is a distinct migration of lanugages for the different types of code being written at each layer. The closer we are to hardware, the more lower-level languages we see being used. We start with assembly language and veriolg. The further we go from the hardware, the more higher-level languages we see being used, until we are no longer dealing with source code, or even commands, but end-user applications controlled by user interfaces.</p>
+<p>Somwhere in-between the OS engineering layer and the critical operations layer we begin to see object-oriented languages being used. Somehere betweeen the applications and services layer we see the emergence of "pointerless" languages like Java. Somewhere around the services and production layer we see "scripting" languages emerging as the language of choice.</p>
+<p>So, it's not too hard to see that when we get in a bit to the standard operations layer we see see object-oriented code come into use. And it doesn't go away after that. In fact, object-oriented languages become dominant as we move toward the end-user with his applications, whcih can be very sophisticated programs reaching a million+ lines of code.</p>
+<p>Conservatively half of all programming realms, the object-oriented approach is important.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>

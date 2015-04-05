@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Configuring FreeBSD with Tmux</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./config-tmux-freebsd.html" rel="bookmark"
+                   title="Permalink to Configuring FreeBSD with Tmux">Configuring FreeBSD with Tmux</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2014-03-05T00:00:00-08:00">
+                Wed 05 March 2014
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>I just replaced <strong>gnu screen</strong> with <strong>tmux</strong>, a newer and better-written terminal multiplexer. This was pretty much an all-day activity on FreeBSD due the research, reading and mucking about. But it's such an important shell utility, and the configuration time is worth it. I hope these steps can help you with this task.</p>
+<p>First, you'll need to install tmux using <code>pkg install tmux</code> or <code>make install</code> in <code>/usr/ports/sysutils/tmux</code>.</p>
+<p>To get the most out of tmux graphically, you will need the following export placed in <strong>.bashrc</strong> or whatever startup file is to your liking:</p>
+<div class="highlight"><pre><span class="nb">export </span><span class="nv">TERM</span><span class="o">=</span>screen-256color
+<span class="nb">echo</span> <span class="nv">$TERM</span>
+screen-256color
+</pre></div>
+
+
+<p><p/></p>
+<p>The reason for this? <strong>color</strong>. Run this little perl script at <a href="http://blog.ijun.org/2011/09/install-tmux-on-freebsd-tutorial-step.html">Simple Life, Complicated Mind</a> to verify your terminal is doing 256 colors.  You should see a nice grid like this: </p>
+<p><a href="./images/tmux_colors.jpg">clickme</a>
+<p/></p>
+<p>If you don't get that, continue on with configuration, and run it again. The next configuration we need to do is for the <strong>~/.tmux.conf</strong> :</p>
+<div class="highlight"><pre><span class="nb">set</span> -g default-terminal screen-256color
+<span class="nb">set</span> -g status-bg red
+<span class="nb">set</span> -g status-fg green
+<span class="nb">set</span> -g status-right <span class="s1">&#39;#(sysctl vm.loadavg)&#39;</span>
+setw -g window-status-current-attr underscore
+<span class="nb">bind </span>r <span class="nb">source</span>-file ~/.tmux.conf
+setw -g utf8 on
+<span class="nb">set</span> -g status-utf8 on
+</pre></div>
+
+
+<p><p/></p>
+<p>The configuration file above sets your default terminal type, a few items on your status bar regarding colors and content. A function to reload tmux with a forced read of this config file is bound to <code>[CTRL]-b r</code>, usable from within a tmux session. It prevents you from having to exit and re-enter tmux again to test a particular configuration option. The last two options should work with UTF-8 encoding if you're using the right terminal. Leaving them in will do no harm.</p>
+<p>And I guess that brings us to an embarrasing oddity of Putty and Tmux which has <a href="http://blog.gmane.org/gmane.comp.terminal-emulators.tmux.user/month=20101101">caused some pain</a> with UTF-8. If you're using Putty, just turn-off <strong>UTF-8</strong> encoding under the Putty config window <code>Window &gt; Translation</code>. Select <code>ISO-8859-1</code> if you don't need to read other languages in the terminal, otherwise you'll get &lt;<Poor Man's>&gt; graphics separating your panels.</p>
+<p>If you'd like more detail on <strong>tmux</strong>, check out <em>Mindfuzz</em> for a nice <a href="http://www.mindfuzz.net/?p=178">tmux config</a> or at <em>ijun.org</em>, a pretty complete <a href="http://blog.ijun.org/2011/09/install-tmux-on-freebsd-tutorial-step.html">tutorial</a> for FreeBSD.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">ruby</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">freebsd</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>
