@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>Moving from Middleman to Pelican on FreeBSD</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./moving-from-middleman-to-pelican.html" rel="bookmark"
+                   title="Permalink to Moving from Middleman to Pelican on FreeBSD">Moving from Middleman to Pelican on FreeBSD</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2015-04-08T00:00:00-07:00">
+                Wed 08 April 2015
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>I've had this sort of ongoing project to update my <a href="https://middlemanapp.com/">Middleman</a> installation for this blog, and in the process of doing so, decided to re-evaluate and switch to a different production technology called <a href="http://docs.getpelican.com/en/3.5.0/">Pelican</a>. </p>
+<p>Middleman is servicable software for generating static websites, and is written in Ruby. The officially approved and supported modules work. The unapproved ones, however, are corroded and do not work (for me) out of the box in a FreeBSD jail. As far as I can tell, people don't maintain them. As any Ruby user knows, if a Gemfile has like a million dependencies in it - it will go out-of-sync very quickly and become impossible for other people to use out of the box. In fact, none of the unsupported Middleman modules I tested worked under a FreeBSD jail RVM install of the latest stable Ruby.</p>
+<p>So this is partly a Ruby thing, partly an RVM thing, and partly a Middleman unofficial modules thing. FreeBSD jails are non-negotiable for me. The software <em>must</em> work in a jail. Plus I want cool features, and an unbroken ecosystem.  All the baggage is just a bit too much to maintain and <em>retain</em> when months may go by between blog posts. And I'm bored. not enough interesting features (like Pelican's Themes) and a broken ecosystem.</p>
+<p>So with this situation, it's time for a new platform.</p>
+<p>Some big pluses for Pelican:</p>
+<p><strong><em>It's elegant. Not an Elephant.</em></strong> I don't have to mess with frameworks to get it running.</p>
+<h2>INSTALLATION</h2>
+<div class="highlight"><pre><span class="c">## PELICAN INSTALLATION STEPS</span>
+
+<span class="c"># install python3</span>
+sudo pkg install python3
+
+<span class="c"># install pip package manager for python</span>
+fetch https://bootstrap.pypa.io/get-pip.py
+sudo python3 ./get-pip.py
+
+
+<span class="c"># make shell Unicode</span>
+vi .login_conf
+me:<span class="se">\</span>
+        :charset<span class="o">=</span>UTF-8:<span class="se">\</span>
+        :lang<span class="o">=</span>en_US.UTF-8:<span class="se">\</span>
+        :setenv<span class="o">=</span><span class="nv">LC_COLLATE</span><span class="o">=</span>C:
+
+<span class="c"># check Unicodeness</span>
+locale
+
+<span class="c"># install pelican and some needed packages</span>
+sudo pip install pelican
+sudo pip install Markdown
+sudo pip install typogrify
+sudo pkg install gmake
+</pre></div>
+
+
+<p>That's all. No RVM muckity-muck or much in the way of shell-dotfile-trickery. Python3 is installed via the FreeBSD package system.</p>
+<h2>Configuration</h2>
+<p>To create a project, all I have to do is run <code>pelican quickstart</code> and some questions get asked, and a project directory tree gets built. </p>
+<p>There is only one config file: <code>pelicanconf.py</code></p>
+<div class="highlight"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*- #</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+
+<span class="n">AUTHOR</span> <span class="o">=</span> <span class="s">&#39;Allan&#39;</span>
+<span class="n">SITENAME</span> <span class="o">=</span> <span class="s">&#39;SyntaxFX&#39;</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">&#39;http://abowhill.github.io&#39;</span>
+
+<span class="n">PATH</span> <span class="o">=</span> <span class="s">&#39;content&#39;</span>
+<span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;images&#39;</span><span class="p">,</span><span class="s">&#39;javascripts&#39;</span><span class="p">,</span><span class="s">&#39;examples&#39;</span><span class="p">]</span>
+<span class="c"># skips processing of all .html</span>
+<span class="n">READERS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;html&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
+
+<span class="n">TIMEZONE</span> <span class="o">=</span> <span class="s">&#39;America/Vancouver&#39;</span>
+<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="s">&#39;en&#39;</span>
+
+<span class="c"># Feed generation is usually not desired when developing</span>
+<span class="n">FEED_ALL_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">CATEGORY_FEED_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">TRANSLATION_FEED_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">AUTHOR_FEED_ATOM</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">AUTHOR_FEED_RSS</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="n">SITESUBTITLE</span><span class="o">=</span><span class="s">&quot;Tech Blog&quot;</span>
+
+<span class="c"># Blogroll</span>
+<span class="n">LINKS</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;Pelican&#39;</span><span class="p">,</span> <span class="s">&#39;http://getpelican.com/&#39;</span><span class="p">),</span>
+         <span class="p">(</span><span class="s">&#39;Python.org&#39;</span><span class="p">,</span> <span class="s">&#39;http://python.org/&#39;</span><span class="p">),)</span>
+
+<span class="c"># Social widget</span>
+<span class="n">SOCIAL</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;Facebook&#39;</span><span class="p">,</span> <span class="s">&#39;https://www.facebook.com/allan.bowhill.1/&#39;</span><span class="p">),)</span>
+
+<span class="n">DEFAULT_PAGINATION</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c"># Uncomment following line if you want document-relative URLs when developing</span>
+<span class="c">#$RELATIVE_URLS = True</span>
+</pre></div>
+
+
+<p>Project layout is very simple. There are just <code>content</code> and <code>output</code> directories that your should care about. The <code>content</code> directory is where you put your markdown for blog articles. The <code>output</code> directory is where your html gets compiled. </p>
+<p>Beneath <code>content</code> you may create other directories to include in the site. Photos and javascript directories are easily handled by Pelican's <code>STATIC_PATHS</code> config file setting. Files in these directories (as long as they are not markdown or html) will be included in the built output tree unmodified.</p>
+<p>One niggle about configuration: the <code>READERS =</code> line in the above pelicanconf.py has to be there if you want to be able to insert and publish raw HTML verbatim, not to be processed by the framework. I had to supress compilation of html because I needed a place to store html files verbatim, without exposing them to the compile process. Some Javascripts for example will not play well with certain complex Javascript layout frameworks like <a href="http://gumbyframework.com">Gumby</a> and need to be isolated in their own space. If you don't use this <code>READERS</code> setting, Pelican will aggressively try to embed any html it finds into the layout framework's wrapper, or in some cases, simply not include it in the files to be uploaded to your site.</p>
+<h2>Development</h2>
+<p>The development process can be done several ways, most of which can be controlled from the Pelican <code>Makefile</code>. You just enter: <code>gmake</code> for a help screen:</p>
+<div class="highlight"><pre><span class="o">[</span>devblog<span class="o">]</span><span class="nv">$gmake</span>
+Makefile <span class="k">for</span> a pelican Web site
+
+Usage:
+   make html                        <span class="o">(</span>re<span class="o">)</span>generate the web site
+   make clean                       remove the generated files
+   make regenerate                  regenerate files upon modification
+   make publish                     generate using production settings
+   make serve <span class="o">[</span><span class="nv">PORT</span><span class="o">=</span>8000<span class="o">]</span>           serve site at http://localhost:8000
+   make devserver <span class="o">[</span><span class="nv">PORT</span><span class="o">=</span>8000<span class="o">]</span>       start/restart develop_server.sh
+   make stopserver                  stop <span class="nb">local </span>server
+   make ssh_upload                  upload the web site via SSH
+   make rsync_upload                upload the web site via rsync+ssh
+   make dropbox_upload              upload the web site via Dropbox
+   make ftp_upload                  upload the web site via FTP
+   make s3_upload                   upload the web site via S3
+   make cf_upload                   upload the web site via Cloud Files
+   make github                      upload the web site via gh-pages
+
+Set the DEBUG variable to <span class="m">1</span> to <span class="nb">enable </span>debugging, e.g. make <span class="nv">DEBUG</span><span class="o">=</span><span class="m">1</span> html
+
+<span class="o">[</span>devblog<span class="o">]</span><span class="err">$</span>
+</pre></div>
+
+
+<p><code>gmake devserver</code> displays the website on local port 8000 while you edit markdown. <code>gmake stopserver</code> shuts down the dev server. I haven't tried the upload commands yet.</p>
+<h2>Conversion of Articles</h2>
+<p>Writing articles in markdown is almost identical to doing it in Middleman, so the articles translate reasonably well. Headers are not the same between the two platforms. Pelican uses more optional information:</p>
+<div class="highlight"><pre><span class="n">Title</span><span class="o">:</span> <span class="n">My</span> <span class="kd">super</span> <span class="n">title</span>
+<span class="n">Date</span><span class="o">:</span> <span class="mi">2010</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">03</span> <span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
+<span class="n">Modified</span><span class="o">:</span> <span class="mi">2010</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">05</span> <span class="mi">19</span><span class="o">:</span><span class="mi">30</span>
+<span class="n">Category</span><span class="o">:</span> <span class="n">Python</span>
+<span class="n">Tags</span><span class="o">:</span> <span class="n">pelican</span><span class="o">,</span> <span class="n">publishing</span>
+<span class="n">Slug</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="kd">super</span><span class="o">-</span><span class="n">post</span>
+<span class="n">Authors</span><span class="o">:</span> <span class="n">Alexis</span> <span class="n">Metaireau</span><span class="o">,</span> <span class="n">Conan</span> <span class="n">Doyle</span>
+<span class="n">Summary</span><span class="o">:</span> <span class="n">Short</span> <span class="n">version</span> <span class="k">for</span> <span class="n">index</span> <span class="n">and</span> <span class="n">feeds</span>
+</pre></div>
+
+
+<p>Middleman uses less, in my config:</p>
+<div class="highlight"><pre><span class="n">layout</span><span class="o">:</span> <span class="n">single</span>
+<span class="n">title</span><span class="o">:</span> <span class="s1">&#39;Using Opal to Generate JavaScript&#39;</span>
+<span class="n">tags</span><span class="o">:</span> <span class="n">ruby</span><span class="o">,</span> <span class="n">opal</span><span class="o">,</span> <span class="n">www</span>
+</pre></div>
+
+
+<p>Converting headers between then required a crude script (beware: it's hackish) and an ERB template:</p>
+<div class="highlight"><pre><span class="nb">require</span> <span class="s1">&#39;erb&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;date&#39;</span>
+
+<span class="k">class</span> <span class="nc">Convert</span>
+
+   <span class="kp">attr_accessor</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">:date_a</span><span class="p">,</span> <span class="ss">:date_b</span><span class="p">,</span> <span class="ss">:slug</span><span class="p">,</span> <span class="ss">:mainfile</span><span class="p">,</span> <span class="ss">:tags</span><span class="p">,</span> <span class="ss">:template</span>
+
+   <span class="k">def</span> <span class="nf">initialize</span> <span class="n">template</span>
+      <span class="vi">@title</span> <span class="o">=</span> <span class="kp">nil</span>
+      <span class="vi">@date_a</span> <span class="o">=</span> <span class="kp">nil</span>
+      <span class="vi">@date_b</span> <span class="o">=</span> <span class="kp">nil</span>
+      <span class="vi">@slug</span> <span class="o">=</span> <span class="kp">nil</span>
+      <span class="vi">@mainfile</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+      <span class="vi">@tags</span> <span class="o">=</span> <span class="kp">nil</span>
+      <span class="vi">@template</span> <span class="o">=</span> <span class="n">template</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">post_init</span>
+      <span class="n">cvt</span> <span class="n">names</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">names</span>
+      <span class="c1"># writes copies of all *.html.markdown files in current directory to *.md!</span>
+      <span class="n">rbfiles</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;**&quot;</span><span class="p">,</span> <span class="s2">&quot;*.markdown&quot;</span><span class="p">)</span>
+      <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">rbfiles</span><span class="p">)</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">cvt</span><span class="p">(</span><span class="n">file_ary</span><span class="p">)</span>
+      <span class="n">file_ary</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">,</span><span class="s2">&quot;.html.markdown&quot;</span><span class="p">)</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">basename</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="sr">/\d+-\d+-\d+-/</span><span class="p">)</span>
+        <span class="vi">@slug</span> <span class="o">=</span> <span class="n">part</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
+        <span class="vi">@date_a</span> <span class="o">=</span> <span class="n">part</span><span class="o">[</span><span class="mi">1</span><span class="o">].</span><span class="n">chop</span>
+        <span class="vi">@date_b</span> <span class="o">=</span> <span class="no">DateTime</span><span class="o">.</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span> <span class="p">(</span><span class="s2">&quot;%m-%d-%Y %I:%M:%S&quot;</span><span class="p">)</span>
+        <span class="vi">@mainfile</span> <span class="o">=</span> <span class="n">read_header</span> <span class="n">file</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">render</span>
+        <span class="n">fh</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">#{</span><span class="n">basename</span><span class="si">}</span><span class="s2">.md&quot;</span><span class="p">,</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span> <span class="o">+</span> <span class="vi">@mainfile</span><span class="p">)</span>
+        <span class="n">fh</span><span class="o">.</span><span class="n">close</span>
+      <span class="k">end</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">read_header</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+      <span class="n">fh</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span> <span class="n">fn</span>
+      <span class="n">mfile</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+      <span class="n">fh</span><span class="o">.</span><span class="n">each_line</span> <span class="k">do</span> <span class="o">|</span><span class="n">line</span><span class="o">|</span>
+         <span class="n">mfile</span> <span class="o">+=</span> <span class="n">line</span>
+         <span class="n">line</span><span class="o">.</span><span class="n">chomp!</span>
+         <span class="vi">@title</span> <span class="o">=</span> <span class="n">clean</span> <span class="n">line</span><span class="p">,</span><span class="s2">&quot;title:&quot;</span> <span class="k">if</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/title:/i</span>
+         <span class="vi">@tags</span> <span class="o">=</span> <span class="n">clean</span> <span class="n">line</span><span class="p">,</span><span class="s2">&quot;tags:&quot;</span> <span class="k">if</span> <span class="n">line</span> <span class="o">=~</span> <span class="sr">/tags:/i</span>
+      <span class="k">end</span>
+      <span class="n">mfile</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="n">type</span><span class="p">)</span>
+      <span class="n">part</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">partition</span> <span class="n">type</span>
+      <span class="n">item</span> <span class="o">=</span> <span class="n">part</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span>
+      <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">delete</span> <span class="s2">&quot;&#39;&quot;</span>
+      <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">delete</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span>
+      <span class="n">item</span><span class="o">.</span><span class="n">strip</span>
+   <span class="k">end</span>
+
+   <span class="k">def</span> <span class="nf">render</span>
+      <span class="vi">@resolved</span> <span class="o">=</span> <span class="no">ERB</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="vi">@template</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">(</span><span class="nb">binding</span><span class="p">)</span><span class="o">.</span><span class="n">to_s</span>
+      <span class="vi">@resolved</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">read</span> <span class="s2">&quot;convert.erb&quot;</span>
+<span class="n">c</span> <span class="o">=</span> <span class="no">Convert</span><span class="o">.</span><span class="n">new</span> <span class="n">template</span>
+<span class="n">c</span><span class="o">.</span><span class="n">post_init</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="ss">Title</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= @title %&gt;</span>
+<span class="sx">Date: &lt;%=</span> <span class="vi">@date_a</span> <span class="sx">%&gt;</span>
+<span class="sx">Modified: &lt;%= @date_b %&gt;</span>
+<span class="ss">Category</span><span class="p">:</span> <span class="o">&lt;</span><span class="sx">%= @tags %&gt;</span>
+<span class="sx">Tags: &lt;%=</span> <span class="vi">@tags</span> <span class="sx">%&gt;</span>
+<span class="sx">Slug: &lt;%= @slug %&gt;</span>
+<span class="ss">Authors</span><span class="p">:</span> <span class="no">Allan</span> <span class="no">Bowhill</span>
+<span class="ss">Summary</span><span class="p">:</span> <span class="o">&lt;%=</span> <span class="vi">@title</span> <span class="o">%&gt;</span>
+</pre></div>
+
+
+<p>Also, Pelican is less tolerant of certain things like uneven open and close code gating symbols, which I had to correct with in a Perl/sed editing pipelines and manual edits.</p>
+<h2>Selecting a Theme</h2>
+<p>This is one of Pelican's Big Strengths as a blogging platform. It has ___many__ themes (around 90) and they're all easy to test.  Just run <code>pelican-themes --list</code> to list currently installed or linked themes.  To get the entire themes collection you'll need git. Here's how to get all the themes, link to one called <code>blue-penguin</code> and serve it up on port 8000</p>
+<div class="highlight"><pre><span class="c"># don&#39;t forget --recursive switch since many themes will be empty due to project linking</span>
+git clone https://github.com/getpelican/pelican-themes.git --recursive
+
+<span class="c"># link your blog to the theme</span>
+sudo pelican-themes --symlink &lt;path to pelican-themes&gt;/blue-penguin
+
+<span class="c"># Verify the themes registered</span>
+pelican-themes -l -v
+
+<span class="c"># build and serve the new theme</span>
+gmake clean <span class="o">&amp;&amp;</span> pelican ./content -o ./output -t blue-penguin  <span class="o">&amp;&amp;</span> gmake serve
+</pre></div>
+
+
+<p>Just repeat the last three commands from the above code for each new theme you want to test.
+It's an eye opener and a great blogging platform overall!</p>
+<h2>Compiling with a Theme</h2>
+<div class="highlight"><pre>gmake clean <span class="o">&amp;&amp;</span> pelican ./content -o ./output -t &lt;theme-name&gt; <span class="o">&amp;&amp;</span> gmake serve
+</pre></div>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
+	    <li class="tag-1"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>
