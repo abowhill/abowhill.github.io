@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Upgrading a -STABLE ZFS system with clang</title>
+        <title>SyntaxFX</title>
         <meta charset="utf-8" />
 
 
@@ -41,89 +41,46 @@
               </ul>
             </div>
 
-<section id="content" class="body">
+<section id="content">
+
+
 
    <div class="row">
+
+
         <div class="eleven columns">
+                 <ol id="post-list">
+                        <li><article class="hentry">
+                                <header> <h2 class="entry-title"><a href="./win7-vs-ubuntu-vs-cr48-boot-times.html" rel="bookmark" title="Permalink to Win7 vs. Ubuntu vs. CR-48 boot times">Win7 vs. Ubuntu vs. CR-48 boot times</a></h2> </header>
+                                <footer class="post-info">
+                                    <abbr class="published" title="2011-02-11T00:00:00-08:00"> Fri 11 February 2011 </abbr>
+                                    <address class="vcard author">By 
+                                    <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+                                    </address>
+                                </footer><!-- /.post-info -->
+                                <div class="entry-content"> <p>Win7 vs. Ubuntu vs. CR-48 boot times</p> </div><!-- /.entry-content -->
+
+                                <div class="medium primary btn"><a href="./win7-vs-ubuntu-vs-cr48-boot-times.html" rel="bookmark" title="Permalink to Win7 vs. Ubuntu vs. CR-48 boot times">Read more <i class="icon-arrow-right"></i></a></div>
 
 
-            <header>
-              <h2 class="entry-title">
-                <a href="./upgrading-a-stable-zfs-system-with-clang.html" rel="bookmark"
-                   title="Permalink to Upgrading a -STABLE ZFS system with clang">Upgrading a -STABLE ZFS system with clang</a></h2>
-           
-            </header>
-            <footer class="post-info">
-              <abbr class="published" title="2013-05-21T00:00:00-07:00">
-                Tue 21 May 2013
-              </abbr>
-              <address class="vcard author">By 
-                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
-              </address>
-            </footer><!-- /.post-info -->
-            <div class="entry-content">
-              <p>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</p>
-<p>Clang has a lot of virtues compared to gcc/g++ among which are:</p>
-<ul>
-<li>Better, more informative error messages</li>
-<li>Better compliance for c++</li>
-<li>Better support for IDEs and diagnostic tools</li>
-<li>Uses less memory</li>
-<li>Has JIT support</li>
-<li>Isn't monolithic, as is gcc/g++</li>
-<li>BSD license, so commercially viable.</li>
-</ul>
-<p>This is one of the things I love about FreeBSD. It's always kept as commercially viable as possible with the BSD license. There is no reason to use open source software at work or home that has restrictive licensing. Adoption of clang is just another good reason to use FreeBSD.</p>
-<p>Instructions for building the OS with clang are located at: https://wiki.freebsd.org/BuildingFreeBSDWithClang</p>
-<p>This page has some useful tips, and there are a couple worth mentioning here. If you want to buildworld and your kernel with clang, you have to enable the clang suite in /etc/make.conf to replace gcc/g++:</p>
-<div class="highlight"><pre><span class="nv">CC</span><span class="o">=</span>clang
-<span class="nv">CXX</span><span class="o">=</span>clang++
-<span class="nv">CPP</span><span class="o">=</span>clang-cpp
-</pre></div>
+
+                                <div class="row tag-row">
+                                        <span>Tagged as : </span>
+                                            <a class="danger label" href="./tag/windows.html">Windows</a>
+                                            <a class="danger label" href="./tag/win7.html">Win7</a>
+                                            <a class="danger label" href="./tag/chrome.html">Chrome</a>
+                                            <a class="danger label" href="./tag/cr-48.html">cr-48</a>
+                                            <a class="danger label" href="./tag/ubuntu.html">Ubuntu</a>
+                                            <a class="danger label" href="./tag/benchmarks.html">benchmarks</a>
+                                </div>
 
 
-<p><p/></p>
-<p>If you do a:  </p>
-<div class="highlight"><pre>make buildworld kernel 
-</pre></div>
 
-
-<p><p/></p>
-<p>with the default command line options, it should work just fine. Nothing further to do.</p>
-<p>However, if you're feeling cautious and want to test the kernel itself first, run the following from /usr/src:</p>
-<div class="highlight"><pre>make kernel <span class="nv">KERNCONF</span><span class="o">=</span>GENERIC <span class="nv">INSTKERNNAME</span><span class="o">=</span>clang
-</pre></div>
-
-
-<p><p/></p>
-<p>The line above builds a GENERIC kernel called clang, but places it into a separate directory along with its modules in /boot. This way, you leave your previous gcc kernel in place, yet can test the clang kernel easily with some intervention at the boot loader.</p>
-<p>If you go this route, when you reboot, drop to the bootloader (option 2) and enter the following to change the module path to boot into the clang kernel:</p>
-<div class="highlight"><pre><span class="nb">set </span><span class="nv">module_path</span><span class="o">=</span>/boot/clang
-boot clang
-</pre></div>
-
-
-<p><p/></p>
-<p>If the kernel panics, there is no need to do so yourself. Just reboot into the old gcc /boot/kernel without intervention, and it will load by default. If you moved or destroyed the old kernel instead, and the option isn't available you can always opt to load /boot/kernel.old and its modules instead from the boot loader.</p>
-<p>However, a clang boot will likely work, and the system should boot and enable you to make kernel buildworld, installworld, etc. This worked fine for me, but on one machine there was a kernel panic bootstrapping the system due to (probably) module installation paths, which was fairly easy to address.</p>
-<p>For some reason, the clang kernel was loading but clang modules were not. I decided to reinstall the kernel again, leaving off the KERNCONF=GENERIC build option:
-<p/></p>
-<div class="highlight"><pre>make reinstallkernel
-</pre></div>
-
-
-<p><p/></p>
-<p>Which did the trick.</p>
-<p>Once booted, a subsequent view of dmesg will show which compiler was used to build the kernel.</p>
-<p>I will be experimenting with this ZFS clang build setup for a little while, and note some of the issues I come across in following posts, but so far, ZFS and clang kernel/OS are performing nicely on my little underpowered Toshiba NB 205 netbook!</p>
-<blockquote>
-<p>Note: Rebuilding the kernel/OS worked fine on my server machine - an old Celeron 1G box.</p>
-</blockquote>
-            </div><!-- /.entry-content -->
-
+                        </article></li>
+                </ol><!-- /#posts-list -->
 
         </div><!-- /.eleven.columns -->
-
+        
 <div class="three columns">
 
 <h4>Pages</h4>
@@ -211,8 +168,11 @@ boot clang
 
 </div> </div><!-- /.row -->
 
-
-</section>
+<p class="paginator">
+            <a href="./index3.html"><i class="icon-arrow-left"></i></a>
+    Page 4 / 4
+</p>
+</section><!-- /#content -->
 
        </div><!-- /.row -->
     </div><!-- /.container -->

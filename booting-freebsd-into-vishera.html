@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>Upgrading a -STABLE ZFS system with clang</title>
+        <title>Booting FreeBSD into an AMD A8-4500M</title>
         <meta charset="utf-8" />
 
 
@@ -49,76 +49,37 @@
 
             <header>
               <h2 class="entry-title">
-                <a href="./upgrading-a-stable-zfs-system-with-clang.html" rel="bookmark"
-                   title="Permalink to Upgrading a -STABLE ZFS system with clang">Upgrading a -STABLE ZFS system with clang</a></h2>
+                <a href="./booting-freebsd-into-vishera.html" rel="bookmark"
+                   title="Permalink to Booting FreeBSD into an AMD A8-4500M">Booting FreeBSD into an AMD A8-4500M</a></h2>
            
             </header>
             <footer class="post-info">
-              <abbr class="published" title="2013-05-21T00:00:00-07:00">
-                Tue 21 May 2013
+              <abbr class="published" title="2015-04-10T00:00:00-07:00">
+                Fri 10 April 2015
               </abbr>
               <address class="vcard author">By 
                 <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
-              <p>One of the technologies I was interested in testing along with ZFS was the LLVM-based clang compiler suite on FreeBSD, which is currently under integration and slated officially to replace the gcc/g++ compiler suite in FreeBSD 10.  Right now, clang is in the 9-STABLE base system alongside gcc/g++.</p>
-<p>Clang has a lot of virtues compared to gcc/g++ among which are:</p>
-<ul>
-<li>Better, more informative error messages</li>
-<li>Better compliance for c++</li>
-<li>Better support for IDEs and diagnostic tools</li>
-<li>Uses less memory</li>
-<li>Has JIT support</li>
-<li>Isn't monolithic, as is gcc/g++</li>
-<li>BSD license, so commercially viable.</li>
-</ul>
-<p>This is one of the things I love about FreeBSD. It's always kept as commercially viable as possible with the BSD license. There is no reason to use open source software at work or home that has restrictive licensing. Adoption of clang is just another good reason to use FreeBSD.</p>
-<p>Instructions for building the OS with clang are located at: https://wiki.freebsd.org/BuildingFreeBSDWithClang</p>
-<p>This page has some useful tips, and there are a couple worth mentioning here. If you want to buildworld and your kernel with clang, you have to enable the clang suite in /etc/make.conf to replace gcc/g++:</p>
-<div class="highlight"><pre><span class="nv">CC</span><span class="o">=</span>clang
-<span class="nv">CXX</span><span class="o">=</span>clang++
-<span class="nv">CPP</span><span class="o">=</span>clang-cpp
-</pre></div>
-
-
-<p><p/></p>
-<p>If you do a:  </p>
-<div class="highlight"><pre>make buildworld kernel 
-</pre></div>
-
-
-<p><p/></p>
-<p>with the default command line options, it should work just fine. Nothing further to do.</p>
-<p>However, if you're feeling cautious and want to test the kernel itself first, run the following from /usr/src:</p>
-<div class="highlight"><pre>make kernel <span class="nv">KERNCONF</span><span class="o">=</span>GENERIC <span class="nv">INSTKERNNAME</span><span class="o">=</span>clang
-</pre></div>
-
-
-<p><p/></p>
-<p>The line above builds a GENERIC kernel called clang, but places it into a separate directory along with its modules in /boot. This way, you leave your previous gcc kernel in place, yet can test the clang kernel easily with some intervention at the boot loader.</p>
-<p>If you go this route, when you reboot, drop to the bootloader (option 2) and enter the following to change the module path to boot into the clang kernel:</p>
-<div class="highlight"><pre><span class="nb">set </span><span class="nv">module_path</span><span class="o">=</span>/boot/clang
-boot clang
-</pre></div>
-
-
-<p><p/></p>
-<p>If the kernel panics, there is no need to do so yourself. Just reboot into the old gcc /boot/kernel without intervention, and it will load by default. If you moved or destroyed the old kernel instead, and the option isn't available you can always opt to load /boot/kernel.old and its modules instead from the boot loader.</p>
-<p>However, a clang boot will likely work, and the system should boot and enable you to make kernel buildworld, installworld, etc. This worked fine for me, but on one machine there was a kernel panic bootstrapping the system due to (probably) module installation paths, which was fairly easy to address.</p>
-<p>For some reason, the clang kernel was loading but clang modules were not. I decided to reinstall the kernel again, leaving off the KERNCONF=GENERIC build option:
-<p/></p>
-<div class="highlight"><pre>make reinstallkernel
-</pre></div>
-
-
-<p><p/></p>
-<p>Which did the trick.</p>
-<p>Once booted, a subsequent view of dmesg will show which compiler was used to build the kernel.</p>
-<p>I will be experimenting with this ZFS clang build setup for a little while, and note some of the issues I come across in following posts, but so far, ZFS and clang kernel/OS are performing nicely on my little underpowered Toshiba NB 205 netbook!</p>
-<blockquote>
-<p>Note: Rebuilding the kernel/OS worked fine on my server machine - an old Celeron 1G box.</p>
-</blockquote>
+              <p>I've been considering upgrading my main workstation / game machine and one of the most interesting options is an AMD (Kaveri) A10-7850K, which is one of the newest third-generation APU processors. </p>
+<p>I'm admittedly seduced by the technical sophistication and cleverness of AMD's designs. They seem to bend over backwards to be different, fresh and innovative in a market that they have played underdog to Intel for many years.</p>
+<p>Kaveri APUs do not normally require a video card. They dedicate die space on the cpu for a bus that allows GPU cores to run alongside cores for normal computing. The two groups of cores share access to memory. This allows greater cooperation between normal compute processors and graphics.</p>
+<p>One of the advantages of this is zero-copy treatment of data. Instead of the CPU copying data between memory and the video card across a motherboard, APUs can use <strong>pointers</strong> to this data which then can be sent between the GPU and CPU, all on the faster die circuits.</p>
+<p>Additionally, programming APIs like OpenCL 2.0 and Mantle leverage Kaveri processing performance even more. Intel CPUs also benefit from this, and these standards are being adopted slowly.</p>
+<p>Furthermore, with the right video card, Kaveri processors can actually use <a href="http://www.tomshardware.com/reviews/a10-7850k-a8-7600-kaveri,3725-8.html">Crossfire technology</a> with the A-series APU, boosting the combined performace of the APU and card. And many of these processors with the "K" designator (such as the 7850K) can be generously overclocked.</p>
+<p>Finally, power consumption on non-overclocked machines has been measured at <a href="http://www.tomshardware.com/reviews/amd-a10-7800-kaveri-apu-efficiency,3899-10.html">55 watts from the wall socket</a> on APU only configurations. 55 watts is a very low power draw. Think of a 55 watt light bulb.</p>
+<p>Howeverm, despite the sophistication of the design, performance of these processors is not as good as Intel, but closes the gap on graphics in a practical sense. </p>
+<p>For most games I saw reviewed, there was a lot of <a href="https://youtu.be/Cv57qDXpEPU">hovering on the 30 fps mark or thereabouts</a>. Application of Mantle and overclocking can push this into more acceptable territory. Most "next-gen" games are still locked at 60 fps and 1080p max. If all else fails, you could back off to 780p to regain frames, or better yet, use the right external card for crossfire.</p>
+<p>It's a complex technology, and it has a way to go. The risks are potential lack of commitment from AMD, lack of support from game makers in using Mantle, motherboards that do not support crossfire, and in my special case, not being able to demote the machine to it's end of life as a FreeBSD server. </p>
+<p>This last point I wanted to mention a bit more. Most of us who have machines like to keep them around long past their due date. Instead of using them as workstations and throwing them out, we "demote and rotate" them out as servers. </p>
+<p>Right now, I have a Celeron single core machine with 1G of memory acting as my FreeBSD server. The machine is over 11 years old. I want to replace it with my current workstation, an Intel Core 2 Duo. <strong>Badly.</strong> </p>
+<p>Even FreeBSD has upped the practical requirement for machines to realistically have 4G of memory (to support fabulous ZFS), and the old Celeron is limited to to 2GB. My Core Duo has 8G, and that's about right for a small home development server.</p>
+<p>Unfortunately, FreeBSD supports old hardware much better than the new, prorietary stuff. I spent quite a lot of time trying to locate someone with a working FreeBSD Kaveri rig out there, (they practically don't exist) and the best I can say is that FreeBSD support seems experimental at this point. Not only that, but FreeBSD has only just recently adopted UEFI bios booting, and so  naturally that will not be up to its full potential for a few months yet.</p>
+<p>Burning inside to discover more about how FreeBSD fares with Kaveri, I tried a test-boot on my ASUS K55N laptop, a Trinity A-series CPU with 4 cores, 2nd generation piledriver architecture. It's similar enough to Kaveri that it could serve as an example on what to expect from FreeBSD <strong>today</strong> if I tried booting it.</p>
+<p>In fact, to my surprise, I was able to boot into FreeBSD on this A8 using the UEFI CD ISO. I was able run a bunch of commands in the shell, but it was rough. There were a number of manual preperatory steps to perform in BIOS, kernel device detection/initialization failures and some other oddities along the way. I won't go into them here, but it's safe to say that full support will eventually come to the current technology. I imagine a year may have to pass before Kaveri recieves attention, unless something comes along to catalyze things. With the nightmare of <a href="https://www.cpubenchmark.net/CPU_mega_page.html">~2500 CPUs</a> to support out there, and countless motherboards, volunteer programmers have their limits.</p>
+<p>I will run any workstation for at least 5 years. If I get one, I won't be rotating a Kaveri machine out as a FreeBDSD server before it gets support. This makes it a reasonable candidate for a windows workstation now. Although the A10's 12 threads are  compelling, if no suppport is there, half the CPU die will be sitting idle, since 8 of those threads are dedicated to graphics. </p>
+<p>I'm also considering the more realistic <a href="https://youtu.be/7WQxr59KRto">AMD FX-83XX series CPUs</a> (8 hardware threads, all usable for computing) for their sheer game-playing power for price. And possibly, the AMD FX-6300 for a decent low end experience with 6 hardware threads.</p>
             </div><!-- /.entry-content -->
 
 
