@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-        <title>A short RVM setup sheet</title>
+        <title>EZJail Setup</title>
         <meta charset="utf-8" />
 
 
@@ -49,168 +49,161 @@
 
             <header>
               <h2 class="entry-title">
-                <a href="./short-rvm-setup-sheet.html" rel="bookmark"
-                   title="Permalink to A short RVM setup sheet">A short RVM setup sheet</a></h2>
+                <a href="./ezjail-setup.html" rel="bookmark"
+                   title="Permalink to EZJail Setup">EZJail Setup</a></h2>
            
             </header>
             <footer class="post-info">
-              <abbr class="published" title="2011-02-28T00:00:00-08:00">
-                Mon 28 February 2011
+              <abbr class="published" title="2015-04-24T00:00:00-07:00">
+                Fri 24 April 2015
               </abbr>
               <address class="vcard author">By 
                 <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
               </address>
             </footer><!-- /.post-info -->
             <div class="entry-content">
-              <p><strong><em>RVM Installation on FreeBSD</em></strong></p>
-<p>There are a few good steps outlined on the RVM website. This document is mostly echoed from those steps: <a href="http://rvm.io">RVM install</a></p>
-<p>The author (originally Wayne Seguin) offers probably the best tech support available. He is on <a href="webchat.freenode.net">webchat.freenode.net</a>, but you'll have to authenticate in order to post. The best route is to Register on freenode, setup a username and login to the <strong>#rvm</strong> channel with authentication. The web interface is pretty nice. </p>
-<blockquote>
-<p>NOTE: the web interface at webchat.freeneode.net accepts input for the following commands at the bottom of the page.</p>
-</blockquote>
-<p>To register on freenode as user: <em>someuser</em> with password: <em>mypassword</em> and email: <em>someuser@mailer.com</em>, first enter the cpatcha to get past the opening screen to be able to talk to the nickserv. Then, in the entry bar at the bottom, enter:</p>
-<div class="highlight"><pre>/msg nickserv info someuser
-/nick someuser
-/msg nickserv register mypassword someuser@mailer.com
-/msg nickserv <span class="nb">set </span>hidemail on
+              <p>If you're interested in virtual machines and FreeBSD, the jail system is the most economical way to go.
+There is a utility called <a href="https://www.freebsd.org/doc/handbook/jails-ezjail.html">EZJail</a> written by <a href="http://erdgeist.org/arts/software/ezjail/#author-contact">Dirk Engling</a> that makes jail setup easy, using the <a href="http://www.freebsd.org/doc/handbook/jails-build.html">service jail model</a>, the most economical way of doing it. Service jails are upgradeable in one place, and share locked down binaries.</p>
+<p>These are my notes on setting up a single ezjail on a FreeBSD system. They're pretty much copped off what you'd find on the internet and FreeBSD docs (links above) but contain some other notes.</p>
+<p>You'll need a working FreeBSD system with a built source tree - meaning you've made world and the <code>/usr/obj</code> directory is loaded with built binaries.  In this installation, EZjail will require you to install this <code>/usr/obj</code> tree into a <em>base</em> jail that will be shared amongst all jails you create. In addition, ports tree will also be installed, but when you use ports in each jail, distfiles downloaded will be unique to each jail.</p>
+<p>Let's start.</p>
+<p>First, install EZJAIL:</p>
+<div class="highlight"><pre># pkg install ezjail
 </pre></div>
 
 
-<p><p/></p>
-<p>Then you'll gedt an email at someuser@example.com with a nickserv command to confirm your registration. Just cut and paste the command verbetim. Login again. For every login, just enter the following:</p>
-<div class="highlight"><pre>/msg nickerv identify someuser mypassword
-/join <span class="c">#rvm</span>
+<p>Make sure EZjail is started at boot in your <code>/etc/rc.conf</code></p>
+<div class="highlight"><pre># vi /etc/rc.conf
+ezjail_enable=&quot;YES&quot;
 </pre></div>
 
 
-<p><p/></p>
-<p><strong><em>Basic Installation</em></strong></p>
-<p>Install git, bash and curl as root. All other steps (except for system-wide dependency installs) should NOT be run as root. When dependencies are installed, run bash and and update your .bashrc with this line:</p>
-<div class="highlight"><pre><span class="o">[[</span> -s <span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.rvm/scripts/rvm&quot;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> . <span class="s2">&quot;</span><span class="nv">$HOME</span><span class="s2">/.rvm/scripts/rvm&quot;</span>
+<p>If you have a source tree, enter the following. If you don't have the source tree, check out <a href="http://www.freebsd.org/doc/handbook/jails-ezjail.html">FreeBSD EZjail docs</a></p>
+<div class="highlight"><pre># ezjail-admin update -i -p
 </pre></div>
 
 
-<p><p/></p>
-<p>Then:</p>
-<div class="highlight"><pre>chmod <span class="m">600</span> .bashrc
+<p>Next, take a look at the name of your interface by running:</p>
+<div class="highlight"><pre>&gt; ifconfig -a 
 </pre></div>
 
 
-<p><p/></p>
-<p>and edit .profile, adding the line as the last in the file:</p>
-<div class="highlight"><pre><span class="nb">source</span> ~/.bashrc
+<p>You should see something like this:</p>
+<div class="highlight"><pre>re0: <span class="nv">flags</span><span class="o">=</span>8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric <span class="m">0</span> mtu 1500
+        <span class="nv">options</span><span class="o">=</span>8209b&lt;RXCSUM,TXCSUM,VLAN_MTU,VLAN_HWTAGGING,VLAN_HWCSUM,WOL_MAGIC,LINKSTATE&gt;
+        ether 00:18:f3:05:42:bf
+        inet 192.168.88.13 netmask 0xffffffff broadcast 192.168.88.13
+        media: Ethernet autoselect <span class="o">(</span>1000baseT &lt;full-duplex,master&gt;<span class="o">)</span>
+        status: active
 </pre></div>
 
 
-<p><p/></p>
-<p>Log out of the console, and log back in to make sure everything works.
-Now fetch rvm: </p>
-<div class="highlight"><pre><span class="se">\c</span>url -s https://get.rvm.io <span class="p">|</span> bash -s stable
+<p>The short-name of the interface is what we want, and it is in the left column: <code>re0</code>
+The actual name will depend upon your ethernet hardware. </p>
+<p>For out jail name, We will just use <code>alpha</code>.</p>
+<p>Next, you'll need to know the IP address and hostname of the jail you want to create.</p>
+<p>Generally, you'll choose an IP address in your internal network from a range of addresses your router will allow free access to. The jails don't use DHCP. They piggy-back off the main host's interface, and as long as the router allows addresses in that range to pass packets, they can call themselves anything thing they like with respect to the IP4 address. Since our router <code>IP Pool</code> gives permission for free use on the internal network for addresses 192.168.88.10-255, we will choose <code>192.168.88.10</code> as our jail IP. Each jail you create will have to manage this, making sure it doesn't conflict with addresses already allocated. EZjail also uses custom loopback addresses to allow communication off-router. The loopbacks should loosely match the IP address of the jail.</p>
+<ul>
+<li>So Where <code>re0</code> is the name of your host primary interface</li>
+<li><em>and</em> where <code>10</code> is the last quad of the jail ip address</li>
+<li><em>and</em> where <code>alpha</code> is the hostname of the jail</li>
+</ul>
+<p>run:</p>
+<div class="highlight"><pre># ezjail-admin create alpha &#39;lo1|127.0.0.10,rl0|192.168.88.10&#39;
 </pre></div>
 
 
-<p><p/></p>
-<p>Logout and log back in again. To test the rvm installation, it should say "rvm is a function" when the following is typed: </p>
-<div class="highlight"><pre><span class="nb">type </span>rvm <span class="p">|</span> head -1
+<p>NOTE: The loopback IP should end in the same quad as the internal IP4 address. The <code>lo1</code> interface is added for the exclusive use of Ezjail to coordinate all the loopbacks from all the jails.</p>
+<p>Here is another example for a jail called <code>junk</code> created on free quad <code>12</code> of the same host:</p>
+<div class="highlight"><pre># ezjail-admin create junk &#39;lo1|127.0.0.12,rl0|192.168.88.12&#39;
 </pre></div>
 
 
-<p><p/></p>
-<p><strong><em>Updating the install</em></strong></p>
-<p>You should probably run these 2 commands each time you login to your shell, but do it now to make sure you have the newest version:</p>
-<div class="highlight"><pre>rvm get head
-rvm reload
+<p>If you look in <code>/usr/jails</code> you will see the base jail and <code>alpha</code> jail. Currently, EZjail per-jail configuration files are created automatically for each jail you make, and are located in <code>/usr/local/etc/ezjail/&lt;jailname&gt;</code>. Also, the jail config gets deleted if you choose to delete the jail. May as well learn how to do that now.</p>
+<p>Delete a jail:</p>
+<div class="highlight"><pre># ezjail-admin stop &lt;jailname&gt;
+# ezjail-admin delete &lt;jailname&gt;
+# chflags -R noschg /usr/jails/&lt;jailname&gt;
+# rm -rfv /usr/jails/&lt;jailname&gt;
+# (remove any corresponding entry from /etc/hosts)
 </pre></div>
 
 
-<p><p/></p>
-<p><strong><em>Getting Dependencies and Ruby</em></strong></p>
-<p>You'll have to check the notes for your platform: </p>
-<div class="highlight"><pre>rvm notes 
+<p>To expand on that, <code>ezjail-admin</code> has the following commands to start, stop and login to a jail as root from the host:</p>
+<div class="highlight"><pre>Start a jail: # ezjail-admin start &lt;myjail&gt;
+Stop a jail:  # ezjail-admin stop &lt;myjail&gt;
+Console jail: # ezjail-admin console &lt;myjail&gt;
 </pre></div>
 
 
-<p><p/></p>
-<blockquote>
-<p>NOTE: You'll have to install a bunch of dependencies as root. For Ubuntu, for example it will give a list of packages to install: </p>
-</blockquote>
-<div class="highlight"><pre>ruby: /usr/bin/apt-get install build-essential bison openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-0 libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev
+<p>Back to making the <code>alpha</code> jail. Since you'll probably want to use stuff like <code>ping</code> inside the jail, you will  have to add the following line to the <code>alpha</code> configuration file in <code>/usr/local/etc/ezjail/alpha</code>:</p>
+<div class="highlight"><pre># export jail_&lt;jailname&gt;_parameters=&quot;allow.raw_sockets=1&quot;
 </pre></div>
 
 
-<p><p/></p>
-<p>To find out which Rubies you can install, type:</p>
-<div class="highlight"><pre>rvm list known
+<p>At this point the jail is ready to start, so run:</p>
+<div class="highlight"><pre># ezjail-admin start alpha
 </pre></div>
 
 
-<p><p/></p>
-<p>Now for the ruby installation (NOT done as root). Just choose the version, and run the following:  </p>
-<div class="highlight"><pre>rvm install 2.0.0  where the ruby version is 2.0.0-<span class="o">[</span>x<span class="o">]</span>
+<p>You can check the state of running jails on the host with:</p>
+<div class="highlight"><pre>&gt; jls
 </pre></div>
 
 
-<p><p/></p>
-<p>This will take some time to build, since it's being built from source. Also, there will be no screen messages during the build process. When completed, both ruby and rubygems will be installed somewhere under your .rvm directory.</p>
-<p><strong><em>Setting default Ruby &amp; Gems</em></strong></p>
-<p>If this is the first installation, you won't have any ruby or gems defined by default. So, to set your default ruby to ruby-1.9.2-p180 enter:</p>
-<div class="highlight"><pre>rvm --default use ruby-1.9.2-p180
-rvm list
+<p>Since we do not have <code>ssh</code> access yet, we have to login to the running jail via the console:</p>
+<div class="highlight"><pre># ezjail-admin console alpha
 </pre></div>
 
 
-<p><p/></p>
-<p>The above lines will display which version is the current default. You can further verify with:</p>
-<div class="highlight"><pre>ruby --version
-gem --version
+<p>This will bring us in the jail as <code>root</code>.</p>
+<p>Perform the following steps to get the system basically usable:</p>
+<p>Add a user:</p>
+<div class="highlight"><pre># adduser
 </pre></div>
 
 
-<p><p/></p>
-<p>Next, set your default gemset to something bound to the purpose (say rails3)</p>
-<div class="highlight"><pre>rvm --create use 1.9.2@rails3
+<p>Set root password:</p>
+<div class="highlight"><pre># passwd
 </pre></div>
 
 
-<p><p/></p>
-<p>This tells rvm to use ruby1.9.2 paired with the gemset called rails3. What happens is that rvm creates a separate set of gems to use with rails-1.9.2. If you should ever need to use another ruby and another version of gems, you can have multiple combinations hanging around, and simply tell rvm which one you would like to use. To verify the current gemset, type: </p>
-<div class="highlight"><pre>rvm gemset list
+<p>Set time zone: </p>
+<div class="highlight"><pre># tzsetup
 </pre></div>
 
 
-<p><p/></p>
-<p>You should see an entry for "global" and your special gemset: rails3. At this point, you should update your gems to the latest. This is done by:</p>
-<div class="highlight"><pre>gem --version
-gem update --system
-gem --version
+<p>Set nameserver to your router or other caching nameserver:</p>
+<div class="highlight"><pre># vi /etc/resolv.conf
+nameserver 192.168.88.10
+nameserver 192.168.88.1
 </pre></div>
 
 
-<p><p/></p>
-<p>You should see the version jump to the latest (currently 2.0.0.) </p>
-<p><strong><em>Installing rails (optional)</em></strong></p>
-<p>That should be it for the ruby installation. You can run ruby normally as the current user without worries. RVM basically intercepts calls to ruby and its utilities, and allows you to have everything installed in your local directory, as well as multiple versions of Ruby and Gems, which are kept as "Gemsets". </p>
-<p>Before installing Ruby on Rails, it's worth visiting the Rails website to determine the correct version. At <a href="http://rubyonrails.org">Rubyonrails.org</a> there are three available, the release candidate (unstable), the dot-zero version (too old) and the bugfix version. In this case, the bugfix version is 3.0.7 so we will install that:</p>
-<div class="highlight"><pre>gem install rails --version 4.0.1
+<p>Comment out adjkernz in <code>/etc/crontab</code></p>
+<div class="highlight"><pre># sudo vi /etc/crontab
+# 1,31   0-5     *       *       *       root    adjkerntz -a
 </pre></div>
 
 
-<p><p/></p>
-<p>All dependencies should binplace locally (in the .rvm subdirectory) and without 
-the need for root access. You should be able to see what's installed with:</p>
-<div class="highlight"><pre>gem list
+<p>Setup the custom loopback and jail name in <code>/etc/hosts</code>:</p>
+<div class="highlight"><pre>::12                    localhost alpha.my.domain
+127.0.0.12              localhost alpha.my.domain
+192.168.88.12           alpha.my.domain alpha
 </pre></div>
 
 
-<p><p/></p>
-<p>If any troubles occur, or there is a need for build-time modifications, you can always poke around in the sources in the .rvm directory to customize anything you install.</p>
-<p><strong><em>Maintenance</em></strong></p>
-<div class="highlight"><pre>rvm get head
-rvm reload
+<p>Add items to <code>/etc/rc.conf</code> (don't set hostname or ip)</p>
+<div class="highlight"><pre># vi /etc/rc.conf
+sshd_enable=&quot;YES&quot;
 </pre></div>
 
 
-<p><p/></p>
+<p>Add <code>sudo</code> and any other packages:</p>
+<div class="highlight"><pre># pkg install sudo
+# visudo
+seconduser ALL=(ALL) ALL
+</pre></div>
             </div><!-- /.entry-content -->
 
 
