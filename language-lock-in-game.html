@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>The Language Lock-in Game</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./language-lock-in-game.html" rel="bookmark"
+                   title="Permalink to The Language Lock-in Game">The Language Lock-in Game</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2015-05-01T00:00:00-07:00">
+                Fri 01 May 2015
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Let's play the Language Lock-in Game.</p>
+<p>The rules of this game are fairly simple.<br />
+You live in Seattle in 2015 and get to choose one or two popular programming languages to put on your resume.</p>
+<p>Which would you choose that would give you the largest number of job offers?</p>
+<p>I built the following tables from LinkedIn searches, got simple counts of
+advertised jobs posted in the last 30 days for the Seattle area.  I chose
+"JOBS &gt; Advanced Search" to do this query:</p>
+<div class="highlight"><pre><span class="k">C</span><span class="o">++</span> <span class="k">OR</span> <span class="k">C</span><span class="o">#</span> <span class="k">OR</span> <span class="n">Java</span> <span class="k">OR</span> <span class="n">Python</span> <span class="k">OR</span> <span class="n">Ruby</span> <span class="k">OR</span> <span class="n">PHP</span> <span class="k">or</span> <span class="n">Perl</span> <span class="k">OR</span> <span class="n">JavaScript</span>
+</pre></div>
+
+
+<p>Total: 4427 jobs listed in the past month for the Seattle area, containing at
+keast one of the languages listed. Strangely, changing this query to just a search 
+for ads mentioning C++ yields almost 200 more hits than all languages OR'd, 
+which indicates something awry with LinkedIn Searches. But let's consider it an 
+anomoly since we won't use the OR keyword in the rest of the data. </p>
+<p>The number is somewhere around 4000-5000 advertised openings. </p>
+<p>Linkedin search counts are also clearly off for some terms. Seaches for <code>C++ vs. C\+\+</code>
+give drastically different results, with the latter delivering about 1000 more
+hits on the same search. Still, given the character processing oddities and
+the search count problems, searches seem more reliable for other language
+names.</p>
+<p>Many listings in these counts are also likely duplicates and reposts. Let's consider
+duplicate posts as not being consequential. Duplicates flatten the differences between languages,
+because languages in rarer, hard-to-fill positions will be advertised more often than
+languages associated with more common, easy-to-fill positons. But re-posts
+only inflate low numbers linearly and assumably have an upper limit, but shouldn't 
+mask differences in magnitudes.</p>
+<p>In other words, ads for a job involving Scala (a rare language) may be
+hard-to-fill, and therefore the ad may be reposted 4 times in a month.
+However, it shouldn't skew things too much when compared to Java jobs, which
+are common, easier-to-fill, and whose counts reach into the 1000's per month.</p>
+<p>Also, I did not include C as a language because it is normally replaced by
+C++ as search term, and I don't trust the results for searching the letter 
+'C' on LinkedIn.</p>
+<p>Additionally, some ads may list many languages, 5 or more. Knowing up to two of the
+five presumably wouldn't be enough to get an interview. But a job ad that requires 
+too many languages lacks credibility, and is analagous to reading the resume of 
+someone who claims to know too many languages. Let's regard these ads as
+uniformly-distributed noise, and ignore their effect on proportions.</p>
+<p>Finally, many times languages mentions are treated as "you must know either x or y" in
+ads. However, when searching language pairs we use "you must know x and y".
+The searches I did do not distinguish between these two relations, making for
+false inflation of the specificity of generalized requirements. But since X OR
+Y is usually a pairing of languages of the same type, inflation of counts
+would be generally limited to comparisons of the same type of language.</p>
+<p>So, with all that out of the way, and tongue-firmly-in-cheek, let's look at the most "in-demand"
+mainstream languages being asked for by LinkedIn HR posts over the past
+month (April 2015):</p>
+<div class="highlight"><pre>Language     | Count
+-------------|-------
+C++          |  4650
+Java         |  2227
+C#           |  1821
+JavaScript   |  1226
+Python       |  986
+Ruby         |  700
+Perl         |  685
+Php          |  317
+</pre></div>
+
+
+<p>Clearly, almost EVERYONE wants a programmer to possess C++ skills. Even if the 
+number is off by 1000 by LinkedIn search, listing C++ on your resume is roughly 
+twice as likely to match a position's requirements than any other language, 
+4 times more likely than the median, and 12 times more likely than someone who 
+can only list weakest language in demand (PHP) on their resume. </p>
+<p>Does this sound reasonable? Honestly, I don't know. C++ is often used, but by
+my own experience, not as much as other languages as it is too expensive to
+develop with for most time-intensive projects. Largely, it is a language 
+requested for interviewing. In practice, the language is less used due to 
+expense. But let's assume you need it just to talk to people.</p>
+<p>So what would you select as a second language? What effect does knowing a
+second language have on your marketability?</p>
+<p>Ad mentions of strongly-typed languages paired with weakly-typed ones:</p>
+<div class="highlight"><pre>            C# | C++ | Java
+---------------|-----|-------
+Python     253 | 464 |    532
+Perl       154 | 348 |    396
+Ruby       167 | 288 |    429
+JavaScript 474 | 418 |    556
+PHP        68  | 92  |    142
+</pre></div>
+
+
+<p>In the table above, the numbers are more closely-knit, and are subsets
+of the single language counts (reflecting the AND relation of the search terms) 
+Since the conventional practice among applicants and advertisers 
+is to pair a weakly-typed language with a strongly-typed one when wording 
+a skill profile, the table cross-counts both.</p>
+<p>The maximum effect of learning a secondary weakly-typed language is
+approximately a 10%-20% improvement in number of jobs an applicant 
+matches, with JavaScript generally being first choice, and Python 
+following closely, depending on the strongly-typed language chosen.</p>
+<p>C# favors being paired with JavaScript, while Java and C++ favor 
+being paired with either JavaScript or Python equally. The difference between
+the counts isn't very remarkable.</p>
+<p>JavaScript may be a special case, since it the defacto language of the 
+web browser, but is also used outside the browser for server-side
+tasks. It is less used for disk and systems scripting, the class
+of coding Python, Ruby and Perl are usually employed to do.</p>
+<p>But since we are considering weakly-typed languages why not compare
+their pairings too? Many programmers build careers on weakly-typed 
+languages.</p>
+<p>Mentions of Weakly-typed language pairings:</p>
+<div class="highlight"><pre>            Python | Perl | Ruby | JavaScript | PHP
+-------------------|------|------|------------|----
+Python      986    | 400  | 363  | 228        | 316
+Perl        400    | 685  | 238  | 104        | 91
+Ruby        363    | 238  | 700  | 240        | 118
+JavaScript  228    | 104  | 240  | 1226       | 1223
+PHP         316    | 91   | 118  | 1223       | 317
+</pre></div>
+
+
+<p>It is interesting to note that upgrading skills to a second weakly-typed
+language begins to exhibit diminishing returns in almost every case except 
+with PHP and JavaScript. This outlier could be false, but makes sense.</p>
+<p>PHP is the weakest language in demand, but when paired with JavaScript skills 
+becomes the most sought-after pairing of all weakly-typed languages. </p>
+<p>If you're a Perl programmer, it's best to graduate to Python rather than Ruby,
+but only marginally better.</p>
+<p>Clearly, a PHP programmer who learns JavaScript will quadruple or quintuple 
+their skill-matches while other language pairings will only improve job requirements 
+matches by 50%-75%. A JavaScript programmer, however, will not gain any 
+marketability by learning PHP. This stands to reason, due to the
+specialization of JavaScript and PHP with web programming.</p>
+<p>How does this pairing stack up against learning two strongly-typed languages?</p>
+<p>Mentions of strongly-typed language pairings:</p>
+<div class="highlight"><pre>            C#   |C++  | Java
+-----------------|-----|-----
+C#          1821 |2114 | 851
+C++         1149 |4650 | 1354
+Java        851  |1354 | 2227
+</pre></div>
+
+
+<p>Java and C# programmers do not benefit well by claiming cross-learning the other
+language, and because the two languages are similar.</p>
+<p>However, gains can be made for C# programmers to learn C++, compared to Java 
+programmers, despite the aforementioned LinkedIn search count anomaly.</p>
+<p>C++ programmers who invest time in learning C# or Java probably stand more to 
+profit than learning weakly-typed languages.</p>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">Games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/languages.html">Languages</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/technotes.html">TechNotes</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/rpg.html">rpg</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-2"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/strategy.html">strategy</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
+	    <li class="tag-4"><a href="./tag/turn-based.html">turn-based</a></li>
+	    <li class="tag-4"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/uefi.html">UEFI</a></li>
+	    <li class="tag-4"><a href="./tag/unix.html">Unix</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/hsa.html">HSA</a></li>
+	    <li class="tag-4"><a href="./tag/jail.html">Jail</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-3"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vim.html">vim</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/trinity.html">Trinity</a></li>
+	    <li class="tag-4"><a href="./tag/vishera.html">Vishera</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/languages.html">languages</a></li>
+	    <li class="tag-4"><a href="./tag/laptop.html">Laptop</a></li>
+	    <li class="tag-3"><a href="./tag/amd.html">AMD</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/2d.html">2d</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/language.html">language</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>
