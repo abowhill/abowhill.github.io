@@ -64,45 +64,56 @@
             <div class="entry-content">
               <p>Let's look at the different ways to store constant character data in arrays. This is useful for passing options to programs. For perspective, we will compare C++ arrays and Ruby arrays, since the languages are so different.</p>
 <h3>A 1D array</h3>
-<p>A 1 dimensional character array is called a Sring. The <em>dimension</em> represents the thing there is a multiplicity of, in this case the sequence of characters in the array.</p>
-<p>The first index (zero) is the first character (zeroth element) of the string, which has a length of three in the Ruby example below. Accessing beyond the last index yields a <em>nil</em>.</p>
-<p>--- ruby
-x = "one"</p>
-<p>x[0]
-=&gt; "o"</p>
-<p>x[1]
-=&gt; "n"</p>
-<p>x[3]
-=&gt; nil</p>
-<hr />
+<p>A 1 dimensional character array is called a Sring. The <em>dimension</em> represents the thing there is a multiplicity of, in this case the sequence of characters in the array.
+The first index (zero) is the first character (zeroth element) of the string, which has a length of three in the Ruby example below. Accessing beyond the last index yields a <em>nil</em>.</p>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;one&quot;</span>
+
+<span class="n">x</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>
+<span class="o">=&gt;</span> <span class="s2">&quot;o&quot;</span>
+
+<span class="n">x</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>
+<span class="o">=&gt;</span> <span class="s2">&quot;n&quot;</span>
+
+<span class="n">x</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span>
+<span class="o">=&gt;</span> <span class="kp">nil</span>
+</pre></div>
+
+
 <p>In Ruby, we can pass and store the array easily as a single pointer to an object. There is no need to allocate or reserve memory, and no need to know how large the string is beforehand. <em>attribute_accessor</em> in Ruby is merely a directive used to declare readable-writable data memebers of a class, and it automatically provides accessors for named symbols placed to the right, (symbolic representations of variable names). So assigning a string to a member variable is actually an accessor method call to a function created behind the scenes with the same name as the variable. There is no need to terminate the string, which is actually a Ruby object itself.</p>
-<p>--- Ruby
-class S
-  attr_accessor :number
-end</p>
-<p>p = S.new
-p.number = x</p>
-<p>p.number
-=&gt; "one"</p>
-<hr />
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">S</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:number</span>
+<span class="k">end</span>
+
+<span class="nb">p</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">new</span>
+<span class="nb">p</span><span class="o">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">x</span>
+
+<span class="nb">p</span><span class="o">.</span><span class="n">number</span>
+<span class="o">=&gt;</span> <span class="s2">&quot;one&quot;</span>
+</pre></div>
+
+
 <p>In C/C++, a one-dimensional character array is a string of characters that are sequential in memory whose address is the zeroth element and whose last character must be a terminating null <strong>'\0'</strong>. The string can be passed by pointer (to the zeroth element), and is indexed by either pointer or numeric integer. The address of the zeroth element is the same address as that of the name of the array, which is a pointer. However, the pointer (astring) and the zeroth element (astring[0]) are not the same thing, even though they may generally be used interchangeably.</p>
 <p>C++ has a special syntax supporting c-style character strings, where you do not need to provide the null terminator for character string constants if you define them in enclosing quotes. Since each character in the string is constant, we can't change the string, but we can assign strings freely to the <em>astring</em> pointer.</p>
 <p>C++ will add the null terminator to the end of the string constant when assigned.</p>
-<p>--- c++</p>
-<h1>include <iostream></h1>
-<p>struct S
-   {
-   const char * astring;
-   };</p>
-<p>int main(void)
-   {
-   S p;
-   p.astring = "one";</p>
-<p>std::cout &lt;&lt; p.astring    &lt;&lt; std::endl  // prints "one"
-             &lt;&lt; p.astring[0] &lt;&lt; std::endl  // prints 'o'
-             &lt;&lt; p.astring[3] &lt;&lt; std::endl; // null terminator
-   }</p>
-<hr />
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">astring</span><span class="p">;</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span><span class="p">;</span>
+   <span class="n">p</span><span class="p">.</span><span class="n">astring</span> <span class="o">=</span> <span class="s">&quot;one&quot;</span><span class="p">;</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span>    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>  <span class="c1">// prints &quot;one&quot;</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>  <span class="c1">// prints &#39;o&#39;</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// null terminator</span>
+   <span class="p">}</span>
+</pre></div>
+
+
 <p>A second, more mainstream way to store array information in C++ is in a pre-allocated fixed-length buffer. However, due to historical reasons, C/C++ disallows direct array-to-array copies.</p>
 <p>To work around this problem, you can take the following steps to assign it:</p>
 <ol>
@@ -113,68 +124,85 @@ p.number = x</p>
 <p>Doing this, a deep copy of the contents of the right hand side of the assignment (an implicit, temporary struct) is performed with respect to the left hand side: the struct itself. When two objects assign to one another across an equals sign, C++ calls the implicit copy or move constructor. </p>
 <p>Normally, C++ won't perform a deep copy of data contents, but since dimension size information can be deduced, the compiler will perform a deep copy of the data for you.</p>
 <p>One other quirk about the one or two dimensional version of this: double-braces seem to result in the same thing as single-braces for this dimension -- you can use either for one-dimensional arrays as shown by the <em>p</em> and <em>r</em> examples below.</p>
-<p>So physically in the example below, the outer set of braces around the right-hand-side constant: <strong><em>{"ONE"}</em></strong> are matched with the outer braces of the struct instance, <em>r</em>. The inner braces are matched with the name of the array: <em>astring</em>. The string constant itself is then assigned to the indexes 0-4, character by character.</p>
-<p>--- c++</p>
-<h1>include <iostream></h1>
-<p>struct S
-   {
-   char astring[4];
-   };</p>
-<p>int main(void)
-   {
-   S p = {"one"};</p>
-<p>std::cout &lt;&lt; p.astring &lt;&lt; std::endl; // prints "one"</p>
-<p>S r = {{"ONE"}};</p>
-<p>std::cout &lt;&lt; r.astring &lt;&lt; std::endl; // prints "ONE"
-   }   </p>
-<hr />
+<p>So physically in the example below, the outer set of braces around the right-hand-side constant: ~~~{"ONE"}~~~ are matched with the outer braces of the struct instance, <em>r</em>. The inner braces are matched with the name of the array: <em>astring</em>. The string constant itself is then assigned to the indexes 0-4, character by character.</p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="n">astring</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">};</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// prints &quot;one&quot;</span>
+
+   <span class="n">S</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&quot;ONE&quot;</span><span class="p">}};</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">r</span><span class="p">.</span><span class="n">astring</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// prints &quot;ONE&quot;</span>
+   <span class="p">}</span>   
+</pre></div>
+
+
 <h3>A 2D Array</h3>
 <p>A 2D array in Ruby assigns one dimension to the set of characters in each string, and one dimension to the set of strings in the array. </p>
-<p>--- ruby
-class S
-  attr_accessor :strs
-end</p>
-<p>strings = ["one", "two"]
-C = S.new
-C.strs = strings</p>
-<p>puts C.strs[0]        # one
-puts C.strs[1]        # two
-puts C.strs[3]        # out of bounds: nil
-puts C.strs[1][1]     # the 'w' in "two"
-puts C.strs[1][1][1]  # out of bounds: nil</p>
-<hr />
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">S</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:strs</span>
+<span class="k">end</span>
+
+<span class="n">strings</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="o">]</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">new</span>
+<span class="n">C</span><span class="o">.</span><span class="n">strs</span> <span class="o">=</span> <span class="n">strings</span>
+
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span>        <span class="c1"># one</span>
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span>        <span class="c1"># two</span>
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span>        <span class="c1"># out of bounds: nil</span>
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span>     <span class="c1"># the &#39;w&#39; in &quot;two&quot;</span>
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">1</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span>  <span class="c1"># out of bounds: nil</span>
+</pre></div>
+
+
 <p>In C++ a standard rectangular two-dimensional assignment looks something like this:</p>
-<p>--- c++</p>
-<h1>include <iostream></h1>
-<p>struct S
-   {
-   char astring[2][4];
-   };</p>
-<p>int main(void)
-   {
-   S p = {"one", "TWO"};</p>
-<p>std::cout &lt;&lt; p.astring[0] &lt;&lt; std::endl     // one
-             &lt;&lt; p.astring[1] &lt;&lt; std::endl     // TWO
-             &lt;&lt; p.astring[3] &lt;&lt; std::endl;    // out of bounds</p>
-<p>std::cout &lt;&lt; p.astring[0][0] &lt;&lt; std::endl  // O (in one)
-             &lt;&lt; p.astring[1][0] &lt;&lt; std::endl  // T (in TWO)
-             &lt;&lt; p.astring[1][5] &lt;&lt; std::endl; // out of bounds
-   }</p>
-<hr />
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="n">astring</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;TWO&quot;</span><span class="p">};</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>     <span class="c1">// one</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>     <span class="c1">// TWO</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>    <span class="c1">// out of bounds</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>  <span class="c1">// O (in one)</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>  <span class="c1">// T (in TWO)</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">5</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// out of bounds</span>
+   <span class="p">}</span>
+</pre></div>
+
+
 <p>Again, 1 or 2 pairs of brackets work.</p>
 <p>There is no practical, good practice way to directly assign anything over 1 dimension to a pointer-based array unless you build an array out of single dimensional arrays. Composite pointer arrays of multiple dimensions are reasonably easier to deal with using heap allocation.</p>
 <p>Although you can direct-assign something like the following locally, it won't work inside a struct.
 Notice how the array storage syntax is becoming more muddled and hard to understand:</p>
-<p>--- c++</p>
-<h1>include <iostream></h1>
-<p>int main(void)
-   {
-   char const * astring[] = {"one", "two"};</p>
-<p>std::cout &lt;&lt; astring[0]  &lt;&lt; std::endl     // one
-             &lt;&lt; astring[1]  &lt;&lt; std::endl     // two
-             &lt;&lt; *astring[1] &lt;&lt; std::endl;    // t (in two)
-   }</p>
-<hr />
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="k">const</span> <span class="o">*</span> <span class="n">astring</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">};</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">astring</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>     <span class="c1">// one</span>
+             <span class="o">&lt;&lt;</span> <span class="n">astring</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>     <span class="c1">// two</span>
+             <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">astring</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>    <span class="c1">// t (in two)</span>
+   <span class="p">}</span>
+</pre></div>
+
+
 <p>Pointer-pointer (**) arrays will not take an assignment from an initializer list because in C++ the type system identifies the type of the list as <strong>const char[4]</strong> or similar, depending on the number of items defined in the array. Due to this variability, the type of the array being assigned-to must be a matching <strong>const char[x]</strong> type, and must be larger than the input. Pointers simply cannot be used in this scenario.</p>
 <p>The unparsable nature of initializer lists precludes the ability to store information directly into pointer arrays, which are unspported by the language.</p>
 <p>In general, you can assign intializer lists of strings any dimension to a standard array of any matching dimension, as long as the destination array is larger or equal to the largest dimension defined by the input. </p>
@@ -182,17 +210,20 @@ Notice how the array storage syntax is becoming more muddled and hard to underst
 <p>A good strategy to save memory is to malloc a standard array of nulls on the heap, take input from an initializer to this heap array, copy the contents from the standard array into a lowe-memory usage pointer array, then delete the standard array.</p>
 <h3>A 3d Arrays</h3>
 <p>Here is a 3d array in Ruby. Pretty much consistent with previous examples.</p>
-<p>--- ruby
-class S
-  attr_accessor :strs
-end</p>
-<p>strings = [["one", "ONE"], ["two","TWO"]]
-C = S.new
-C.strs = strings</p>
-<p>puts C.strs[0][0]
-puts C.strs[0][1]
-puts C.strs[1][1][0]</p>
-<hr />
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">S</span>
+  <span class="kp">attr_accessor</span> <span class="ss">:strs</span>
+<span class="k">end</span>
+
+<span class="n">strings</span> <span class="o">=</span> <span class="o">[[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;ONE&quot;</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="s2">&quot;two&quot;</span><span class="p">,</span><span class="s2">&quot;TWO&quot;</span><span class="o">]]</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">new</span>
+<span class="n">C</span><span class="o">.</span><span class="n">strs</span> <span class="o">=</span> <span class="n">strings</span>
+
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span>
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span>
+<span class="nb">puts</span> <span class="n">C</span><span class="o">.</span><span class="n">strs</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">1</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span>
+</pre></div>
+
+
 <p>Here is a 3D array in C++. In order to use the initializer, you must wrap everything in two braces.
 Unlike 1D or 2D arrays, it is not optional. Working from outermost to innermost braces:</p>
 <ol>
@@ -202,19 +233,23 @@ Unlike 1D or 2D arrays, it is not optional. Working from outermost to innermost 
 <li>The maximum count of strings for any braced group within, corresponds to the 2nd array index allocation of the destination</li>
 <li>The maximum count of characters for any string (including null terminator) corresponds to the last index allocation.</li>
 </ol>
-<p>--- c++</p>
-<h1>include <iostream></h1>
-<p>struct S
-   {
-   char astring[2][2][4];
-   };</p>
-<p>int main(void)
-   {
-   S p = {{ {"one", "ONE"},{"two","TWO"} }};</p>
-<p>std::cout &lt;&lt; p.astring[0][0] &lt;&lt; std::endl  // one
-             &lt;&lt; p.astring[1][0] &lt;&lt; std::endl; // two
-   }</p>
-<hr />
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="n">astring</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{{</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;ONE&quot;</span><span class="p">},{</span><span class="s">&quot;two&quot;</span><span class="p">,</span><span class="s">&quot;TWO&quot;</span><span class="p">}</span> <span class="p">}};</span>
+
+   <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span>  <span class="c1">// one</span>
+             <span class="o">&lt;&lt;</span> <span class="n">p</span><span class="p">.</span><span class="n">astring</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// two</span>
+   <span class="p">}</span>
+</pre></div>
+
+
 <p>In summary, C++ multidimensional array assignment is comparatively muddled with quirks when compared to clean, consistency of Ruby arrays.</p>
 <p>Some final points about C++ arrays:</p>
 <ol>
@@ -286,66 +321,66 @@ Unlike 1D or 2D arrays, it is not optional. Working from outermost to innermost 
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
-	    <li class="tag-3"><a href="./tag/amd.html">AMD</a></li>
-	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
-	    <li class="tag-4"><a href="./tag/vishera.html">Vishera</a></li>
-	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-4"><a href="./tag/ruby-c.html">Ruby C++</a></li>
 	    <li class="tag-4"><a href="./tag/dos.html">DOS</a></li>
-	    <li class="tag-4"><a href="./tag/rpg.html">rpg</a></li>
-	    <li class="tag-4"><a href="./tag/strategy.html">strategy</a></li>
-	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
-	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
-	    <li class="tag-4"><a href="./tag/samba.html">Samba</a></li>
-	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
-	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
-	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
-	    <li class="tag-4"><a href="./tag/hsa.html">HSA</a></li>
-	    <li class="tag-4"><a href="./tag/jail.html">Jail</a></li>
+	    <li class="tag-2"><a href="./tag/shell.html">shell</a></li>
 	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
-	    <li class="tag-4"><a href="./tag/turn-based.html">turn-based</a></li>
-	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/jail.html">Jail</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/vishera.html">Vishera</a></li>
+	    <li class="tag-3"><a href="./tag/unix.html">UNIX</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
 	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
 	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
-	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
-	    <li class="tag-3"><a href="./tag/language.html">Language</a></li>
-	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
-	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
-	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
-	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
-	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
-	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
-	    <li class="tag-2"><a href="./tag/shell.html">shell</a></li>
 	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
-	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
-	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
-	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
-	    <li class="tag-3"><a href="./tag/windows.html">Windows</a></li>
-	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
 	    <li class="tag-4"><a href="./tag/languages.html">languages</a></li>
-	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
-	    <li class="tag-3"><a href="./tag/games.html">games</a></li>
 	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
-	    <li class="tag-3"><a href="./tag/vim.html">Vim</a></li>
-	    <li class="tag-3"><a href="./tag/unix.html">UNIX</a></li>
-	    <li class="tag-4"><a href="./tag/trinity.html">Trinity</a></li>
-	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
-	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
-	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
-	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
-	    <li class="tag-4"><a href="./tag/uefi.html">UEFI</a></li>
-	    <li class="tag-4"><a href="./tag/ruby-c.html">Ruby C++</a></li>
-	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
-	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
-	    <li class="tag-4"><a href="./tag/2d.html">2d</a></li>
-	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
-	    <li class="tag-4"><a href="./tag/laptop.html">Laptop</a></li>
-	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
-	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
+	    <li class="tag-3"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/hsa.html">HSA</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/rpg.html">rpg</a></li>
 	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/2d.html">2d</a></li>
+	    <li class="tag-3"><a href="./tag/vim.html">Vim</a></li>
+	    <li class="tag-3"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-4"><a href="./tag/trinity.html">Trinity</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/strategy.html">strategy</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/turn-based.html">turn-based</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-3"><a href="./tag/amd.html">AMD</a></li>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
+	    <li class="tag-4"><a href="./tag/laptop.html">Laptop</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
 	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
-	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
-	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-4"><a href="./tag/samba.html">Samba</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-3"><a href="./tag/language.html">Language</a></li>
+	    <li class="tag-4"><a href="./tag/uefi.html">UEFI</a></li>
 </ul>
 
 
