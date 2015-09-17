@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+        <title>String Array Zoo</title>
+        <meta charset="utf-8" />
+
+
+        <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+
+        <link rel="stylesheet" type="text/css" href="./theme/gumby.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/style.css" />
+        <link rel="stylesheet" type="text/css" href="./theme/pygment.css" />
+
+        <script src="./theme/js/libs/modernizr-2.6.2.min.js"></script>
+
+
+
+
+</head>
+
+<body id="index" class="home">
+
+
+    <div class="container">
+
+        <div class="row">
+
+          <header id="banner" class="body">
+                  <h1><a href="./">SyntaxFX <strong>Tech Blog</strong></a></h1>
+          </header><!-- /#banner -->
+
+            <div id="navigation" class="navbar row">
+              <a href="#" gumby-trigger="#navigation &gt; ul" class="toggle"><i class="icon-menu"></i></a>
+             
+              <ul class="columns">
+                <li><a href="./">Home</a></li>
+
+
+              </ul>
+            </div>
+
+<section id="content" class="body">
+
+   <div class="row">
+        <div class="eleven columns">
+
+
+            <header>
+              <h2 class="entry-title">
+                <a href="./cpp-arrays.html" rel="bookmark"
+                   title="Permalink to String Array Zoo">String Array Zoo</a></h2>
+           
+            </header>
+            <footer class="post-info">
+              <abbr class="published" title="2015-09-15T00:00:00-07:00">
+                Tue 15 September 2015
+              </abbr>
+              <address class="vcard author">By 
+                <a class="url fn" href="./author/allan-bowhill.html"> Allan Bowhill</a>
+              </address>
+            </footer><!-- /.post-info -->
+            <div class="entry-content">
+              <p>Let's look at the different ways to store constant character data in arrays occupying different objects.</p>
+<h3>A 1D array</h3>
+<p>In C/C++, a one-dimensional character string can be passed by pointer:</p>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">astring</span><span class="p">;</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span><span class="p">;</span>
+   <span class="n">p</span><span class="p">.</span><span class="n">astring</span> <span class="o">=</span> <span class="s">&quot;one&quot;</span><span class="p">;</span>
+   <span class="p">}</span>
+</pre></div>
+
+
+<p>A more mainstream way to store array information in C++ is to pre-allocate a fixed-length buffer. But note that C/C++ disallows direct array-to-array copies, so you must work around it:</p>
+<ol>
+<li>Place the destination array into a struct and make it the only element.</li>
+<li>Place the source string into braces (either one or two pairs) creating an <em>initializer list</em></li>
+<li>Assign the list to the struct directly.</li>
+</ol>
+<p>A deep copy of the contents of the initializer list (an implicit, temporary struct) is assgned to the struct directly. This is performed by the implicit copy constructor.</p>
+<p>One quirk: double-braces seem to result in the same thing as single-braces.</p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="n">astring</span><span class="p">[</span><span class="mi">4</span><span class="p">];</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">};</span>
+   <span class="n">S</span> <span class="n">r</span> <span class="o">=</span> <span class="p">{{</span><span class="s">&quot;ONE&quot;</span><span class="p">}};</span>
+   <span class="p">}</span>   
+</pre></div>
+
+
+<h3>A 2D Array</h3>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="n">astring</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;TWO&quot;</span><span class="p">};</span>
+   <span class="p">}</span>
+</pre></div>
+
+
+<p>Quirk: Either 1 or 2 braces around the initializer still work.</p>
+<p>Limitation: There is no practical way to directly assign to a pointer array from an initializer, above 1 dimension, especially across objects.</p>
+<p>Although you can direct-assign something like the following locally, it won't work when assigning to another object.
+Also notice how the array storage syntax is decaying and becoming harder to understand:</p>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="k">const</span> <span class="o">*</span> <span class="n">astring</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;two&quot;</span><span class="p">};</span>
+   <span class="p">}</span>
+</pre></div>
+
+
+<p>Pointer-pointer <strong>(**)</strong> arrays will not take an assignment from an initializer list because the type system identifies the type of the list as <strong>const char[4]</strong> or similar, depending on the number of items defined in the array. Due to this variability, the type of the array being assigned-to must be a matching <strong>const char[x]</strong> type, and must be larger or equal to the input.</p>
+<p>Initializer lists are manually unparsable. In general, you can only assign them to standard array types, which embed nulls and waste a lot of space.</p>
+<p>A good strategy to save memory is to allocate a standard array of nulls on the heap, take input from an initializer to this heap array, copy the contents from the standard array into a pointer array, then delete the standard array.</p>
+<h3>A 3d Arrays</h3>
+<p>Here is a 3D array in C++. In order to use the initializer, you must wrap everything in two braces. Unlike 1D or 2D arrays, it is not optional. Working from outermost to innermost braces:</p>
+<ol>
+<li>The outer pair corresponds to the struct being assigned-to</li>
+<li>The next pair corresponds to the name of the destination array in the struct</li>
+<li>The next level of braces corresponds to the 1st index allocation of the array of the destination</li>
+<li>The maximum count of strings for any braced group within, corresponds to the 2nd array index allocation of the destination</li>
+<li>The maximum count of characters for any string (including null terminator) corresponds to the last index allocation.</li>
+</ol>
+<div class="highlight"><pre><span class="cp">#include &lt;iostream&gt;</span>
+
+<span class="k">struct</span> <span class="n">S</span>
+   <span class="p">{</span>
+   <span class="kt">char</span> <span class="n">astring</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">][</span><span class="mi">4</span><span class="p">];</span>
+   <span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+   <span class="p">{</span>
+   <span class="n">S</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{{</span> <span class="p">{</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="s">&quot;ONE&quot;</span><span class="p">},{</span><span class="s">&quot;two&quot;</span><span class="p">,</span><span class="s">&quot;TWO&quot;</span><span class="p">}</span> <span class="p">}};</span>
+   <span class="p">}</span>
+</pre></div>
+
+
+<p>In summary, C++ multidimensional array assignment across objects is tricky.</p>
+<ol>
+<li>Standard dimension-specified arrays (linear, rectangual, cubic, etc) are supported by the language. There are bonuses for using them, like free deep-copy from initializer lists.</li>
+<li>Standard arrays need to have their dimensions declared before reading, writing, passing or storage. Pointer arrays don't necessarily need known dimension information if all dimensions are bouned by nulls.</li>
+<li>Pointer arrays are best used with persistent memory, and can be passed and stored easily by <strong><em><strong>, </strong><strong><strong>, or </strong></strong></em></strong>, etc.</li>
+<li>Standard arrays require dimension information to be known at compile-time if used on the stack.</li>
+<li>Standard arrays should be parsed with indexing rather than pointer arithmetic.</li>
+<li>When assigning strings to standard arrays, you need to include space for a null terminator for each string.</li>
+<li>
+<p>Pointer arrays need an extra slot in each dimension to place null terminators after the last element. (NULL for the strings, nullptr for the 1st and 2nd dimensions). These nulls make the array possible to parse without knowing dimension information. </p>
+</li>
+<li>
+<p>Stardard arrays tend to be wasteful for permanent string storage. Pointer arrays are much more economical in memory. It's generally better to treat standard arrays as temporary because of this.</p>
+</li>
+<li>
+<p>As a rule of thumb with C/C++ arrays it is generally best to consider assignment, passing and storage as three different operations that need to be aligned before you write a lot of code. Write small test code first in a separate file to understand what you are doing.</p>
+</li>
+<li>
+<p>Pointer arrays are best thought-of as composites of 1D arrays. They require some support code to parse, but you don't need to know their dimensions.</p>
+</li>
+</ol>
+            </div><!-- /.entry-content -->
+
+
+        </div><!-- /.eleven.columns -->
+
+<div class="three columns">
+
+<h4>Pages</h4>
+
+ <ul>
+  </ul>
+
+<h4>Categories</h4>
+<ul>
+		<li><a href="./category/c.html">C++</a></li>
+		<li><a href="./category/chrome.html">Chrome</a></li>
+		<li><a href="./category/design.html">Design</a></li>
+		<li><a href="./category/freebsd.html">FreeBSD</a></li>
+		<li><a href="./category/games.html">Games</a></li>
+		<li><a href="./category/javascript.html">Javascript</a></li>
+		<li><a href="./category/languages.html">Languages</a></li>
+		<li><a href="./category/ruby.html">Ruby</a></li>
+		<li><a href="./category/rvm.html">RVM</a></li>
+		<li><a href="./category/scala.html">Scala</a></li>
+		<li><a href="./category/shell.html">shell</a></li>
+		<li><a href="./category/ssh.html">SSH</a></li>
+		<li><a href="./category/storage.html">storage</a></li>
+		<li><a href="./category/technotes.html">TechNotes</a></li>
+		<li><a href="./category/tmux.html">Tmux</a></li>
+		<li><a href="./category/unix.html">Unix</a></li>
+		<li><a href="./category/vim.html">Vim</a></li>
+</ul>
+
+
+<h4>Tags</h4>
+	<ul>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/rpg.html">rpg</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
+	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-4"><a href="./tag/samba.html">Samba</a></li>
+	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
+	    <li class="tag-4"><a href="./tag/dos.html">DOS</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/vishera.html">Vishera</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-4"><a href="./tag/turn-based.html">turn-based</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-3"><a href="./tag/vim.html">Vim</a></li>
+	    <li class="tag-2"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/laptop.html">Laptop</a></li>
+	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
+	    <li class="tag-4"><a href="./tag/uefi.html">UEFI</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-3"><a href="./tag/unix.html">UNIX</a></li>
+	    <li class="tag-4"><a href="./tag/languages.html">languages</a></li>
+	    <li class="tag-3"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
+	    <li class="tag-3"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/c.html">C++</a></li>
+	    <li class="tag-3"><a href="./tag/language.html">Language</a></li>
+	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-3"><a href="./tag/amd.html">AMD</a></li>
+	    <li class="tag-4"><a href="./tag/trinity.html">Trinity</a></li>
+	    <li class="tag-4"><a href="./tag/jail.html">Jail</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-4"><a href="./tag/hsa.html">HSA</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/2d.html">2d</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/strategy.html">strategy</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+</ul>
+
+
+<nav class="widget">
+  <h4>Social</h4>
+  <ul>
+    <li><a href="https://www.facebook.com/allan.bowhill.1/">Facebook</a></li>
+  </ul>
+</nav>
+
+</div> </div><!-- /.row -->
+
+
+</section>
+
+       </div><!-- /.row -->
+    </div><!-- /.container -->
+
+
+       <div class="container.nopad bg">
+
+    
+        <footer id="credits" class="row">
+          <div class="seven columns left-center">
+
+                   <address id="about" class="vcard body">
+                    Proudly powered by <a href="http://getpelican.com/">Pelican</a>,
+                    which takes great advantage of <a href="http://python.org">Python</a>.
+                    <br />
+                    Based on the <a target="_blank" href="http://gumbyframework.com">Gumby Framework</a>
+                    </address>
+          </div>
+
+
+          <div class="seven columns">
+            <div class="row">
+              <ul class="socbtns">
+
+
+
+
+
+              </ul>
+            </div>
+          </div>
+        </footer>
+
+    </div>
+
+
+  <script src="./theme/js/libs/jquery-1.9.1.min.js"></script>
+  <script src="./theme/js/libs/gumby.min.js"></script>
+  <script src="./theme/js/plugins.js"></script>
+</body>
+</html>
