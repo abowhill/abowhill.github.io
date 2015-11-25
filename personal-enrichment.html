@@ -141,19 +141,6 @@ up something new. Anything.</p>
 <p>So, yes. Personal Enrichment. College was good. And it made me a
 better-informed technologist. The career fell short, but for reasons having
 little to do with school.</p>
-<p>APIs are like engineered fishing holes. You either design one to be fished by a user for helper functions, or you make the user stock it with their own data to get custom behavior. </p>
-<p>This is related to the size of facilities the library supplies. <em>Rich APIs</em> and <em>Convenience Libraries</em> have a tendency to be broad (many functions) and shallow (small objects). Narrow and deep functionality can sometimes be found with <em>Minimal APIs</em>.</p>
-<p>Rich APIs are desirable becuase they offer a maximal amount of public functions from which to choose and minimal delegation control to a library. The downside is you use only 1% of what is in the library, but include this fat at run-time. Using rich APIs not only creates fat binaries (an actual problem nowadays) but also prevents you from writing only small amounts of comparatively simple code that you use often.</p>
-<p>Thin APIs are desirable because they minimize the number of public functions and maximize delegation to a library. You're using a 99% of the code, but must live with the behavior of the library. This creates thin binaries, and can save you from writing large programs that you run only a few times. Those programs may not run exactly the way you want, but that is a problem with all libraries.</p>
-<p>Which is more programmer-efficient?</p>
-<p>An API user uses a library in the first place to minimize writing code. When you offer many small functions attached to manipulating a small object, you tend to defeat that purpose by increasing user dependency and offering only the illusion of delegating work. The user still ends-up writing code for large facilities.</p>
-<p>In either case, the value of using libraries is measured by the amount of work saved in coding time. It's better to Code your own String class and use it a million times. It's less better to code your own XML parser that you use only once.</p>
-<p>In designing a library, if you take the view that it serves a purpose by offering major facilities, and you recognize the user signs over control to the library to perform all functions related to those facilities, the concept of <em>less is more</em> (aka: minimal) becomes important.</p>
-<p>Minimalism implies offering only a few public method calls - ideally not much outside of initialization, shutdown and configuration. However, if an API is well-designed, it also means that user is given control by <em>data-oriented configuration</em>.</p>
-<p>Data-oriented configuration comes in the form of compile-time configuration "knobs" representing data inputs that can be set by the API user to customize special behavior of the facility offered. Designing an API in this way means writing quite a bit of support code, perhaps doubling the amount of original code to get the thing functional in the first place.</p>
-<p>Obviously, offering an engineered system of control to users is very different than exposing a simple bucket of loosely-related helper functions centered on a frequently used, easily-programmed things. To design a system, you're not offering a <em>rich API</em> or <em>convenience library</em> but more like a full-fledged, programmable application module.</p>
-<p>In libraries like these, the user hands control over to your code to perform a major application function they would rather not write. Simplified data input of configuration rather than a rich functional interface represents a higher-level of design consideration.</p>
-<p>Your library offers a limited set of knobs. The user sets them according to preference. Set and forget.</p>
             </div><!-- /.entry-content -->
 
 
@@ -191,67 +178,67 @@ little to do with school.</p>
 
 <h4>Tags</h4>
 	<ul>
-	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
-	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
-	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
 	    <li class="tag-4"><a href="./tag/chromebook.html">chromebook</a></li>
-	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
-	    <li class="tag-4"><a href="./tag/rpg.html">rpg</a></li>
-	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
-	    <li class="tag-3"><a href="./tag/language.html">Language</a></li>
-	    <li class="tag-4"><a href="./tag/turn-based.html">turn-based</a></li>
-	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
-	    <li class="tag-3"><a href="./tag/windows.html">Windows</a></li>
-	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
-	    <li class="tag-4"><a href="./tag/c.html">C++</a></li>
-	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
-	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
-	    <li class="tag-3"><a href="./tag/vim.html">Vim</a></li>
-	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
-	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
-	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
-	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
-	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
-	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
-	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
-	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
-	    <li class="tag-4"><a href="./tag/dos.html">DOS</a></li>
-	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
-	    <li class="tag-3"><a href="./tag/amd.html">AMD</a></li>
-	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
-	    <li class="tag-3"><a href="./tag/games.html">games</a></li>
-	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
-	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
-	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
-	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
-	    <li class="tag-4"><a href="./tag/2d.html">2d</a></li>
-	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
-	    <li class="tag-4"><a href="./tag/languages.html">languages</a></li>
-	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
-	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
-	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
-	    <li class="tag-2"><a href="./tag/shell.html">shell</a></li>
-	    <li class="tag-4"><a href="./tag/samba.html">Samba</a></li>
-	    <li class="tag-4"><a href="./tag/strategy.html">strategy</a></li>
-	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
-	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
-	    <li class="tag-4"><a href="./tag/uefi.html">UEFI</a></li>
-	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
 	    <li class="tag-3"><a href="./tag/unix.html">UNIX</a></li>
-	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
-	    <li class="tag-4"><a href="./tag/education.html">Education</a></li>
-	    <li class="tag-4"><a href="./tag/trinity.html">Trinity</a></li>
-	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
-	    <li class="tag-4"><a href="./tag/hsa.html">HSA</a></li>
-	    <li class="tag-4"><a href="./tag/jail.html">Jail</a></li>
 	    <li class="tag-4"><a href="./tag/scripts.html">scripts</a></li>
-	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
-	    <li class="tag-4"><a href="./tag/vishera.html">Vishera</a></li>
+	    <li class="tag-3"><a href="./tag/windows.html">Windows</a></li>
+	    <li class="tag-3"><a href="./tag/games.html">games</a></li>
+	    <li class="tag-3"><a href="./tag/vim.html">Vim</a></li>
+	    <li class="tag-4"><a href="./tag/arma-iii.html">ArmA III</a></li>
+	    <li class="tag-3"><a href="./tag/sbt.html">sbt</a></li>
+	    <li class="tag-4"><a href="./tag/www.html">www</a></li>
 	    <li class="tag-3"><a href="./tag/tmux.html">tmux</a></li>
-	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
-	    <li class="tag-4"><a href="./tag/laptop.html">Laptop</a></li>
+	    <li class="tag-4"><a href="./tag/configuration.html">configuration</a></li>
+	    <li class="tag-4"><a href="./tag/build.html">build</a></li>
 	    <li class="tag-2"><a href="./tag/design.html">design</a></li>
+	    <li class="tag-4"><a href="./tag/ide.html">ide</a></li>
+	    <li class="tag-2"><a href="./tag/ssh.html">ssh</a></li>
+	    <li class="tag-4"><a href="./tag/vishera.html">Vishera</a></li>
+	    <li class="tag-4"><a href="./tag/education.html">Education</a></li>
+	    <li class="tag-4"><a href="./tag/opal.html">opal</a></li>
+	    <li class="tag-4"><a href="./tag/functional.html">functional</a></li>
+	    <li class="tag-4"><a href="./tag/cr-48.html">cr-48</a></li>
+	    <li class="tag-4"><a href="./tag/dos.html">DOS</a></li>
+	    <li class="tag-4"><a href="./tag/strategy.html">strategy</a></li>
+	    <li class="tag-4"><a href="./tag/hsa.html">HSA</a></li>
+	    <li class="tag-4"><a href="./tag/clang.html">clang</a></li>
 	    <li class="tag-4"><a href="./tag/javascript.html">Javascript</a></li>
+	    <li class="tag-4"><a href="./tag/perl.html">perl</a></li>
+	    <li class="tag-2"><a href="./tag/programming.html">programming</a></li>
+	    <li class="tag-1"><a href="./tag/freebsd.html">FreeBSD</a></li>
+	    <li class="tag-4"><a href="./tag/win7.html">Win7</a></li>
+	    <li class="tag-4"><a href="./tag/chrome.html">Chrome</a></li>
+	    <li class="tag-4"><a href="./tag/trinity.html">Trinity</a></li>
+	    <li class="tag-4"><a href="./tag/rpg.html">rpg</a></li>
+	    <li class="tag-4"><a href="./tag/2d.html">2d</a></li>
+	    <li class="tag-4"><a href="./tag/gui.html">gui</a></li>
+	    <li class="tag-4"><a href="./tag/dotfile.html">dotfile</a></li>
+	    <li class="tag-4"><a href="./tag/java.html">java</a></li>
+	    <li class="tag-4"><a href="./tag/ubuntu.html">Ubuntu</a></li>
+	    <li class="tag-4"><a href="./tag/benchmarks.html">benchmarks</a></li>
+	    <li class="tag-4"><a href="./tag/laptop.html">Laptop</a></li>
+	    <li class="tag-1"><a href="./tag/scala.html">scala</a></li>
+	    <li class="tag-4"><a href="./tag/jail.html">Jail</a></li>
+	    <li class="tag-3"><a href="./tag/language.html">Language</a></li>
+	    <li class="tag-4"><a href="./tag/samba.html">Samba</a></li>
+	    <li class="tag-4"><a href="./tag/forwarding.html">forwarding</a></li>
+	    <li class="tag-1"><a href="./tag/ruby.html">Ruby</a></li>
+	    <li class="tag-4"><a href="./tag/template.html">template</a></li>
+	    <li class="tag-4"><a href="./tag/languages.html">languages</a></li>
+	    <li class="tag-4"><a href="./tag/c.html">C++</a></li>
+	    <li class="tag-4"><a href="./tag/uefi.html">UEFI</a></li>
+	    <li class="tag-4"><a href="./tag/intellij.html">intellij</a></li>
+	    <li class="tag-3"><a href="./tag/rvm.html">rvm</a></li>
+	    <li class="tag-2"><a href="./tag/shell.html">shell</a></li>
+	    <li class="tag-4"><a href="./tag/disk.html">disk</a></li>
+	    <li class="tag-4"><a href="./tag/storage.html">storage</a></li>
+	    <li class="tag-4"><a href="./tag/python.html">Python</a></li>
+	    <li class="tag-3"><a href="./tag/amd.html">AMD</a></li>
+	    <li class="tag-3"><a href="./tag/metaprogramming.html">metaprogramming</a></li>
+	    <li class="tag-3"><a href="./tag/zfs.html">zfs</a></li>
+	    <li class="tag-4"><a href="./tag/turn-based.html">turn-based</a></li>
+	    <li class="tag-4"><a href="./tag/object.html">object</a></li>
+	    <li class="tag-4"><a href="./tag/patterns.html">patterns</a></li>
 </ul>
 
 
